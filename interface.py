@@ -11,6 +11,8 @@ ctk.set_default_color_theme("dark-blue")
 # Подключение к базе данных
 connection = connect_with_bd()
 
+my_width = 200
+my_height = 40
 
 class App(ctk.CTk):
     # общий конструтор класса
@@ -32,7 +34,7 @@ class App(ctk.CTk):
     def init_states(self):
         # # Загружаем фоновое изображение
         # self.background_image = ImageTk.PhotoImage(file="1.jpg")
-        #
+        # #
         # # Создайте метку (Label) для отображения изображения
         # self.background_label = Label(self, image=self.background_image)
         # self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -91,14 +93,14 @@ class App(ctk.CTk):
             self.menu_frame, text="Каталог автомобилей", command=self.show_car_catalog
         )
         self.car_catalog_button.grid(row=0, column=0, padx=300, pady=20, sticky="nsew")
-        self.car_catalog_button.configure(width=200, height=40, font=("Arial", 30))
+        self.car_catalog_button.configure(width=my_width, height=my_height, font=("Calibri", 30))
 
         # Кнопка "Двс автомобили"
         self.dvs_car_button = ctk.CTkButton(
             self.menu_frame, text="Двс автомобили", command=self.show_dvs_car
         )
         self.dvs_car_button.grid(row=1, column=0, padx=300, pady=20, sticky="nsew")
-        self.dvs_car_button.configure(width=200, height=40, font=("Arial", 30))
+        self.dvs_car_button.configure(width=my_width, height=my_height, font=("Calibri", 30))
 
         # Кнопка "Электрические автомобили"
         self.electric_car_button = ctk.CTkButton(
@@ -107,35 +109,35 @@ class App(ctk.CTk):
             command=self.show_electric_car,
         )
         self.electric_car_button.grid(row=2, column=0, padx=300, pady=20, sticky="nsew")
-        self.electric_car_button.configure(width=200, height=40, font=("Arial", 30))
+        self.electric_car_button.configure(width=my_width, height=my_height, font=("Calibri", 30))
 
         # Кнопка "Гибридные автомобили"
         self.hybrid_car_button = ctk.CTkButton(
             self.menu_frame, text="Гибридные автомобили", command=self.show_hybrid_car
         )
         self.hybrid_car_button.grid(row=3, column=0, padx=300, pady=20, sticky="nsew")
-        self.hybrid_car_button.configure(width=200, height=40, font=("Arial", 30))
+        self.hybrid_car_button.configure(width=my_width, height=my_height, font=("Calibri", 30))
 
         # Кнопка "Цвета автомобилей"
         self.colours_button = ctk.CTkButton(
             self.menu_frame, text="Цвета автомобилей", command=self.show_colours
         )
         self.colours_button.grid(row=4, column=0, padx=300, pady=20, sticky="nsew")
-        self.colours_button.configure(width=200, height=40, font=("Arial", 30))
+        self.colours_button.configure(width=my_width, height=my_height, font=("Calibri", 30))
 
         # Кнопка "Сделки"
         self.deals_button = ctk.CTkButton(
             self.menu_frame, text="Сделки", command=self.show_deals
         )
         self.deals_button.grid(row=5, column=0, padx=300, pady=20, sticky="nsew")
-        self.deals_button.configure(width=200, height=40, font=("Arial", 30))
+        self.deals_button.configure(width=my_width, height=my_height, font=("Calibri", 30))
 
         # Кнопка "Покупатели"
         self.buyers_button = ctk.CTkButton(
             self.menu_frame, text="Покупатели", command=self.show_buyers
         )
         self.buyers_button.grid(row=6, column=0, padx=300, pady=20, sticky="nsew")
-        self.buyers_button.configure(width=200, height=40, font=("Arial", 30))
+        self.buyers_button.configure(width=my_width, height=my_height, font=("Calibri", 30))
 
         # Кнопка "Опции всех автомобилей"
         self.all_car_options_button = ctk.CTkButton(
@@ -146,14 +148,14 @@ class App(ctk.CTk):
         self.all_car_options_button.grid(
             row=7, column=0, padx=300, pady=20, sticky="nsew"
         )
-        self.all_car_options_button.configure(width=200, height=40, font=("Arial", 30))
+        self.all_car_options_button.configure(width=my_width, height=my_height, font=("Calibri", 30))
 
         # Кнопка "Опции"
         self.options_button = ctk.CTkButton(
             self.menu_frame, text="Опции", command=self.show_options
         )
         self.options_button.grid(row=8, column=0, padx=300, pady=20, sticky="nsew")
-        self.options_button.configure(width=200, height=40, font=("Arial", 30))
+        self.options_button.configure(width=my_width, height=my_height, font=("Calibri", 30))
 
     # инициализация фрейма - Каталог автомобилей
     def init_car_catalog_frame(self):
@@ -166,7 +168,7 @@ class App(ctk.CTk):
         self.car_catalog1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
         )
-        self.car_catalog1_button.configure(width=200, height=50, font=("Arial", 30))
+        self.car_catalog1_button.configure(width=my_width, height=50, font=("Calibri", 30))
 
         # Кнопка "Назад"
         self.back_button_car_catalog = ctk.CTkButton(
@@ -178,7 +180,7 @@ class App(ctk.CTk):
         self.back_button_car_catalog.grid(
             row=6, column=0, padx=300, pady=25, sticky="nsew"
         )
-        self.back_button_car_catalog.configure(width=200, height=50, font=("Arial", 30))
+        self.back_button_car_catalog.configure(width=my_width, height=50, font=("Calibri", 30))
 
     # инициализация фрейма - Двс автомобилей
     def init_dvs_car_frame(self):
@@ -190,7 +192,7 @@ class App(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_dvs_car.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
-        self.back_button_dvs_car.configure(width=200, height=50, font=("Arial", 30))
+        self.back_button_dvs_car.configure(width=my_width, height=50, font=("Calibri", 30))
 
     # инициализация фрейма - Электрических автомобилей
     def init_electric_car_frame(self):
@@ -205,7 +207,7 @@ class App(ctk.CTk):
             row=6, column=0, padx=300, pady=25, sticky="nsew"
         )
         self.back_button_electric_car.configure(
-            width=200, height=50, font=("Arial", 30)
+            width=my_width, height=50, font=("Calibri", 30)
         )
 
     # инициализация фрейма - Гибридных автомобилей
@@ -220,7 +222,7 @@ class App(ctk.CTk):
         self.back_button_hybrid_car.grid(
             row=6, column=0, padx=300, pady=25, sticky="nsew"
         )
-        self.back_button_hybrid_car.configure(width=200, height=50, font=("Arial", 30))
+        self.back_button_hybrid_car.configure(width=my_width, height=50, font=("Calibri", 30))
 
     # инициализация фрейма - Цвета автомобилей
     def init_colours_frame(self):
@@ -232,7 +234,7 @@ class App(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_colours.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
-        self.back_button_colours.configure(width=200, height=50, font=("Arial", 30))
+        self.back_button_colours.configure(width=my_width, height=50, font=("Calibri", 30))
 
     # инициализация фрейма - Сделки
     def init_deals_frame(self):
@@ -244,7 +246,7 @@ class App(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_deals.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
-        self.back_button_deals.configure(width=200, height=50, font=("Arial", 30))
+        self.back_button_deals.configure(width=my_width, height=50, font=("Calibri", 30))
 
     # инициализация фрейма - Покупатели
     def init_buyers_frame(self):
@@ -256,7 +258,7 @@ class App(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_buyers.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
-        self.back_button_buyers.configure(width=200, height=50, font=("Arial", 30))
+        self.back_button_buyers.configure(width=my_width, height=50, font=("Calibri", 30))
 
     # инициализация фрейма - Опции всех автомобилей
     def init_all_car_options_frame(self):
@@ -271,7 +273,7 @@ class App(ctk.CTk):
             row=6, column=0, padx=300, pady=25, sticky="nsew"
         )
         self.back_button_all_car_options.configure(
-            width=200, height=50, font=("Arial", 30)
+            width=my_width, height=50, font=("Calibri", 30)
         )
 
     # инициализация фрейма - Опции
@@ -284,7 +286,7 @@ class App(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_options.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
-        self.back_button_options.configure(width=200, height=50, font=("Arial", 30))
+        self.back_button_options.configure(width=my_width, height=50, font=("Calibri", 30))
 
     def init_result_state_frame(self):
         # Treeview для отображения данных в виде таблицы
