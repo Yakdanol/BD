@@ -669,23 +669,23 @@ class App(ctk.CTk):
                 sticky="nsew",
             )
 
-    def show_insert_menu(self, sql_request):
-        self.hide_all_states()
-        # TODO: добавить условия для запроса
-        self.insert_car_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 2,
-            pady=my_pady,
-            sticky="nsew",
-        )
-
         # Очистка Treeview перед новыми данными
         for item in self.tree.get_children():
             self.tree.delete(item)
 
         # Вызов функции show с передачей self в качестве первого аргумента
         show(self, connection, sql_request)
+
+    def show_insert_menu(self, sql_request):
+        self.hide_all_states()
+        # TODO: добавить условия для запроса
+        self.insert_car_frame.grid(
+            row=0,
+            column=0,
+            padx=self.winfo_screenwidth() / 2.5,
+            pady=my_pady,
+            sticky="nsew",
+        )
 
     @staticmethod
     def find_id(sql_request: str):
