@@ -182,6 +182,17 @@ class App(ctk.CTk):
 
     # инициализация фрейма - Двс автомобилей
     def init_dvs_car_frame(self):
+        # Кнопка "Все автомобили"
+        self.dvs_car1_button = ctk.CTkButton(
+            self.dvs_car_frame,
+            text="Все Двс автомобили",
+            command=lambda: self.show_result_state(bd.dvs_car_Select_All),
+        )
+        self.dvs_car1_button.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.dvs_car1_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_dvs_car = ctk.CTkButton(
             self.dvs_car_frame,
@@ -194,6 +205,17 @@ class App(ctk.CTk):
 
     # инициализация фрейма - Электрических автомобилей
     def init_electric_car_frame(self):
+        # Кнопка "Все Электрические автомобили"
+        self.electric_car1_button = ctk.CTkButton(
+            self.electric_car_frame,
+            text="Все Электрические автомобили",
+            command=lambda: self.show_result_state(bd.electric_car_Select_All),
+        )
+        self.electric_car1_button.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.electric_car1_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_electric_car = ctk.CTkButton(
             self.electric_car_frame,
@@ -210,6 +232,17 @@ class App(ctk.CTk):
 
     # инициализация фрейма - Гибридных автомобилей
     def init_hybrid_car_frame(self):
+        # Кнопка "Все Гибридные автомобили"
+        self.hybrid_car1_button = ctk.CTkButton(
+            self.hybrid_car_frame,
+            text="Все Гибридные автомобили",
+            command=lambda: self.show_result_state(bd.hybrid_car_Select_All),
+        )
+        self.hybrid_car1_button.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.hybrid_car1_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_hybrid_car = ctk.CTkButton(
             self.hybrid_car_frame,
@@ -224,6 +257,17 @@ class App(ctk.CTk):
 
     # инициализация фрейма - Цвета автомобилей
     def init_colours_frame(self):
+        # Кнопка "Все Цвета автомобилей"
+        self.colours1_button = ctk.CTkButton(
+            self.colours_frame,
+            text="Все Цвета автомобилей",
+            command=lambda: self.show_result_state(bd.colour_of_car_Select_All),
+        )
+        self.colours1_button.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.colours1_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_colours = ctk.CTkButton(
             self.colours_frame,
@@ -236,6 +280,17 @@ class App(ctk.CTk):
 
     # инициализация фрейма - Сделки
     def init_deals_frame(self):
+        # Кнопка "Все Сделки"
+        self.deals1_button = ctk.CTkButton(
+            self.deals_frame,
+            text="Все Сделки",
+            command=lambda: self.show_result_state(bd.deals_Select_All),
+        )
+        self.deals1_button.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.deals1_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_deals = ctk.CTkButton(
             self.deals_frame,
@@ -248,6 +303,17 @@ class App(ctk.CTk):
 
     # инициализация фрейма - Покупатели
     def init_buyers_frame(self):
+        # Кнопка "Все Покупатели"
+        self.buyers1_button = ctk.CTkButton(
+            self.buyers_frame,
+            text="Все Покупатели",
+            command=lambda: self.show_result_state(bd.buyers_Select_All),
+        )
+        self.buyers1_button.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.buyers1_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_buyers = ctk.CTkButton(
             self.buyers_frame,
@@ -260,6 +326,17 @@ class App(ctk.CTk):
 
     # инициализация фрейма - Опции всех автомобилей
     def init_all_car_options_frame(self):
+        # Кнопка "Опции всех автомобилей"
+        self.all_car_options1_button = ctk.CTkButton(
+            self.all_car_options_frame,
+            text="Опции всех автомобилей",
+            command=lambda: self.show_result_state(bd.all_car_options_Select_All),
+        )
+        self.all_car_options1_button.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.all_car_options1_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_all_car_options = ctk.CTkButton(
             self.all_car_options_frame,
@@ -276,6 +353,17 @@ class App(ctk.CTk):
 
     # инициализация фрейма - Опции
     def init_options_frame(self):
+        # Кнопка "Доступные опции"
+        self.options1_button = ctk.CTkButton(
+            self.options_frame,
+            text="Доступные опции",
+            command=lambda: self.show_result_state(bd.options_Select_All),
+        )
+        self.options1_button.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.options1_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_options = ctk.CTkButton(
             self.options_frame,
@@ -287,8 +375,18 @@ class App(ctk.CTk):
         self.back_button_options.configure(width=200, height=50, font=("Arial", 30))
 
     def init_result_state_frame(self):
+        # Создайте объект стиля
+        style = ttk.Style()
+
+        # Настройте стиль "Treeview"
+        style.configure("Treeview", font=("Arial", 16))  # Измените шрифт и размер текста
+        style.configure("Treeview.Heading", font=("Arial", 18, "bold"))  # Измените шрифт и размер заголовков столбцов
+
+        # Настройте высоту строк в стиле "Treeview"
+        style.configure("Treeview", rowheight=40)
+
         # Treeview для отображения данных в виде таблицы
-        self.tree = ttk.Treeview(self.result_state_frame)
+        self.tree = ttk.Treeview(self.result_state_frame, style="Treeview")
         self.tree.grid(row=0, column=0, padx=(10, 10), pady=(25, 0), sticky="nsew")
 
         # Создаем виджеты Scrollbar
@@ -309,7 +407,7 @@ class App(ctk.CTk):
         )
 
         # Ограничиваем размеры Treeview
-        self.tree.config(height=30, show="headings")
+        self.tree.config(height=25, show="headings")
 
         # Кнопка "Назад"
         self.back_button_result = ctk.CTkButton(
