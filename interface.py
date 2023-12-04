@@ -309,7 +309,7 @@ class App(ctk.CTk):
         )
 
         # Ограничиваем размеры Treeview
-        self.tree.config(height=10, show="headings")
+        self.tree.config(height=30, show="headings")
 
         # Кнопка "Назад"
         self.back_button_result = ctk.CTkButton(
@@ -324,7 +324,7 @@ class App(ctk.CTk):
         # self.back_button_result.place(connection=10, y=675)  # Задайте нужные вам координаты кнопки
 
 
-    # инициализация фрейма - скрытия фреймов
+    # инициализация функции - скрытия фреймов
     def hide_all_states(self):
         self.menu_frame.grid_forget()
 
@@ -510,7 +510,7 @@ class App(ctk.CTk):
             self.result_state_frame.grid(
                 row=0,
                 column=0,
-                padx=self.winfo_screenwidth() / 13,
+                padx=self.winfo_screenwidth() / 4,
                 pady=220,
                 sticky="nsew",
             )

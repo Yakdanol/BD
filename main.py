@@ -28,7 +28,7 @@ def show(self, connection, sql_request: str):
 
         # Вставка новых данных в Treeview
         for row in rows:
-            self.tree.insert('', 'end', values=tuple(row.values()))
+            self.tree.insert('', 'end', values=row)
 
     # Return the number of columns
     return len(headers)
