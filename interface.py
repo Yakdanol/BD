@@ -440,7 +440,6 @@ class App(ctk.CTk):
         # self.back_button_result.place(connection=10, y=675)  # Задайте нужные вам координаты кнопки
 
     def init_insert_car_frame(self):
-        # TODO: сделать функционал добавления автомобиля
         # Поля для ввода данных об автомобиле
         self.entry_idcar = ctk.CTkEntry(
             self.insert_car_frame,
@@ -471,7 +470,7 @@ class App(ctk.CTk):
 
         self.entry_year = ctk.CTkEntry(
             self.insert_car_frame,
-            placeholder_text="Дата выпуска"
+            placeholder_text="Дата выпуска (ГГГГ-ММ-ДД)"
         )
         self.entry_year.grid(
             row=3, column=0, padx=300, pady=25, sticky="nsew"
@@ -523,10 +522,23 @@ class App(ctk.CTk):
         )
         self.entry_range.configure(width=my_width, height=my_height, font=(my_font, 14))
 
+        data = [
+            self.entry_idcar.get(),
+            self.entry_brand.get(),
+            self.entry_model.get(),
+            self.entry_year.get(),
+            self.entry_colour.get(),
+            self.entry_price.get(),
+            self.entry_type.get(),
+            self.entry_condition.get(),
+            self.entry_range.get()
+        ]
+
+        query = bd.insert_into_table + " car_catalog VALUES " + f"({data[0]}, '{data[1]}', '{data[2]}', {data[3]}, {data[4]}, {data[5]}, '{data[6]}, '{data[7]}', {data[8]})"
         self.button_insert_car = ctk.CTkButton(
             self.insert_car_frame,
             text="Добавить",
-            command=self.show_menu,
+            command=self.make_insert_to_db(query),
         )
         self.button_insert_car.grid(
             row=9, column=0, padx=300, pady=25, sticky="nsew"
@@ -769,7 +781,7 @@ class App(ctk.CTk):
         # Вызов функции show с передачей self в качестве первого аргумента
         show(self, connection, sql_request)
 
-    def show_insert_menu(self, sql_request):
+    def show_insert_menu(self, table):
         self.hide_all_states()
         # TODO: добавить условия для запроса
         self.insert_car_frame.grid(
@@ -780,8 +792,10 @@ class App(ctk.CTk):
             sticky="nsew",
         )
 
-    def make_insert_to_db(self, sql_request):
-        pass
+    def make_insert_to_db(self, sql_request: str):
+        #TODO: исправить ошибку на компиляции
+        with connection.cursor() as cursor:
+            cursor.execute(sql_request)
 
     @staticmethod
     def find_id(sql_request: str):
