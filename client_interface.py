@@ -662,5 +662,5 @@ if __name__ == "__main__":
     app.mainloop()
 
 def client_interface():
-    app = App_client()
-    app.mainloop()
+    app_client = App_client()
+    app_client.mainloop()

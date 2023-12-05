@@ -2,8 +2,6 @@ from tkinter import *
 from tkinter import Canvas, PhotoImage, ttk
 import customtkinter as ctk
 from PIL import Image, ImageTk
-import commands_sql as bd
-from main import show, connect_client_with_bd
 from interface import admin_interface
 from client_interface import client_interface
 from tkinter import simpledialog, messagebox
@@ -11,9 +9,6 @@ from tkinter import simpledialog, messagebox
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("dark-blue")
-
-# Подключение к базе данных
-#connection = connect_client_with_bd()
 
 
 class App_general_menu(ctk.CTk):
@@ -30,16 +25,16 @@ class App_general_menu(ctk.CTk):
         self.show_menu()
 
         # Словарь для хранения фоновых изображений
-        self.background_images = {}
+        #self.background_images = {}
 
     # инициализация всех состояний - фреймов
     def init_states(self):
-        # # Загружаем фоновое изображение
-        # self.background_image = ImageTk.PhotoImage(file="1.jpg")
-        #
-        # # Создайте метку (Label) для отображения изображения
-        # self.background_label = Label(self, image=self.background_image)
-        # self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        # Загружаем фоновое изображение
+        self.background_image = ImageTk.PhotoImage(file="1.jpg")
+
+        # Создайте метку (Label) для отображения изображения
+        self.background_label = Label(self, image=self.background_image)
+        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         # Фрейм - Основное меню
         self.menu_frame = Frame(self)
@@ -58,14 +53,14 @@ class App_general_menu(ctk.CTk):
         self.client_button = ctk.CTkButton(
             self.menu_frame, text="Войти как клиент", command=client_interface
         )
-        self.client_button.grid(row=0, column=0, padx=300, pady=100, sticky="nsew")
+        self.client_button.grid(row=0, column=0, padx=300, pady=20, sticky="nsew")
         self.client_button.configure(width=200, height=50, font=("Arial", 30))
 
         # Кнопка "Администратор"
         self.admin_button = ctk.CTkButton(
             self.menu_frame, text="Войти как администратор", command=self.show_login_admin
         )
-        self.admin_button.grid(row=1, column=0, padx=300, pady=10, sticky="nsew")
+        self.admin_button.grid(row=1, column=0, padx=300, pady=20, sticky="nsew")
         self.admin_button.configure(width=200, height=50, font=("Arial", 30))
 
     # инициализация фрейма - Вход для администратора
@@ -110,6 +105,12 @@ class App_general_menu(ctk.CTk):
             self.temp_login.delete(0, 'end')
             self.temp_password.delete(0, 'end')
 
+            # Скрыть текущее окно
+            #self.hide_all_states()
+            # Закрыть текущее окно
+            # self.quit()
+            # self.destroy()
+
             admin_interface()
 
         else:
@@ -137,10 +138,14 @@ class App_general_menu(ctk.CTk):
         self.menu_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 3.7,
-            pady=100,
+            padx=self.winfo_screenwidth() / 3.5,
+            pady=500,
             sticky="nsew",
         )
+        # Устанавливаем фрейм меню по центру окна
+        # frame_x = self.winfo_screenwidth() / 3.7
+        # frame_y = self.winfo_screenheight() / 2 - 75  # Высота фрейма меню - 150 (сумма высоты кнопок)
+        # self.menu_frame.grid(row=0, column=0, padx=frame_x, pady=frame_y, sticky="nsew")
 
     def show_login_admin(self):
         self.hide_all_states()
@@ -148,9 +153,14 @@ class App_general_menu(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 2.5,
-            pady=100,
+            pady=300,
             sticky="nsew",
         )
+        # Устанавливаем фрейм входа для администратора по центру окна
+        # frame_x = self.winfo_screenwidth() / 2.5
+        # frame_y = self.winfo_screenheight() / 2 - 75  # Высота фрейма входа для админа - 150 (сумма высоты элементов)
+        # self.login_admin_frame.grid(row=0, column=0, padx=frame_x, pady=frame_y, sticky="nsew")
+
 
     def on_closing(self):
         self.destroy()
