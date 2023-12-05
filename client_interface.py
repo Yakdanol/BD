@@ -12,7 +12,7 @@ ctk.set_default_color_theme("dark-blue")
 connection = connect_client_with_bd()
 
 
-class App(ctk.CTk):
+class App_client(ctk.CTk):
     # общий конструтор класса
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -658,5 +658,9 @@ class App(ctk.CTk):
 
 
 if __name__ == "__main__":
-    app = App()
+    app = App_client()
+    app.mainloop()
+
+def client_interface():
+    app = App_client()
     app.mainloop()

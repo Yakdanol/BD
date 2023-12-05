@@ -660,3 +660,7 @@ class App(ctk.CTk):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
+
+def interface_admin():
+    app = App()
+    app.mainloop()
