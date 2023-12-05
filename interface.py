@@ -12,7 +12,7 @@ ctk.set_default_color_theme("dark-blue")
 connection = connect_with_bd()
 
 my_width = 200
-my_height = 40
+my_height = 20
 my_pady = 20
 my_font = "xo oriel"
 
@@ -440,8 +440,99 @@ class App(ctk.CTk):
         # self.back_button_result.place(connection=10, y=675)  # Задайте нужные вам координаты кнопки
 
     def init_insert_car_frame(self):
-        self.hide_all_states()
         # TODO: сделать функционал добавления автомобиля
+        # Поля для ввода данных об автомобиле
+        self.entry_idcar = ctk.CTkEntry(
+            self.insert_car_frame,
+            placeholder_text="ID автомобиля"
+        )
+        self.entry_idcar.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_idcar.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_brand = ctk.CTkEntry(
+            self.insert_car_frame,
+            placeholder_text="Марка автомобиля"
+        )
+        self.entry_brand.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_brand.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_model = ctk.CTkEntry(
+            self.insert_car_frame,
+            placeholder_text="Модель автомобиля"
+        )
+        self.entry_model.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_model.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_year = ctk.CTkEntry(
+            self.insert_car_frame,
+            placeholder_text="Дата выпуска"
+        )
+        self.entry_year.grid(
+            row=3, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_year.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_colour = ctk.CTkEntry(
+            self.insert_car_frame,
+            placeholder_text="Номер цвета"
+        )
+        self.entry_colour.grid(
+            row=4, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_colour.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_price = ctk.CTkEntry(
+            self.insert_car_frame,
+            placeholder_text="Цена"
+        )
+        self.entry_price.grid(
+            row=5, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_price.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_type = ctk.CTkEntry(
+            self.insert_car_frame,
+            placeholder_text="Тип (DVS, Hybrid, Electric)"
+        )
+        self.entry_type.grid(
+            row=6, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_type.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_condition = ctk.CTkEntry(
+            self.insert_car_frame,
+            placeholder_text="Состояние (New, Used)"
+        )
+        self.entry_condition.grid(
+            row=7, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_condition.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_range = ctk.CTkEntry(
+            self.insert_car_frame,
+            placeholder_text="Запас хода"
+        )
+        self.entry_range.grid(
+            row=8, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_range.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.back_button_insert_car = ctk.CTkButton(
+            self.insert_car_frame,
+            text="Добавить",
+            command=self.show_menu,
+        )
+        self.back_button_insert_car.grid(
+            row=9, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.back_button_insert_car.configure(width=my_width, height=my_height, font=(my_font, 20))
+
         self.back_button_insert_car = ctk.CTkButton(
             self.insert_car_frame,
             text="Назад",
@@ -449,9 +540,9 @@ class App(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_insert_car.grid(
-            row=6, column=0, padx=300, pady=25, sticky="nsew"
+            row=10, column=0, padx=300, pady=25, sticky="nsew"
         )
-        self.back_button_insert_car.configure(width=my_width, height=my_height, font=(my_font, 30))
+        self.back_button_insert_car.configure(width=my_width, height=my_height, font=(my_font, 20))
 
 
     # инициализация функции - скрытия фреймов
