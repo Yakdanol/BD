@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import Canvas, PhotoImage, ttk
 import customtkinter as ctk
-from main import show, connect_admin_with_bd
+from main import show, connect_client_with_bd
 from PIL import Image, ImageTk
 import commands_sql as bd
 
@@ -9,7 +9,7 @@ ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("dark-blue")
 
 # Подключение к базе данных
-connection = connect_admin_with_bd()
+connection = connect_client_with_bd()
 
 
 class App(ctk.CTk):
@@ -592,7 +592,7 @@ class App(ctk.CTk):
             connection.commit()
         self.hide_all_states()
         self.show_menu()
-    
+
     def confirm_temp(self, func, to_save):
         temp = to_save.get().strip()
         if not temp:
