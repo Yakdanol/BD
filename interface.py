@@ -523,15 +523,15 @@ class App(ctk.CTk):
         )
         self.entry_range.configure(width=my_width, height=my_height, font=(my_font, 14))
 
-        self.back_button_insert_car = ctk.CTkButton(
+        self.button_insert_car = ctk.CTkButton(
             self.insert_car_frame,
             text="Добавить",
             command=self.show_menu,
         )
-        self.back_button_insert_car.grid(
+        self.button_insert_car.grid(
             row=9, column=0, padx=300, pady=25, sticky="nsew"
         )
-        self.back_button_insert_car.configure(width=my_width, height=my_height, font=(my_font, 20))
+        self.button_insert_car.configure(width=my_width, height=my_height, font=(my_font, 20))
 
         self.back_button_insert_car = ctk.CTkButton(
             self.insert_car_frame,
@@ -568,6 +568,8 @@ class App(ctk.CTk):
         self.options_frame.grid_forget()
 
         self.result_state_frame.grid_forget()
+
+        self.insert_car_frame.grid_forget()
 
 
     # TODO padx отвечает за сдвиги таблицы с кнопками по горизонтали
@@ -777,6 +779,9 @@ class App(ctk.CTk):
             pady=my_pady,
             sticky="nsew",
         )
+
+    def make_insert_to_db(self, sql_request):
+        pass
 
     @staticmethod
     def find_id(sql_request: str):
