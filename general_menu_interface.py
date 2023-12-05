@@ -4,14 +4,16 @@ import customtkinter as ctk
 from PIL import Image, ImageTk
 import commands_sql as bd
 from main import show, connect_client_with_bd
-from interface import interface_admin
+from interface import admin_interface
 from client_interface import client_interface
+from tkinter import simpledialog, messagebox
+
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("dark-blue")
 
 # Подключение к базе данных
-connection = connect_client_with_bd()
+#connection = connect_client_with_bd()
 
 
 class App_general_menu(ctk.CTk):
@@ -43,84 +45,58 @@ class App_general_menu(ctk.CTk):
         self.menu_frame = Frame(self)
         self.init_menu_frame()
 
-        # Фрейм - "Каталог автомобилей"
-        self.car_catalog_frame = Frame(self)
-        self.init_car_catalog_frame()
-
-        # Фрейм - "Двс автомобилей"
-        self.dvs_car_frame = Frame(self)
-        self.init_dvs_car_frame()
-
         # Фрейм для четвертого состояния (результат show)
         self.result_state_frame = Frame(self)
         self.init_result_state_frame()
 
         # Обработка закрытия окна
-        self.protocol("WM_DELETE_WINDOW", lambda: self.on_closing(connection))
+        self.protocol("WM_DELETE_WINDOW", lambda: self.on_closing())
 
     # инициализация фрейма - Меню
     def init_menu_frame(self):
-        # Кнопка "Каталог автомобилей"
-        self.car_catalog_button = ctk.CTkButton(
-            self.menu_frame, text="Войти как клиент", command=self.show_car_catalog
+        # Кнопка "Клиент"
+        self.client_button = ctk.CTkButton(
+            self.menu_frame, text="Войти как клиент", command=client_interface
         )
-        self.car_catalog_button.grid(row=0, column=0, padx=300, pady=20, sticky="nsew")
-        self.car_catalog_button.configure(width=200, height=40, font=("Arial", 30))
+        self.client_button.grid(row=0, column=0, padx=300, pady=20, sticky="nsew")
+        self.client_button.configure(width=200, height=40, font=("Arial", 30))
 
-        # Кнопка "Двс автомобили"
-        self.dvs_car_button = ctk.CTkButton(
-            self.menu_frame, text="Войти как администратор", command=self.show_dvs_car
+        # Кнопка "Администратор"
+        self.admin_button = ctk.CTkButton(
+            self.menu_frame, text="Войти как администратор", command=self.check_admin_credentials
         )
-        self.dvs_car_button.grid(row=1, column=0, padx=300, pady=20, sticky="nsew")
-        self.dvs_car_button.configure(width=200, height=40, font=("Arial", 30))
+        self.admin_button.grid(row=1, column=0, padx=300, pady=20, sticky="nsew")
+        self.admin_button.configure(width=200, height=40, font=("Arial", 30))
 
-    # инициализация фрейма - Каталог автомобилей
-    def init_car_catalog_frame(self):
-        # Кнопка "Все автомобили"
-        self.car_catalog1_button = ctk.CTkButton(
-            self.car_catalog_frame,
-            text="Все автомобили",
-            command=lambda: self.show_result_state(bd.car_catalog_Select_All),
+        self.username_entry = Entry(self.menu_frame, font=("Arial", 14), width=30)
+        self.password_entry = Entry(self.menu_frame, font=("Arial", 14), show='*', width=30)
+        self.login_button = ctk.CTkButton(
+            self.menu_frame, text="Войти", command=self.check_admin_credentials
         )
-        self.car_catalog1_button.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
-        )
-        self.car_catalog1_button.configure(width=200, height=50, font=("Arial", 30))
 
-        # Кнопка "Назад"
-        self.back_button_car_catalog = ctk.CTkButton(
-            self.car_catalog_frame,
-            text="Назад",
-            command=self.show_menu,
-            fg_color="grey",
+    # инициализация фрейма - Вход для администратора
+    def init_login_admin_frame(self):
+        # Кнопка "Входа"
+        self.client_button = ctk.CTkButton(
+            self.menu_frame, text="", command=client_interface
         )
-        self.back_button_car_catalog.grid(
-            row=6, column=0, padx=300, pady=25, sticky="nsew"
-        )
-        self.back_button_car_catalog.configure(width=200, height=50, font=("Arial", 30))
+        self.client_button.grid(row=0, column=0, padx=300, pady=20, sticky="nsew")
+        self.client_button.configure(width=200, height=40, font=("Arial", 30))
 
-    # инициализация фрейма - Двс автомобилей
-    def init_dvs_car_frame(self):
-        # Кнопка "Все автомобили"
-        self.dvs_car1_button = ctk.CTkButton(
-            self.dvs_car_frame,
-            text="Все Двс автомобили",
-            command=lambda: self.show_result_state(bd.dvs_car_Select_All),
-        )
-        self.dvs_car1_button.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
-        )
-        self.dvs_car1_button.configure(width=200, height=50, font=("Arial", 30))
 
-        # Кнопка "Назад"
-        self.back_button_dvs_car = ctk.CTkButton(
-            self.dvs_car_frame,
-            text="Назад",
-            command=self.show_menu,
-            fg_color="grey",
-        )
-        self.back_button_dvs_car.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
-        self.back_button_dvs_car.configure(width=200, height=50, font=("Arial", 30))
+    def toggle_admin_login(self):
+        self.username_entry.grid(row=2, column=0, padx=300, pady=10, sticky="nsew")
+        self.password_entry.grid(row=3, column=0, padx=300, pady=10, sticky="nsew")
+        self.login_button.grid(row=4, column=0, padx=300, pady=20, sticky="nsew")
+
+    def check_admin_credentials(self):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+
+        if username == "admin" and password == "password":  # Замените эти значения на свои
+            admin_interface()
+        else:
+            ctk.show_error("Ошибка", "Введены неверные данные")
 
     def init_result_state_frame(self):
         # Создайте объект стиля
@@ -174,12 +150,6 @@ class App_general_menu(ctk.CTk):
     def hide_all_states(self):
         self.menu_frame.grid_forget()
 
-        self.car_catalog_frame.grid_forget()
-
-        self.dvs_car_frame.grid_forget()
-
-        self.result_state_frame.grid_forget()
-
 
     # TODO padx отвечает за сдвиги таблицы с кнопками по горизонтали
     # TODO pady отвечает за сдвиги таблицы с кнопками по вертикали
@@ -196,121 +166,25 @@ class App_general_menu(ctk.CTk):
             sticky="nsew",
         )
 
-    # отображение фрейма - Каталог автомобилей
-    def show_car_catalog(self):
-        self.hide_all_states()
-        self.car_catalog_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 2.5,
-            pady=220,
-            sticky="nsew",
-        )
+    def check_admin_credentials(self):
+        username = simpledialog.askstring("Логин", "Введите логин:")
+        password = simpledialog.askstring("Пароль", "Введите пароль:", show='*')
 
-    # отображение фрейма - Двс автомобили
-    def show_dvs_car(self):
-        self.hide_all_states()
-        self.dvs_car_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 2.5,
-            pady=220,
-            sticky="nsew",
-        )
-
-    # пока не используется
-    def get_id(self, func, to_save):
-        # фигня какая то, мб поставить заглушку
-        temp = to_save.get().strip()
-        # print("get_client_id", to_save.get().strip())
-        if not temp:
-            return
-        self.find_id(func(temp))
-
-    # пока не используется
-    def create_contract(self, to_save, client_id, emp_id):
-        temp = to_save.get().strip().split(' ')
-        if not temp:
-            return
-        self.hide_all_states()
-        with connection.cursor() as cursor:
-            num_rows = int(cursor.execute(bd.credit_contracts_first))
-        with connection.cursor() as cursor:
-            cursor.execute(bd.insert_into_cs(num_rows))
-            connection.commit()
-        with connection.cursor() as cursor:
-            cursor.execute(bd.insert_into_cv(num_rows, temp[0], temp[1], temp[2]))
-            connection.commit()
-        with connection.cursor() as cursor:
-            cursor.execute(bd.insert_into_clcr(num_rows, client_id))
-            connection.commit()
-        with connection.cursor() as cursor:
-            cursor.execute(bd.insert_into_crco(num_rows, client_id, emp_id, temp[0], temp[3]))
-            connection.commit()
-        self.hide_all_states()
-        self.show_menu()
-
-    def confirm_temp(self, func, to_save):
-        temp = to_save.get().strip()
-        if not temp:
-            return
-        self.hide_all_states()
-        s = func(temp)
-        self.show_result_state(s)
-
-    def show_result_state(self, sql_request):
-        self.hide_all_states()
-        num_columns = show(self, connection, sql_request)
-        if num_columns > 7:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 4,
-                pady=220,
-                sticky="nsew",
-            )
-        elif num_columns == 7:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 8,
-                pady=220,
-                sticky="nsew",
-            )
-        elif num_columns == 6:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 6,
-                pady=220,
-                sticky="nsew",
-            )
+        if username == "admin" and password == "password":  # Замените эти значения на свои
+            admin_interface()
         else:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 3.7,
-                pady=220,
-                sticky="nsew",
-            )
+            self.show_error_and_return_to_menu()
 
-        # Очистка Treeview перед новыми данными
-        for item in self.tree.get_children():
-            self.tree.delete(item)
-
-        # Вызов функции show с передачей self в качестве первого аргумента
-        show(self, connection, sql_request)
-
-    @staticmethod
-    def find_id(sql_request: str):
-        with connection.cursor() as cursor:
-            cursor.execute(sql_request)
-            rows = cursor.fetchall()
-            return list(rows[0].values())[0]
+    def show_error_and_return_to_menu(self):
+        messagebox.showerror("Ошибка", "Введены неверные данные")
+        app.show_menu()
 
     # закрытие окна и окончание работы с базой
-    def on_closing(self, connection):
-        connection.close()
+    # def on_closing(self, connection):
+    #     connection.close()
+    #     self.destroy()
+
+    def on_closing(self):
         self.destroy()
 
 

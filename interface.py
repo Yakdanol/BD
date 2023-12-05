@@ -661,6 +661,6 @@ if __name__ == "__main__":
     app = App()
     app.mainloop()
 
-def interface_admin():
+def admin_interface():
     app = App()
     app.mainloop()
