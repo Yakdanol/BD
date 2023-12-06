@@ -117,8 +117,8 @@ class App_general_menu(ctk.CTk):
 
     # инициализация функции - скрытия фреймов
     def hide_all_states(self):
-        self.menu_frame.grid_forget()
-        self.login_admin_frame.grid_forget()
+        self.menu_frame.pack_forget()
+        self.login_admin_frame.pack_forget()
 
 
     # TODO padx отвечает за сдвиги таблицы с кнопками по горизонтали
@@ -128,32 +128,29 @@ class App_general_menu(ctk.CTk):
     # отображение фрейма - Меню
     def show_menu(self):
         self.hide_all_states()
-        self.menu_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 3.5,
-            pady=500,
-            sticky="nsew",
-        )
-        # Устанавливаем фрейм меню по центру окна
-        # frame_x = self.winfo_screenwidth() / 3.7
-        # frame_y = self.winfo_screenheight() / 2 - 75  # Высота фрейма меню - 150 (сумма высоты кнопок)
-        # self.menu_frame.grid(row=0, column=0, padx=frame_x, pady=frame_y, sticky="nsew")
+        self.menu_frame.pack(fill="both", expand=True)
+        self.menu_frame.configure(padx=(self.winfo_screenwidth() / 3.5), pady=500)
+        # self.hide_all_states()
+        # self.menu_frame.grid(
+        #     row=0,
+        #     column=0,
+        #     padx=self.winfo_screenwidth() / 3.5,
+        #     pady=500,
+        #     sticky="nsew",
+        # )
 
     def show_login_admin(self):
         self.hide_all_states()
-        self.login_admin_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 2.5,
-            pady=300,
-            sticky="nsew",
-        )
-        # Устанавливаем фрейм входа для администратора по центру окна
-        # frame_x = self.winfo_screenwidth() / 2.5
-        # frame_y = self.winfo_screenheight() / 2 - 75  # Высота фрейма входа для админа - 150 (сумма высоты элементов)
-        # self.login_admin_frame.grid(row=0, column=0, padx=frame_x, pady=frame_y, sticky="nsew")
-
+        self.login_admin_frame.pack(fill="both", expand=True)
+        self.login_admin_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=300)
+        # self.hide_all_states()
+        # self.login_admin_frame.grid(
+        #     row=0,
+        #     column=0,
+        #     padx=self.winfo_screenwidth() / 2.5,
+        #     pady=300,
+        #     sticky="nsew",
+        # )
 
     def on_closing(self):
         self.destroy()
