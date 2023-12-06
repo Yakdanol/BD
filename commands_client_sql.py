@@ -1,7 +1,7 @@
 
 car_catalog_Select_All = """
 SELECT
-    cc.id_car AS "VIN",
+--    cc.id_car AS "VIN",
     cc.car_brand AS "Brand",
     cc.car_model AS "Model",
     cc.year_release AS "Year release",

@@ -90,14 +90,14 @@ class App_client(ctk.CTk):
         self.car_catalog_button = ctk.CTkButton(
             self.menu_frame, text="Каталог автомобилей", command=self.show_car_catalog
         )
-        self.car_catalog_button.grid(row=0, column=0, padx=300, pady=20, sticky="nsew")
+        self.car_catalog_button.pack(pady=20)
         self.car_catalog_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Двс автомобили"
         self.dvs_car_button = ctk.CTkButton(
             self.menu_frame, text="Двс автомобили", command=self.show_dvs_car
         )
-        self.dvs_car_button.grid(row=1, column=0, padx=300, pady=20, sticky="nsew")
+        self.dvs_car_button.pack(pady=20)
         self.dvs_car_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Электрические автомобили"
@@ -106,35 +106,35 @@ class App_client(ctk.CTk):
             text="Электрические автомобили",
             command=self.show_electric_car,
         )
-        self.electric_car_button.grid(row=2, column=0, padx=300, pady=20, sticky="nsew")
+        self.electric_car_button.pack(pady=20)
         self.electric_car_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Гибридные автомобили"
         self.hybrid_car_button = ctk.CTkButton(
             self.menu_frame, text="Гибридные автомобили", command=self.show_hybrid_car
         )
-        self.hybrid_car_button.grid(row=3, column=0, padx=300, pady=20, sticky="nsew")
+        self.hybrid_car_button.pack(pady=20)
         self.hybrid_car_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Цвета автомобилей"
         self.colours_button = ctk.CTkButton(
             self.menu_frame, text="Цвета автомобилей", command=self.show_colours
         )
-        self.colours_button.grid(row=4, column=0, padx=300, pady=20, sticky="nsew")
+        self.colours_button.pack(pady=20)
         self.colours_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Сделки"
         self.deals_button = ctk.CTkButton(
             self.menu_frame, text="Сделки", command=self.show_deals
         )
-        self.deals_button.grid(row=5, column=0, padx=300, pady=20, sticky="nsew")
+        self.deals_button.pack(pady=20)
         self.deals_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Покупатели"
         self.buyers_button = ctk.CTkButton(
             self.menu_frame, text="Покупатели", command=self.show_buyers
         )
-        self.buyers_button.grid(row=6, column=0, padx=300, pady=20, sticky="nsew")
+        self.buyers_button.pack(pady=20)
         self.buyers_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Опции всех автомобилей"
@@ -143,17 +143,16 @@ class App_client(ctk.CTk):
             text="Опции всех автомобилей",
             command=self.show_all_car_options,
         )
-        self.all_car_options_button.grid(
-            row=7, column=0, padx=300, pady=20, sticky="nsew"
-        )
+        self.all_car_options_button.pack(pady=20)
         self.all_car_options_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Опции"
         self.options_button = ctk.CTkButton(
             self.menu_frame, text="Опции", command=self.show_options
         )
-        self.options_button.grid(row=8, column=0, padx=300, pady=20, sticky="nsew")
+        self.options_button.pack(pady=20)
         self.options_button.configure(width=200, height=40, font=("Arial", 30))
+
 
     # инициализация фрейма - Каталог автомобилей
     def init_car_catalog_frame(self):
@@ -419,32 +418,33 @@ class App_client(ctk.CTk):
         self.back_button_result.grid(
             row=2, column=0, padx=(10, 10), pady=(0, 50), sticky="nsew"
         )
-        # self.back_button_result.place(connection=10, y=675)  # Задайте нужные вам координаты кнопки
+        # self.back_button_result.place(connection=10, y=675)
+        # Задайте нужные вам координаты кнопки
 
 
     # инициализация функции - скрытия фреймов
     def hide_all_states(self):
-        self.menu_frame.grid_forget()
+        self.menu_frame.pack_forget()
 
-        self.car_catalog_frame.grid_forget()
+        self.car_catalog_frame.pack_forget()
 
-        self.dvs_car_frame.grid_forget()
+        self.dvs_car_frame.pack_forget()
 
-        self.electric_car_frame.grid_forget()
+        self.electric_car_frame.pack_forget()
 
-        self.hybrid_car_frame.grid_forget()
+        self.hybrid_car_frame.pack_forget()
 
-        self.colours_frame.grid_forget()
+        self.colours_frame.pack_forget()
 
-        self.deals_frame.grid_forget()
+        self.deals_frame.pack_forget()
 
-        self.buyers_frame.grid_forget()
+        self.buyers_frame.pack_forget()
 
-        self.all_car_options_frame.grid_forget()
+        self.all_car_options_frame.pack_forget()
 
-        self.options_frame.grid_forget()
+        self.options_frame.pack_forget()
 
-        self.result_state_frame.grid_forget()
+        self.result_state_frame.pack_forget()
 
 
     # TODO padx отвечает за сдвиги таблицы с кнопками по горизонтали
@@ -454,149 +454,92 @@ class App_client(ctk.CTk):
     # отображение фрейма - Меню
     def show_menu(self):
         self.hide_all_states()
-        self.menu_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 3.7,
-            pady=100,
-            sticky="nsew",
-        )
+        self.menu_frame.pack(fill="both", expand=True)
+        self.menu_frame.configure(pady=100)
+
 
     # отображение фрейма - Каталог автомобилей
     def show_car_catalog(self):
         self.hide_all_states()
-        self.car_catalog_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 2.5,
-            pady=220,
-            sticky="nsew",
-        )
+        self.car_catalog_frame.pack(fill="both", expand=True)
+        self.car_catalog_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
     # отображение фрейма - Двс автомобили
     def show_dvs_car(self):
         self.hide_all_states()
-        self.dvs_car_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 3,
-            pady=220,
-            sticky="nsew",
-        )
+        self.dvs_car_frame.pack(fill="both", expand=True)
+        self.dvs_car_frame.configure(padx=(self.winfo_screenwidth() / 3), pady=220)
 
     # отображение фрейма - Электрические автомобили
     def show_electric_car(self):
         self.hide_all_states()
-        self.electric_car_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 3.8,
-            pady=220,
-            sticky="nsew",
-        )
+        self.electric_car_frame.pack(fill="both", expand=True)
+        self.electric_car_frame.configure(padx=(self.winfo_screenwidth() / 3.8), pady=220)
 
     # отображение фрейма - Гибридные автомобили
     def show_hybrid_car(self):
         self.hide_all_states()
-        self.hybrid_car_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 3.8,
-            pady=220,
-            sticky="nsew",
-        )
+        self.hybrid_car_frame.pack(fill="both", expand=True)
+        self.hybrid_car_frame.configure(padx=(self.winfo_screenwidth() / 3.8), pady=220)
 
     # отображение фрейма - Цвета
     def show_colours(self):
         self.hide_all_states()
-        self.colours_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 3,
-            pady=220,
-            sticky="nsew",
-        )
+        self.colours_frame.pack(fill="both", expand=True)
+        self.colours_frame.configure(padx=(self.winfo_screenwidth() / 3), pady=220)
 
     # отображение фрейма - Сделки
     def show_deals(self):
         self.hide_all_states()
-        self.deals_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 2.5,
-            pady=220,
-            sticky="nsew",
-        )
+        self.deals_frame.pack(fill="both", expand=True)
+        self.deals_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
     # отображение фрейма - Покупатели
     def show_buyers(self):
         self.hide_all_states()
-        self.buyers_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 2.5,
-            pady=220,
-            sticky="nsew",
-        )
+        self.buyers_frame.pack(fill="both", expand=True)
+        self.buyers_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
     # отображение фрейма - Опции всех автомобилей
     def show_all_car_options(self):
         self.hide_all_states()
-        self.all_car_options_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 3.5,
-            pady=220,
-            sticky="nsew",
-        )
+        self.all_car_options_frame.pack(fill="both", expand=True)
+        self.all_car_options_frame.configure(padx=(self.winfo_screenwidth() / 3.5), pady=220)
 
     # отображение фрейма - Опции
     def show_options(self):
         self.hide_all_states()
-        self.options_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 2.5,
-            pady=220,
-            sticky="nsew",
-        )
+        self.options_frame.pack(fill="both", expand=True)
+        self.options_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
     # TODO надо править padx для конкретных окно
     def show_result_state(self, sql_request):
         self.hide_all_states()
         num_columns = show(self, connection, sql_request)
-        if num_columns > 7:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 4,
-                pady=220,
-                sticky="nsew",
-            )
-        elif num_columns == 7:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 2.5,
-                pady=220,
-                sticky="nsew",
-            )
-        elif num_columns == 6:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 2.2,
-                pady=220,
-                sticky="nsew",
-            )
-        else:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 1.8,
-                pady=220,
-                sticky="nsew",
-            )
+
+        padx_value = {
+            13: self.winfo_screenwidth() / 6,
+            12: self.winfo_screenwidth() / 5.5,
+            11: self.winfo_screenwidth() / 5,
+            10: self.winfo_screenwidth() / 4.5,
+            9: self.winfo_screenwidth() / 4,
+            8: self.winfo_screenwidth() / 3,
+            7: self.winfo_screenwidth() / 2.5,
+            6: self.winfo_screenwidth() / 2.2,
+            5: self.winfo_screenwidth() / 2.0,
+            4: self.winfo_screenwidth() / 1.8,
+            3: self.winfo_screenwidth() / 1.6,
+            2: self.winfo_screenwidth() / 1.4,
+            1: self.winfo_screenwidth() / 1.2,
+            'default': self.winfo_screenwidth() / 4,
+        }.get(num_columns, 'default')
+
+        self.result_state_frame.pack(
+            fill="both",
+            expand=True,
+            padx=padx_value,
+            pady=100,
+        )
 
         # Очистка Treeview перед новыми данными
         for item in self.tree.get_children():
