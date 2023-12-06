@@ -25,6 +25,9 @@ class App_client(ctk.CTk):
         # Инициализация в первом состоянии
         self.show_menu()
 
+        # храним предыдущий фрейм для кнопки назад
+        self.previous_frame = None
+
         # Словарь для хранения фоновых изображений
         # self.background_images = {}
 
@@ -160,7 +163,7 @@ class App_client(ctk.CTk):
         self.car_catalog1_button = ctk.CTkButton(
             self.car_catalog_frame,
             text="Все автомобили",
-            command=lambda: self.show_result_state(bd.car_catalog_Select_All),
+            command=lambda: self.show_result_state(bd.car_catalog_Select_All, self.car_catalog_frame),
         )
         self.car_catalog1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -185,7 +188,7 @@ class App_client(ctk.CTk):
         self.dvs_car1_button = ctk.CTkButton(
             self.dvs_car_frame,
             text="Все Двс автомобили",
-            command=lambda: self.show_result_state(bd.dvs_car_Select_All),
+            command=lambda: self.show_result_state(bd.dvs_car_Select_All, self.dvs_car_frame),
         )
         self.dvs_car1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -208,7 +211,7 @@ class App_client(ctk.CTk):
         self.electric_car1_button = ctk.CTkButton(
             self.electric_car_frame,
             text="Все Электрические автомобили",
-            command=lambda: self.show_result_state(bd.electric_car_Select_All),
+            command=lambda: self.show_result_state(bd.electric_car_Select_All, self.electric_car_frame),
         )
         self.electric_car1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -235,7 +238,7 @@ class App_client(ctk.CTk):
         self.hybrid_car1_button = ctk.CTkButton(
             self.hybrid_car_frame,
             text="Все Гибридные автомобили",
-            command=lambda: self.show_result_state(bd.hybrid_car_Select_All),
+            command=lambda: self.show_result_state(bd.hybrid_car_Select_All, self.hybrid_car_frame),
         )
         self.hybrid_car1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -260,7 +263,7 @@ class App_client(ctk.CTk):
         self.colours1_button = ctk.CTkButton(
             self.colours_frame,
             text="Все Цвета автомобилей",
-            command=lambda: self.show_result_state(bd.colour_of_car_Select_All),
+            command=lambda: self.show_result_state(bd.colour_of_car_Select_All, self.colours_frame),
         )
         self.colours1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -283,7 +286,7 @@ class App_client(ctk.CTk):
         self.deals1_button = ctk.CTkButton(
             self.deals_frame,
             text="Все Сделки",
-            command=lambda: self.show_result_state(bd.deals_Select_All),
+            command=lambda: self.show_result_state(bd.deals_Select_All, self.deals_frame),
         )
         self.deals1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -306,7 +309,7 @@ class App_client(ctk.CTk):
         self.buyers1_button = ctk.CTkButton(
             self.buyers_frame,
             text="Все Покупатели",
-            command=lambda: self.show_result_state(bd.buyers_Select_All),
+            command=lambda: self.show_result_state(bd.buyers_Select_All, self.buyers_frame),
         )
         self.buyers1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -329,7 +332,7 @@ class App_client(ctk.CTk):
         self.all_car_options1_button = ctk.CTkButton(
             self.all_car_options_frame,
             text="Опции всех автомобилей",
-            command=lambda: self.show_result_state(bd.all_car_options_Select_All),
+            command=lambda: self.show_result_state(bd.all_car_options_Select_All, self.all_car_options_frame),
         )
         self.all_car_options1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -356,7 +359,7 @@ class App_client(ctk.CTk):
         self.options1_button = ctk.CTkButton(
             self.options_frame,
             text="Доступные опции",
-            command=lambda: self.show_result_state(bd.options_Select_All),
+            command=lambda: self.show_result_state(bd.options_Select_All, self.options_frame),
         )
         self.options1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -412,7 +415,7 @@ class App_client(ctk.CTk):
         self.back_button_result = ctk.CTkButton(
             self.result_state_frame,
             text="Назад",
-            command=self.show_menu,
+            command=self.go_back,
             fg_color="grey",
         )
         self.back_button_result.grid(
@@ -420,6 +423,12 @@ class App_client(ctk.CTk):
         )
         # self.back_button_result.place(connection=10, y=675)
         # Задайте нужные вам координаты кнопки
+
+    # Метод для возврата к предыдущему фрейму
+    def go_back(self):
+        if self.previous_frame:
+            self.result_state_frame.pack_forget()  # Скрываем текущий фрейм
+            self.previous_frame.pack(fill="both", expand=True, pady=25)  # Отображаем предыдущий фрейм
 
 
     # инициализация функции - скрытия фреймов
@@ -456,7 +465,6 @@ class App_client(ctk.CTk):
         self.hide_all_states()
         self.menu_frame.pack(fill="both", expand=True)
         self.menu_frame.configure(pady=100)
-
 
     # отображение фрейма - Каталог автомобилей
     def show_car_catalog(self):
@@ -513,7 +521,8 @@ class App_client(ctk.CTk):
         self.options_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
     # TODO надо править padx для конкретных окно
-    def show_result_state(self, sql_request):
+    def show_result_state(self, sql_request, current_frame):
+        self.previous_frame = current_frame
         self.hide_all_states()
         num_columns = show(self, connection, sql_request)
 
