@@ -85,8 +85,33 @@ class App(ctk.CTk):
         self.result_state_frame = Frame(self)
         self.init_result_state_frame()
 
+        # Фреймы для добавления в бд
         self.insert_car_frame = Frame(self)
         self.init_insert_car_frame()
+
+        self.insert_dvs_frame = Frame(self)
+        self.init_insert_dvs_frame()
+
+        self.insert_electric_frame = Frame(self)
+        self.init_insert_electric_frame()
+
+        self.insert_hybrid_frame = Frame(self)
+        self.init_insert_hybrid_frame()
+
+        self.insert_colour_frame = Frame(self)
+        self.init_insert_colour_frame()
+
+        self.insert_deals_frame = Frame(self)
+        self.init_insert_deals_frame()
+
+        self.insert_buyers_frame = Frame(self)
+        self.init_insert_buyers_frame()
+
+        self.insert_general_options_frame = Frame(self)
+        self.init_insert_general_options_frame()
+
+        self.insert_options_frame = Frame(self)
+        self.init_insert_options_frame()
 
         # Обработка закрытия окна
         self.protocol("WM_DELETE_WINDOW", lambda: self.on_closing(connection))
@@ -179,7 +204,7 @@ class App(ctk.CTk):
         self.car_catalog2_button = ctk.CTkButton(
             self.car_catalog_frame,
             text="Добавить автомобиль",
-            command=lambda: self.show_insert_menu(bd.car_catalog_Select_All),
+            command=lambda: self.show_insert_menu("car_catalog"),
         )
         self.car_catalog2_button.grid(
             row=1, column=0, padx=300, pady=25, sticky="nsew"
@@ -211,6 +236,16 @@ class App(ctk.CTk):
         )
         self.dvs_car1_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
+        self.dvs_car2_button = ctk.CTkButton(
+            self.dvs_car_frame,
+            text="Добавить ДВС",
+            command=lambda: self.show_insert_menu("dvs"),
+        )
+        self.dvs_car2_button.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.dvs_car2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
         # Кнопка "Назад"
         self.back_button_dvs_car = ctk.CTkButton(
             self.dvs_car_frame,
@@ -233,6 +268,16 @@ class App(ctk.CTk):
             row=0, column=0, padx=300, pady=25, sticky="nsew"
         )
         self.electric_car1_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
+        self.electric_car2_button = ctk.CTkButton(
+            self.electric_car_frame,
+            text="Добавить электромобиль",
+            command=lambda: self.show_insert_menu("electric"),
+        )
+        self.electric_car2_button.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.electric_car2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
         # Кнопка "Назад"
         self.back_button_electric_car = ctk.CTkButton(
@@ -261,6 +306,16 @@ class App(ctk.CTk):
         )
         self.hybrid_car1_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
+        self.hybrid_car2_button = ctk.CTkButton(
+            self.hybrid_car_frame,
+            text="Добавить гибрид",
+            command=lambda: self.show_insert_menu("hybrid"),
+        )
+        self.hybrid_car2_button.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.hybrid_car2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
         # Кнопка "Назад"
         self.back_button_hybrid_car = ctk.CTkButton(
             self.hybrid_car_frame,
@@ -286,6 +341,16 @@ class App(ctk.CTk):
         )
         self.colours1_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
+        self.colours2_button = ctk.CTkButton(
+            self.colours_frame,
+            text="Добавить цвет",
+            command=lambda: self.show_insert_menu("colour"),
+        )
+        self.colours2_button.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.colours2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
         # Кнопка "Назад"
         self.back_button_colours = ctk.CTkButton(
             self.colours_frame,
@@ -308,6 +373,16 @@ class App(ctk.CTk):
             row=0, column=0, padx=300, pady=25, sticky="nsew"
         )
         self.deals1_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
+        self.deals2_button = ctk.CTkButton(
+            self.deals_frame,
+            text="Добавить сделку",
+            command=lambda: self.show_insert_menu("deals"),
+        )
+        self.deals2_button.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.deals2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
         # Кнопка "Назад"
         self.back_button_deals = ctk.CTkButton(
@@ -332,6 +407,16 @@ class App(ctk.CTk):
         )
         self.buyers1_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
+        self.buyers2_button = ctk.CTkButton(
+            self.buyers_frame,
+            text="Добавить покупателя",
+            command=lambda: self.show_insert_menu("buyers"),
+        )
+        self.buyers2_button.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.buyers2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
         # Кнопка "Назад"
         self.back_button_buyers = ctk.CTkButton(
             self.buyers_frame,
@@ -354,6 +439,16 @@ class App(ctk.CTk):
             row=0, column=0, padx=300, pady=25, sticky="nsew"
         )
         self.all_car_options1_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
+        self.all_car_options2_button = ctk.CTkButton(
+            self.all_car_options_frame,
+            text="Добавить опцию автомобилю",
+            command=lambda: self.show_insert_menu("general_options"),
+        )
+        self.all_car_options2_button.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.all_car_options2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
         # Кнопка "Назад"
         self.back_button_all_car_options = ctk.CTkButton(
@@ -381,6 +476,16 @@ class App(ctk.CTk):
             row=0, column=0, padx=300, pady=25, sticky="nsew"
         )
         self.options1_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
+        self.options2_button = ctk.CTkButton(
+            self.options_frame,
+            text="Добавить опцию",
+            command=lambda: self.show_insert_menu("options"),
+        )
+        self.options2_button.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.options2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
         # Кнопка "Назад"
         self.back_button_options = ctk.CTkButton(
@@ -538,7 +643,7 @@ class App(ctk.CTk):
         self.button_insert_car = ctk.CTkButton(
             self.insert_car_frame,
             text="Добавить",
-            command=self.make_insert_to_db(query),
+            command=self.make_insert_to_db(bd.car_catalog_Select_All),
         )
         self.button_insert_car.grid(
             row=9, column=0, padx=300, pady=25, sticky="nsew"
@@ -556,6 +661,505 @@ class App(ctk.CTk):
         )
         self.back_button_insert_car.configure(width=my_width, height=my_height, font=(my_font, 20))
 
+    def init_insert_dvs_frame(self):
+        # Поля для ввода данных
+        self.entry_idcar_dvs = ctk.CTkEntry(
+            self.insert_dvs_frame,
+            placeholder_text="ID автомобиля"
+        )
+        self.entry_idcar_dvs.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_idcar_dvs.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_power = ctk.CTkEntry(
+            self.insert_dvs_frame,
+            placeholder_text="Мощность"
+        )
+        self.entry_power.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_power.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_capacity = ctk.CTkEntry(
+            self.insert_dvs_frame,
+            placeholder_text="Объем"
+        )
+        self.entry_capacity.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_capacity.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_fuel = ctk.CTkEntry(
+            self.insert_dvs_frame,
+            placeholder_text="Вид топлива (1, 2, 3)"
+        )
+        self.entry_fuel.grid(
+            row=3, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_fuel.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_class = ctk.CTkEntry(
+            self.insert_dvs_frame,
+            placeholder_text="Экологический класс"
+        )
+        self.entry_class.grid(
+            row=4, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_class.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        data = [
+            self.entry_idcar_dvs.get(),
+            self.entry_power.get(),
+            self.entry_capacity.get(),
+            self.entry_fuel.get(),
+            self.entry_class.get()
+        ]
+
+        query = bd.insert_into_table + " dvs_car VALUES " + f"({data[0]}, {data[1]}, {data[2]}, {data[3]}, '{data[4]}', 'DVS')"
+        self.button_insert_dvs = ctk.CTkButton(
+            self.insert_dvs_frame,
+            text="Добавить",
+            command=self.make_insert_to_db(bd.dvs_car_Select_All),
+        )
+        self.button_insert_dvs.grid(
+            row=5, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.button_insert_dvs.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+        self.back_button_insert_dvs = ctk.CTkButton(
+            self.insert_dvs_frame,
+            text="Назад",
+            command=self.show_menu,
+            fg_color="grey",
+        )
+        self.back_button_insert_dvs.grid(
+            row=10, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.back_button_insert_dvs.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+    def init_insert_electric_frame(self):
+        # Поля для ввода данных
+        self.entry_idcar_electric = ctk.CTkEntry(
+            self.insert_electric_frame,
+            placeholder_text="ID автомобиля"
+        )
+        self.entry_idcar_electric.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_idcar_electric.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_power_electric = ctk.CTkEntry(
+            self.insert_electric_frame,
+            placeholder_text="Мощность"
+        )
+        self.entry_power_electric.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_power_electric.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_capacity_battery = ctk.CTkEntry(
+            self.insert_electric_frame,
+            placeholder_text="Объем батареи"
+        )
+        self.entry_capacity_battery.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_capacity_battery.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        data = [
+            self.entry_idcar_electric.get(),
+            self.entry_power_electric.get(),
+            self.entry_capacity_battery.get()
+        ]
+
+        query = bd.insert_into_table + " electric_car VALUES " + f"({data[0]}, {data[1]}, {data[2]}, 'Electric')"
+        self.button_insert_electric = ctk.CTkButton(
+            self.insert_electric_frame,
+            text="Добавить",
+            command=self.make_insert_to_db(bd.electric_car_Select_All),
+        )
+        self.button_insert_electric.grid(
+            row=3, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.button_insert_electric.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+        self.back_button_insert_electric = ctk.CTkButton(
+            self.insert_electric_frame,
+            text="Назад",
+            command=self.show_menu,
+            fg_color="grey",
+        )
+        self.back_button_insert_electric.grid(
+            row=10, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.back_button_insert_electric.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+    def init_insert_hybrid_frame(self):
+        self.entry_idcar_hybrid = ctk.CTkEntry(
+            self.insert_hybrid_frame,
+            placeholder_text="ID автомобиля"
+        )
+        self.entry_idcar_hybrid.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_idcar_hybrid.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_power_hybrid = ctk.CTkEntry(
+            self.insert_hybrid_frame,
+            placeholder_text="Мощность"
+        )
+        self.entry_power_hybrid.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_power_hybrid.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_capacity_hybrid = ctk.CTkEntry(
+            self.insert_hybrid_frame,
+            placeholder_text="Объем двигателя"
+        )
+        self.entry_capacity_hybrid.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_capacity_hybrid.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_class_hybrid = ctk.CTkEntry(
+            self.insert_hybrid_frame,
+            placeholder_text="Экологический класс"
+        )
+        self.entry_class_hybrid.grid(
+            row=3, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_class_hybrid.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_power_electric_hybrid = ctk.CTkEntry(
+            self.insert_hybrid_frame,
+            placeholder_text="Мощность электродвигателя"
+        )
+        self.entry_power_electric_hybrid.grid(
+            row=4, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_power_electric_hybrid.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_capacity_battery_hybrid = ctk.CTkEntry(
+            self.insert_hybrid_frame,
+            placeholder_text="Объем батареи"
+        )
+        self.entry_capacity_battery_hybrid.grid(
+            row=5, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_capacity_battery_hybrid.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        data = [
+            self.entry_idcar_hybrid.get(),
+            self.entry_power_hybrid.get(),
+            self.entry_capacity_hybrid.get(),
+            self.entry_class_hybrid.get(),
+            self.entry_power_electric_hybrid.get(),
+            self.entry_capacity_battery_hybrid.get()
+        ]
+
+        query = bd.insert_into_table + " hybrid_car VALUES " + f"({data[0]}, {data[1]}, {data[2]}, '{data[3]}', {data[4]}, {data[5]}, 'Hybrid')"
+        self.button_insert_hybrid = ctk.CTkButton(
+            self.insert_hybrid_frame,
+            text="Добавить",
+            command=self.make_insert_to_db(bd.hybrid_car_Select_All),
+        )
+        self.button_insert_hybrid.grid(
+            row=6, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.button_insert_hybrid.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+        self.back_button_insert_hybrid = ctk.CTkButton(
+            self.insert_hybrid_frame,
+            text="Назад",
+            command=self.show_menu,
+            fg_color="grey",
+        )
+        self.back_button_insert_hybrid.grid(
+            row=10, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.back_button_insert_hybrid.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+    def init_insert_colour_frame(self):
+        self.entry_id_colour = ctk.CTkEntry(
+            self.insert_colour_frame,
+            placeholder_text="ID цвета"
+        )
+        self.entry_id_colour.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_id_colour.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_colour_name = ctk.CTkEntry(
+            self.insert_colour_frame,
+            placeholder_text="Цвет"
+        )
+        self.entry_colour_name.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_colour_name.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        data = [
+            self.entry_id_colour.get(),
+            self.entry_colour_name.get()
+        ]
+
+        query = bd.insert_into_table + " colour_of_car VALUES " + f"({data[0]}, '{data[1]}')"
+        self.button_insert_colour = ctk.CTkButton(
+            self.insert_colour_frame,
+            text="Добавить",
+            command=self.make_insert_to_db(bd.colour_of_car_Select_All),
+        )
+        self.button_insert_colour.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.button_insert_colour.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+        self.back_button_insert_colour = ctk.CTkButton(
+            self.insert_colour_frame,
+            text="Назад",
+            command=self.show_menu,
+            fg_color="grey",
+        )
+        self.back_button_insert_colour.grid(
+            row=10, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.back_button_insert_colour.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+    def init_insert_deals_frame(self):
+        self.entry_id_deals = ctk.CTkEntry(
+            self.insert_deals_frame,
+            placeholder_text="ID сделки"
+        )
+        self.entry_id_deals.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_id_deals.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_idcar_deals = ctk.CTkEntry(
+            self.insert_deals_frame,
+            placeholder_text="ID автомобиля"
+        )
+        self.entry_idcar_deals.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_idcar_deals.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_idbuyer_deals = ctk.CTkEntry(
+            self.insert_deals_frame,
+            placeholder_text="ID покупателя"
+        )
+        self.entry_idbuyer_deals.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_idbuyer_deals.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_date_deals = ctk.CTkEntry(
+            self.insert_deals_frame,
+            placeholder_text="Дата продажи (ГГГГ-ММ-ДД)"
+        )
+        self.entry_date_deals.grid(
+            row=3, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_date_deals.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_price_deals = ctk.CTkEntry(
+            self.insert_deals_frame,
+            placeholder_text="Цена продажи"
+        )
+        self.entry_price_deals.grid(
+            row=4, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_price_deals.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        data = [
+            self.entry_id_deals.get(),
+            self.entry_idcar_deals.get(),
+            self.entry_idbuyer_deals.get(),
+            self.entry_date_deals.get(),
+            self.entry_price_deals.get()
+        ]
+
+        query = bd.insert_into_table + " deals VALUES " + f"({data[0]}, {data[1]}, {data[2]}, {data[3]}, {data[4]})"
+        self.button_insert_deals = ctk.CTkButton(
+            self.insert_deals_frame,
+            text="Добавить",
+            command=self.make_insert_to_db(bd.hybrid_car_Select_All),
+        )
+        self.button_insert_deals.grid(
+            row=5, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.button_insert_deals.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+        self.back_button_insert_deals = ctk.CTkButton(
+            self.insert_deals_frame,
+            text="Назад",
+            command=self.show_menu,
+            fg_color="grey",
+        )
+        self.back_button_insert_deals.grid(
+            row=10, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.back_button_insert_deals.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+    def init_insert_buyers_frame(self):
+        self.entry_id_buyers = ctk.CTkEntry(
+            self.insert_buyers_frame,
+            placeholder_text="ID покупателя"
+        )
+        self.entry_id_buyers.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_id_buyers.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_name_buyers = ctk.CTkEntry(
+            self.insert_buyers_frame,
+            placeholder_text="Имя Фамилия"
+        )
+        self.entry_name_buyers.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_name_buyers.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_contacts_buyers = ctk.CTkEntry(
+            self.insert_buyers_frame,
+            placeholder_text="Контакт"
+        )
+        self.entry_contacts_buyers.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_contacts_buyers.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        data = [
+            self.entry_id_buyers.get(),
+            self.entry_name_buyers.get(),
+            self.entry_contacts_buyers.get()
+        ]
+
+        query = bd.insert_into_table + " buyers VALUES " + f"({data[0]}, '{data[1]}', '{data[2]}')"
+        self.button_insert_buyers = ctk.CTkButton(
+            self.insert_buyers_frame,
+            text="Добавить",
+            command=self.make_insert_to_db(bd.buyers_Select_All),
+        )
+        self.button_insert_buyers.grid(
+            row=3, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.button_insert_buyers.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+        self.back_button_insert_buyers = ctk.CTkButton(
+            self.insert_buyers_frame,
+            text="Назад",
+            command=self.show_menu,
+            fg_color="grey",
+        )
+        self.back_button_insert_buyers.grid(
+            row=10, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.back_button_insert_buyers.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+    def init_insert_general_options_frame(self):
+        self.entry_id_general = ctk.CTkEntry(
+            self.insert_general_options_frame,
+            placeholder_text="ID связи"
+        )
+        self.entry_id_general.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_id_general.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_idcar_general = ctk.CTkEntry(
+            self.insert_general_options_frame,
+            placeholder_text="ID автомобиля"
+        )
+        self.entry_idcar_general.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_idcar_general.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_idoption_general = ctk.CTkEntry(
+            self.insert_general_options_frame,
+            placeholder_text="ID опции"
+        )
+        self.entry_idoption_general.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_idoption_general.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        data = [
+            self.entry_id_general.get(),
+            self.entry_idcar_general.get(),
+            self.entry_idoption_general.get()
+        ]
+
+        query = bd.insert_into_table + " general_car_options VALUES " + f"({data[0]}, {data[1]}, {data[2]})"
+        self.button_insert_general = ctk.CTkButton(
+            self.insert_general_options_frame,
+            text="Добавить",
+            command=self.make_insert_to_db(bd.all_car_options_Select_All),
+        )
+        self.button_insert_general.grid(
+            row=3, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.button_insert_general.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+        self.back_button_insert_general = ctk.CTkButton(
+            self.insert_general_options_frame,
+            text="Назад",
+            command=self.show_menu,
+            fg_color="grey",
+        )
+        self.back_button_insert_general.grid(
+            row=10, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.back_button_insert_general.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+    def init_insert_options_frame(self):
+        self.entry_id_option = ctk.CTkEntry(
+            self.insert_options_frame,
+            placeholder_text="ID опции"
+        )
+        self.entry_id_option.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_id_option.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        self.entry_description_option = ctk.CTkEntry(
+            self.insert_options_frame,
+            placeholder_text="Описание опции"
+        )
+        self.entry_description_option.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_description_option.configure(width=my_width, height=my_height, font=(my_font, 14))
+
+        data = [
+            self.entry_id_option.get(),
+            self.entry_description_option.get()
+        ]
+
+        query = bd.insert_into_table + " options VALUES " + f"({data[0]}, '{data[1]}')"
+        self.button_insert_options = ctk.CTkButton(
+            self.insert_options_frame,
+            text="Добавить",
+            command=self.make_insert_to_db(bd.buyers_Select_All),
+        )
+        self.button_insert_options.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.button_insert_options.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+        self.back_button_insert_options = ctk.CTkButton(
+            self.insert_options_frame,
+            text="Назад",
+            command=self.show_menu,
+            fg_color="grey",
+        )
+        self.back_button_insert_options.grid(
+            row=10, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.back_button_insert_options.configure(width=my_width, height=my_height, font=(my_font, 20))
 
     # инициализация функции - скрытия фреймов
     def hide_all_states(self):
@@ -582,6 +1186,22 @@ class App(ctk.CTk):
         self.result_state_frame.grid_forget()
 
         self.insert_car_frame.grid_forget()
+
+        self.insert_dvs_frame.grid_forget()
+
+        self.insert_electric_frame.grid_forget()
+
+        self.insert_hybrid_frame.grid_forget()
+
+        self.insert_colour_frame.grid_forget()
+
+        self.insert_deals_frame.grid_forget()
+
+        self.insert_buyers_frame.grid_forget()
+
+        self.insert_general_options_frame.grid_forget()
+
+        self.insert_options_frame.grid_forget()
 
 
     # TODO padx отвечает за сдвиги таблицы с кнопками по горизонтали
@@ -784,13 +1404,78 @@ class App(ctk.CTk):
     def show_insert_menu(self, table):
         self.hide_all_states()
         # TODO: добавить условия для запроса
-        self.insert_car_frame.grid(
-            row=0,
-            column=0,
-            padx=self.winfo_screenwidth() / 2.5,
-            pady=my_pady,
-            sticky="nsew",
-        )
+        if table == "car_catalog":
+            self.insert_car_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.5,
+                pady=my_pady,
+                sticky="nsew",
+            )
+        elif table == "dvs":
+            self.insert_dvs_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.5,
+                pady=my_pady,
+                sticky="nsew",
+            )
+        elif table == "electric":
+            self.insert_electric_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.5,
+                pady=my_pady,
+                sticky="nsew",
+            )
+        elif table == "hybrid":
+            self.insert_hybrid_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.5,
+                pady=my_pady,
+                sticky="nsew",
+            )
+        elif table == "colour":
+            self.insert_colour_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.5,
+                pady=my_pady,
+                sticky="nsew",
+            )
+        elif table == "deals":
+            self.insert_deals_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.5,
+                pady=my_pady,
+                sticky="nsew",
+            )
+        elif table == "buyers":
+            self.insert_buyers_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.5,
+                pady=my_pady,
+                sticky="nsew",
+            )
+        elif table == "general_options":
+            self.insert_general_options_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.5,
+                pady=my_pady,
+                sticky="nsew",
+            )
+        elif table == "options":
+            self.insert_options_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.5,
+                pady=my_pady,
+                sticky="nsew",
+            )
 
     def make_insert_to_db(self, sql_request: str):
         #TODO: исправить ошибку на компиляции
