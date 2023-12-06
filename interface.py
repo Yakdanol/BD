@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import Canvas, PhotoImage, ttk
 import customtkinter as ctk
-from main import show, connect_with_bd
+from main import show, connect_with_bd, make_insert_to_db
 from PIL import Image, ImageTk
 import commands_sql as bd
 
@@ -640,10 +640,11 @@ class App(ctk.CTk):
         ]
 
         query = bd.insert_into_table + " car_catalog VALUES " + f"({data[0]}, '{data[1]}', '{data[2]}', {data[3]}, {data[4]}, {data[5]}, '{data[6]}, '{data[7]}', {data[8]})"
+        # query = bd.insert_into_table + " car_catalog VALUES " + "({0}, '{1}', '{2}', {3}, {4}, {5}, '{6}, '{7}', {8})".format(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
         self.button_insert_car = ctk.CTkButton(
             self.insert_car_frame,
             text="Добавить",
-            command=self.make_insert_to_db(bd.car_catalog_Select_All),
+            command=lambda: make_insert_to_db(connection, query, data),
         )
         self.button_insert_car.grid(
             row=9, column=0, padx=300, pady=25, sticky="nsew"
@@ -720,7 +721,7 @@ class App(ctk.CTk):
         self.button_insert_dvs = ctk.CTkButton(
             self.insert_dvs_frame,
             text="Добавить",
-            command=self.make_insert_to_db(bd.dvs_car_Select_All),
+            command=lambda: make_insert_to_db(connection, query, data),
         )
         self.button_insert_dvs.grid(
             row=5, column=0, padx=300, pady=25, sticky="nsew"
@@ -777,7 +778,7 @@ class App(ctk.CTk):
         self.button_insert_electric = ctk.CTkButton(
             self.insert_electric_frame,
             text="Добавить",
-            command=self.make_insert_to_db(bd.electric_car_Select_All),
+            command=lambda: make_insert_to_db(connection, query, data),
         )
         self.button_insert_electric.grid(
             row=3, column=0, padx=300, pady=25, sticky="nsew"
@@ -863,7 +864,7 @@ class App(ctk.CTk):
         self.button_insert_hybrid = ctk.CTkButton(
             self.insert_hybrid_frame,
             text="Добавить",
-            command=self.make_insert_to_db(bd.hybrid_car_Select_All),
+            command=lambda: make_insert_to_db(connection, query, data),
         )
         self.button_insert_hybrid.grid(
             row=6, column=0, padx=300, pady=25, sticky="nsew"
@@ -909,7 +910,7 @@ class App(ctk.CTk):
         self.button_insert_colour = ctk.CTkButton(
             self.insert_colour_frame,
             text="Добавить",
-            command=self.make_insert_to_db(bd.colour_of_car_Select_All),
+            command=lambda: make_insert_to_db(connection, query, data),
         )
         self.button_insert_colour.grid(
             row=2, column=0, padx=300, pady=25, sticky="nsew"
@@ -985,7 +986,7 @@ class App(ctk.CTk):
         self.button_insert_deals = ctk.CTkButton(
             self.insert_deals_frame,
             text="Добавить",
-            command=self.make_insert_to_db(bd.hybrid_car_Select_All),
+            command=lambda: make_insert_to_db(connection, query, data),
         )
         self.button_insert_deals.grid(
             row=5, column=0, padx=300, pady=25, sticky="nsew"
@@ -1041,7 +1042,7 @@ class App(ctk.CTk):
         self.button_insert_buyers = ctk.CTkButton(
             self.insert_buyers_frame,
             text="Добавить",
-            command=self.make_insert_to_db(bd.buyers_Select_All),
+            command=lambda: make_insert_to_db(connection, query, data),
         )
         self.button_insert_buyers.grid(
             row=3, column=0, padx=300, pady=25, sticky="nsew"
@@ -1097,7 +1098,7 @@ class App(ctk.CTk):
         self.button_insert_general = ctk.CTkButton(
             self.insert_general_options_frame,
             text="Добавить",
-            command=self.make_insert_to_db(bd.all_car_options_Select_All),
+            command=lambda: make_insert_to_db(connection, query, data),
         )
         self.button_insert_general.grid(
             row=3, column=0, padx=300, pady=25, sticky="nsew"
@@ -1143,7 +1144,7 @@ class App(ctk.CTk):
         self.button_insert_options = ctk.CTkButton(
             self.insert_options_frame,
             text="Добавить",
-            command=self.make_insert_to_db(bd.buyers_Select_All),
+            command=lambda: make_insert_to_db(connection, query, data),
         )
         self.button_insert_options.grid(
             row=2, column=0, padx=300, pady=25, sticky="nsew"
@@ -1403,7 +1404,6 @@ class App(ctk.CTk):
 
     def show_insert_menu(self, table):
         self.hide_all_states()
-        # TODO: добавить условия для запроса
         if table == "car_catalog":
             self.insert_car_frame.grid(
                 row=0,
@@ -1477,10 +1477,17 @@ class App(ctk.CTk):
                 sticky="nsew",
             )
 
-    def make_insert_to_db(self, sql_request: str):
-        #TODO: исправить ошибку на компиляции
-        with connection.cursor() as cursor:
-            cursor.execute(sql_request)
+    # def make_insert_to_db(self, sql_request: str, data: list):
+    #     #TODO: не добавляет данные в таблицу
+    #     with connection.cursor() as cursor:
+    #         flag = True
+    #         for i in range(len(data)):
+    #             if len(data[i]) == 0:
+    #                 flag = False
+    #                 break
+    #         if flag == True:
+    #             cursor.execute(sql_request)
+    #             # print(sql_request)
 
     @staticmethod
     def find_id(sql_request: str):

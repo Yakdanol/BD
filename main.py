@@ -33,6 +33,19 @@ def show(self, connection, sql_request: str):
     # Return the number of columns
     return len(headers)
 
+def make_insert_to_db(self, connection, sql_request: str, data: list):
+    #TODO: не добавляет данные в таблицу
+    #TODO: разделить на каждую таблицу
+    with connection.cursor() as cursor:
+        flag = True
+        for i in range(len(data)):
+            if len(data[i]) == 0:
+                flag = False
+                break
+        if flag == True:
+            cursor.execute(sql_request)
+            print(sql_request)
+
 if __name__ == "__main__":
     try:
         connection = connect_with_bd()
