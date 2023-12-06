@@ -25,16 +25,16 @@ class App_general_menu(ctk.CTk):
         self.show_menu()
 
         # Словарь для хранения фоновых изображений
-        #self.background_images = {}
+        # self.background_images = {}
 
     # инициализация всех состояний - фреймов
     def init_states(self):
-        # Загружаем фоновое изображение
-        self.background_image = ImageTk.PhotoImage(file="1.jpg")
-
-        # Создайте метку (Label) для отображения изображения
-        self.background_label = Label(self, image=self.background_image)
-        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
+        # # Загружаем фоновое изображение
+        # self.background_image = ImageTk.PhotoImage(file="1.jpg")
+        #
+        # # Создайте метку (Label) для отображения изображения
+        # self.background_label = Label(self, image=self.background_image)
+        # self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         # Фрейм - Основное меню
         self.menu_frame = Frame(self)
@@ -65,12 +65,6 @@ class App_general_menu(ctk.CTk):
 
     # инициализация фрейма - Вход для администратора
     def init_login_admin_frame(self):
-
-        # # Элемент для ввода логина
-        # self.temp_login = Entry(self.login_admin_frame, font=("Arial", 14), width=30)
-        # # этот объект - поле для ввода, а не параметр, который мы ввели
-        # self.temp_login.grid(row=0, column=1, padx=300, pady=25, sticky="nsew")
-
         # Элемент для ввода логина
         self.temp_login = Entry(self.login_admin_frame, font=("Arial", 20), width=30)
         self.temp_login.grid(row=0, column=0, padx=500, pady=25, sticky="nsew")
@@ -110,7 +104,6 @@ class App_general_menu(ctk.CTk):
             # Закрыть текущее окно
             # self.quit()
             # self.destroy()
-
             admin_interface()
 
         else:

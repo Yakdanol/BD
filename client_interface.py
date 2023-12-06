@@ -3,7 +3,7 @@ from tkinter import Canvas, PhotoImage, ttk
 import customtkinter as ctk
 from main import show, connect_client_with_bd
 from PIL import Image, ImageTk
-import commands_sql as bd
+import commands_client_sql as bd
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("dark-blue")
@@ -26,7 +26,7 @@ class App_client(ctk.CTk):
         self.show_menu()
 
         # Словарь для хранения фоновых изображений
-        self.background_images = {}
+        # self.background_images = {}
 
     # инициализация всех состояний - фреймов
     def init_states(self):
@@ -479,7 +479,7 @@ class App_client(ctk.CTk):
         self.dvs_car_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 2.5,
+            padx=self.winfo_screenwidth() / 3,
             pady=220,
             sticky="nsew",
         )
@@ -490,7 +490,7 @@ class App_client(ctk.CTk):
         self.electric_car_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 2.5,
+            padx=self.winfo_screenwidth() / 3.8,
             pady=220,
             sticky="nsew",
         )
@@ -501,7 +501,7 @@ class App_client(ctk.CTk):
         self.hybrid_car_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 2.5,
+            padx=self.winfo_screenwidth() / 3.8,
             pady=220,
             sticky="nsew",
         )
@@ -512,7 +512,7 @@ class App_client(ctk.CTk):
         self.colours_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 2.5,
+            padx=self.winfo_screenwidth() / 3,
             pady=220,
             sticky="nsew",
         )
@@ -545,7 +545,7 @@ class App_client(ctk.CTk):
         self.all_car_options_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 2.5,
+            padx=self.winfo_screenwidth() / 3.5,
             pady=220,
             sticky="nsew",
         )
@@ -560,6 +560,51 @@ class App_client(ctk.CTk):
             pady=220,
             sticky="nsew",
         )
+
+    # TODO надо править padx для конкретных окно
+    def show_result_state(self, sql_request):
+        self.hide_all_states()
+        num_columns = show(self, connection, sql_request)
+        if num_columns > 7:
+            self.result_state_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 4,
+                pady=220,
+                sticky="nsew",
+            )
+        elif num_columns == 7:
+            self.result_state_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.5,
+                pady=220,
+                sticky="nsew",
+            )
+        elif num_columns == 6:
+            self.result_state_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 2.2,
+                pady=220,
+                sticky="nsew",
+            )
+        else:
+            self.result_state_frame.grid(
+                row=0,
+                column=0,
+                padx=self.winfo_screenwidth() / 1.8,
+                pady=220,
+                sticky="nsew",
+            )
+
+        # Очистка Treeview перед новыми данными
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        # Вызов функции show с передачей self в качестве первого аргумента
+        show(self, connection, sql_request)
+
 
     # пока не используется
     def get_id(self, func, to_save):
@@ -600,49 +645,6 @@ class App_client(ctk.CTk):
         self.hide_all_states()
         s = func(temp)
         self.show_result_state(s)
-
-    def show_result_state(self, sql_request):
-        self.hide_all_states()
-        num_columns = show(self, connection, sql_request)
-        if num_columns > 7:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 4,
-                pady=220,
-                sticky="nsew",
-            )
-        elif num_columns == 7:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 8,
-                pady=220,
-                sticky="nsew",
-            )
-        elif num_columns == 6:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 6,
-                pady=220,
-                sticky="nsew",
-            )
-        else:
-            self.result_state_frame.grid(
-                row=0,
-                column=0,
-                padx=self.winfo_screenwidth() / 3.7,
-                pady=220,
-                sticky="nsew",
-            )
-
-        # Очистка Treeview перед новыми данными
-        for item in self.tree.get_children():
-            self.tree.delete(item)
-
-        # Вызов функции show с передачей self в качестве первого аргумента
-        show(self, connection, sql_request)
 
     @staticmethod
     def find_id(sql_request: str):

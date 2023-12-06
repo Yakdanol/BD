@@ -479,7 +479,7 @@ class App(ctk.CTk):
         self.dvs_car_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 2.5,
+            padx=self.winfo_screenwidth() / 3,
             pady=220,
             sticky="nsew",
         )
@@ -490,7 +490,7 @@ class App(ctk.CTk):
         self.electric_car_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 2.5,
+            padx=self.winfo_screenwidth() / 3.8,
             pady=220,
             sticky="nsew",
         )
@@ -501,7 +501,7 @@ class App(ctk.CTk):
         self.hybrid_car_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 2.5,
+            padx=self.winfo_screenwidth() / 3.8,
             pady=220,
             sticky="nsew",
         )
@@ -512,7 +512,7 @@ class App(ctk.CTk):
         self.colours_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 2.5,
+            padx=self.winfo_screenwidth() / 3,
             pady=220,
             sticky="nsew",
         )
@@ -545,7 +545,7 @@ class App(ctk.CTk):
         self.all_car_options_frame.grid(
             row=0,
             column=0,
-            padx=self.winfo_screenwidth() / 2.5,
+            padx=self.winfo_screenwidth() / 3.5,
             pady=220,
             sticky="nsew",
         )
