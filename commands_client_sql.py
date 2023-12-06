@@ -18,9 +18,26 @@ ORDER BY id_car;
 """
 
 dvs_car_Select_All = """
-SELECT *
-FROM "dvs_car"
+SELECT
+--    cc.id_car AS "VIN",
+    cc.car_brand AS "Brand",
+    cc.car_model AS "Model",
+--    cc.year_release AS "Year release",
+    cc.car_price AS "Car price",
+--    cc.car_type AS "Type of car",
+    cc.car_condition AS "Car condition",
+    cc.car_range AS "Range",
+    dvs.power AS "Power",
+    dvs.engine_capacity AS "Engine Capacity",
+    dvs.fuel_type AS "Fuel type",
+    dvs.ecological_class AS "Ecological class"
+FROM
+    dvs_car dvs
+JOIN
+    car_catalog cc ON cc.id_car = dvs.id_car
+ORDER BY dvs.id_car;
 """
+
 
 electric_car_Select_All = """
 SELECT *

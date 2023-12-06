@@ -93,14 +93,14 @@ class App_client(ctk.CTk):
         self.car_catalog_button = ctk.CTkButton(
             self.menu_frame, text="Каталог автомобилей", command=self.show_car_catalog
         )
-        self.car_catalog_button.pack(pady=20)
+        self.car_catalog_button.grid(row=0, column=0, padx=300, pady=20, sticky="nsew")
         self.car_catalog_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Двс автомобили"
         self.dvs_car_button = ctk.CTkButton(
             self.menu_frame, text="Двс автомобили", command=self.show_dvs_car
         )
-        self.dvs_car_button.pack(pady=20)
+        self.dvs_car_button.grid(row=1, column=0, padx=300, pady=20, sticky="nsew")
         self.dvs_car_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Электрические автомобили"
@@ -109,35 +109,35 @@ class App_client(ctk.CTk):
             text="Электрические автомобили",
             command=self.show_electric_car,
         )
-        self.electric_car_button.pack(pady=20)
+        self.electric_car_button.grid(row=2, column=0, padx=300, pady=20, sticky="nsew")
         self.electric_car_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Гибридные автомобили"
         self.hybrid_car_button = ctk.CTkButton(
             self.menu_frame, text="Гибридные автомобили", command=self.show_hybrid_car
         )
-        self.hybrid_car_button.pack(pady=20)
+        self.hybrid_car_button.grid(row=3, column=0, padx=300, pady=20, sticky="nsew")
         self.hybrid_car_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Цвета автомобилей"
         self.colours_button = ctk.CTkButton(
             self.menu_frame, text="Цвета автомобилей", command=self.show_colours
         )
-        self.colours_button.pack(pady=20)
+        self.colours_button.grid(row=4, column=0, padx=300, pady=20, sticky="nsew")
         self.colours_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Сделки"
         self.deals_button = ctk.CTkButton(
             self.menu_frame, text="Сделки", command=self.show_deals
         )
-        self.deals_button.pack(pady=20)
+        self.deals_button.grid(row=5, column=0, padx=300, pady=20, sticky="nsew")
         self.deals_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Покупатели"
         self.buyers_button = ctk.CTkButton(
             self.menu_frame, text="Покупатели", command=self.show_buyers
         )
-        self.buyers_button.pack(pady=20)
+        self.buyers_button.grid(row=6, column=0, padx=300, pady=20, sticky="nsew")
         self.buyers_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Опции всех автомобилей"
@@ -146,16 +146,17 @@ class App_client(ctk.CTk):
             text="Опции всех автомобилей",
             command=self.show_all_car_options,
         )
-        self.all_car_options_button.pack(pady=20)
+        self.all_car_options_button.grid(
+            row=7, column=0, padx=300, pady=20, sticky="nsew"
+        )
         self.all_car_options_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Опции"
         self.options_button = ctk.CTkButton(
             self.menu_frame, text="Опции", command=self.show_options
         )
-        self.options_button.pack(pady=20)
+        self.options_button.grid(row=8, column=0, padx=300, pady=20, sticky="nsew")
         self.options_button.configure(width=200, height=40, font=("Arial", 30))
-
 
     # инициализация фрейма - Каталог автомобилей
     def init_car_catalog_frame(self):
@@ -169,6 +170,17 @@ class App_client(ctk.CTk):
             row=0, column=0, padx=300, pady=25, sticky="nsew"
         )
         self.car_catalog1_button.configure(width=200, height=50, font=("Arial", 30))
+
+        # Кнопка "Поиска по параметрам"
+        self.car_catalog2_button = ctk.CTkButton(
+            self.car_catalog_frame,
+            text="Поиск",
+            command=lambda: self.show_car_catalog_search_menu(bd.car_catalog_Select_All),
+        )
+        self.car_catalog2_button.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.car_catalog2_button.configure(width=200, height=50, font=("Arial", 30))
 
         # Кнопка "Назад"
         self.back_button_car_catalog = ctk.CTkButton(
@@ -464,7 +476,7 @@ class App_client(ctk.CTk):
     def show_menu(self):
         self.hide_all_states()
         self.menu_frame.pack(fill="both", expand=True)
-        self.menu_frame.configure(pady=100)
+        self.menu_frame.configure(padx=(self.winfo_screenwidth() / 3.5), pady=100)
 
     # отображение фрейма - Каталог автомобилей
     def show_car_catalog(self):
@@ -556,6 +568,18 @@ class App_client(ctk.CTk):
 
         # Вызов функции show с передачей self в качестве первого аргумента
         show(self, connection, sql_request)
+
+    # Сортировка данных в Treeview при клике на заголовок столбца
+    def treeview_sort_column(self, tree, col, reverse):
+        l = [(tree.set(k, col), k) for k in tree.get_children('')]
+        l.sort(reverse=reverse)
+
+        # Переставлять элементы в отсортированном порядке
+        for index, (val, k) in enumerate(l):
+            tree.move(k, '', index)
+
+        # Изменение направления сортировки для следующего клика
+        tree.heading(col, command=lambda: self.treeview_sort_column(tree, col, not reverse))
 
 
     # пока не используется

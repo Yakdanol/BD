@@ -30,19 +30,26 @@ def show(self, connection, sql_request: str):
     with connection.cursor() as cursor:
         cursor.execute(sql_request)
         rows = cursor.fetchall()
+
         # Определение заголовков
         headers = [desc[0] for desc in cursor.description]
-        # Установка заголовков в Treeview
+
+        # Установка заголовков и связывание с функцией сортировки
         self.tree['columns'] = headers
         for header in headers:
-            self.tree.heading(header, text=header)
+            self.tree.heading(header, text=header,
+                              command=lambda _col=header: self.treeview_sort_column(self.tree, _col, False))
             self.tree.column(header, anchor='center')  # Выравнивание по центру
 
-        # Вставка новых данных в Treeview
+        # Очистка таблицы перед заполнением новыми данными
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        # Вставка новых данных
         for row in rows:
             self.tree.insert('', 'end', values=row)
 
-    # Return the number of columns
+    # Возврат количества столбцов
     return len(headers)
 
 if __name__ == "__main__":
