@@ -45,3 +45,7 @@ SELECT *
 FROM "options"
 """
 
+insert_into_table = """
+INSERT INTO
+"""
+
