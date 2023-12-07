@@ -60,27 +60,15 @@ class App_client(ctk.CTk):
         self.hybrid_car_frame = Frame(self)
         self.init_hybrid_car_frame()
 
-        # Фрейм - "Цвета"
-        self.colours_frame = Frame(self)
-        self.init_colours_frame()
-
         # Фрейм - "Сделки"
         self.deals_frame = Frame(self)
         self.init_deals_frame()
-
-        # Фрейм - "Покупатели"
-        self.buyers_frame = Frame(self)
-        self.init_buyers_frame()
 
         # Фрейм - "Опции всех автомобилей"
         self.all_car_options_frame = Frame(self)
         self.init_all_car_options_frame()
 
-        # Фрейм - "Опиции"
-        self.options_frame = Frame(self)
-        self.init_options_frame()
-
-        # Фрейм для четвертого состояния (результат show)
+        # Фрейм для результата запросов к бд (результат show)
         self.result_state_frame = Frame(self)
         self.init_result_state_frame()
 
@@ -119,9 +107,11 @@ class App_client(ctk.CTk):
         self.hybrid_car_button.grid(row=3, column=0, padx=300, pady=20, sticky="nsew")
         self.hybrid_car_button.configure(width=200, height=40, font=("Arial", 30))
 
-        # Кнопка "Цвета автомобилей"
+        # Кнопка "Все Цвета автомобилей"
         self.colours_button = ctk.CTkButton(
-            self.menu_frame, text="Цвета автомобилей", command=self.show_colours
+            self.menu_frame,
+            text="Доступные цвета автомобилей",
+            command=lambda: self.show_result_state(bd.colour_of_car_Select_All, self.menu_frame),
         )
         self.colours_button.grid(row=4, column=0, padx=300, pady=20, sticky="nsew")
         self.colours_button.configure(width=200, height=40, font=("Arial", 30))
@@ -133,17 +123,10 @@ class App_client(ctk.CTk):
         self.deals_button.grid(row=5, column=0, padx=300, pady=20, sticky="nsew")
         self.deals_button.configure(width=200, height=40, font=("Arial", 30))
 
-        # Кнопка "Покупатели"
-        self.buyers_button = ctk.CTkButton(
-            self.menu_frame, text="Покупатели", command=self.show_buyers
-        )
-        self.buyers_button.grid(row=6, column=0, padx=300, pady=20, sticky="nsew")
-        self.buyers_button.configure(width=200, height=40, font=("Arial", 30))
-
         # Кнопка "Опции всех автомобилей"
         self.all_car_options_button = ctk.CTkButton(
             self.menu_frame,
-            text="Опции всех автомобилей",
+            text="Посмотреть опции автомобиля",
             command=self.show_all_car_options,
         )
         self.all_car_options_button.grid(
@@ -151,9 +134,11 @@ class App_client(ctk.CTk):
         )
         self.all_car_options_button.configure(width=200, height=40, font=("Arial", 30))
 
-        # Кнопка "Опции"
+        # Кнопка "Доступные опции"
         self.options_button = ctk.CTkButton(
-            self.menu_frame, text="Опции", command=self.show_options
+            self.menu_frame,
+            text="Доступные опции",
+            command=lambda: self.show_result_state(bd.options_Select_All, self.menu_frame),
         )
         self.options_button.grid(row=8, column=0, padx=300, pady=20, sticky="nsew")
         self.options_button.configure(width=200, height=40, font=("Arial", 30))
@@ -269,29 +254,6 @@ class App_client(ctk.CTk):
         )
         self.back_button_hybrid_car.configure(width=200, height=50, font=("Arial", 30))
 
-    # инициализация фрейма - Цвета автомобилей
-    def init_colours_frame(self):
-        # Кнопка "Все Цвета автомобилей"
-        self.colours1_button = ctk.CTkButton(
-            self.colours_frame,
-            text="Все Цвета автомобилей",
-            command=lambda: self.show_result_state(bd.colour_of_car_Select_All, self.colours_frame),
-        )
-        self.colours1_button.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
-        )
-        self.colours1_button.configure(width=200, height=50, font=("Arial", 30))
-
-        # Кнопка "Назад"
-        self.back_button_colours = ctk.CTkButton(
-            self.colours_frame,
-            text="Назад",
-            command=self.show_menu,
-            fg_color="grey",
-        )
-        self.back_button_colours.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
-        self.back_button_colours.configure(width=200, height=50, font=("Arial", 30))
-
     # инициализация фрейма - Сделки
     def init_deals_frame(self):
         # Кнопка "Все Сделки"
@@ -314,29 +276,6 @@ class App_client(ctk.CTk):
         )
         self.back_button_deals.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
         self.back_button_deals.configure(width=200, height=50, font=("Arial", 30))
-
-    # инициализация фрейма - Покупатели
-    def init_buyers_frame(self):
-        # Кнопка "Все Покупатели"
-        self.buyers1_button = ctk.CTkButton(
-            self.buyers_frame,
-            text="Все Покупатели",
-            command=lambda: self.show_result_state(bd.buyers_Select_All, self.buyers_frame),
-        )
-        self.buyers1_button.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
-        )
-        self.buyers1_button.configure(width=200, height=50, font=("Arial", 30))
-
-        # Кнопка "Назад"
-        self.back_button_buyers = ctk.CTkButton(
-            self.buyers_frame,
-            text="Назад",
-            command=self.show_menu,
-            fg_color="grey",
-        )
-        self.back_button_buyers.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
-        self.back_button_buyers.configure(width=200, height=50, font=("Arial", 30))
 
     # инициализация фрейма - Опции всех автомобилей
     def init_all_car_options_frame(self):
@@ -364,29 +303,6 @@ class App_client(ctk.CTk):
         self.back_button_all_car_options.configure(
             width=200, height=50, font=("Arial", 30)
         )
-
-    # инициализация фрейма - Опции
-    def init_options_frame(self):
-        # Кнопка "Доступные опции"
-        self.options1_button = ctk.CTkButton(
-            self.options_frame,
-            text="Доступные опции",
-            command=lambda: self.show_result_state(bd.options_Select_All, self.options_frame),
-        )
-        self.options1_button.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
-        )
-        self.options1_button.configure(width=200, height=50, font=("Arial", 30))
-
-        # Кнопка "Назад"
-        self.back_button_options = ctk.CTkButton(
-            self.options_frame,
-            text="Назад",
-            command=self.show_menu,
-            fg_color="grey",
-        )
-        self.back_button_options.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
-        self.back_button_options.configure(width=200, height=50, font=("Arial", 30))
 
     def init_result_state_frame(self):
         # Создайте объект стиля
@@ -433,8 +349,26 @@ class App_client(ctk.CTk):
         self.back_button_result.grid(
             row=2, column=0, padx=(10, 10), pady=(0, 50), sticky="nsew"
         )
+
+        # Привязка события выбора строки
+        self.tree.bind("<<TreeviewSelect>>", self.on_car_selected)
+
         # self.back_button_result.place(connection=10, y=675)
         # Задайте нужные вам координаты кнопки
+
+     # Метод для обработки выбора строки в Treeview
+    def on_car_selected(self, event):
+        if (self.previous_frame == self.car_catalog_frame or self.previous_frame == self.dvs_car_frame
+        or self.previous_frame == self.electric_car_frame or self.previous_frame == self.hybrid_car_frame):
+            selection = self.tree.selection()
+            if selection:
+                selected_item = selection[0]
+                car_data = self.tree.item(selected_item, "values")
+                car_id = car_data[0]  # Предполагается, что ID автомобиля находится в первом столбце
+                # Запрос к базе данных для получения опций автомобиля
+                self.show_result_state(bd.options_select_car(car_id), self.car_catalog_frame)
+        else:
+            pass
 
     # Метод для возврата к предыдущему фрейму
     def go_back(self):
@@ -455,15 +389,9 @@ class App_client(ctk.CTk):
 
         self.hybrid_car_frame.pack_forget()
 
-        self.colours_frame.pack_forget()
-
         self.deals_frame.pack_forget()
 
-        self.buyers_frame.pack_forget()
-
         self.all_car_options_frame.pack_forget()
-
-        self.options_frame.pack_forget()
 
         self.result_state_frame.pack_forget()
 
@@ -514,23 +442,13 @@ class App_client(ctk.CTk):
         self.deals_frame.pack(fill="both", expand=True)
         self.deals_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
-    # отображение фрейма - Покупатели
-    def show_buyers(self):
-        self.hide_all_states()
-        self.buyers_frame.pack(fill="both", expand=True)
-        self.buyers_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=220)
-
     # отображение фрейма - Опции всех автомобилей
     def show_all_car_options(self):
         self.hide_all_states()
         self.all_car_options_frame.pack(fill="both", expand=True)
         self.all_car_options_frame.configure(padx=(self.winfo_screenwidth() / 3.5), pady=220)
 
-    # отображение фрейма - Опции
-    def show_options(self):
-        self.hide_all_states()
-        self.options_frame.pack(fill="both", expand=True)
-        self.options_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=220)
+
 
     # TODO надо править padx для конкретных окно
     def show_result_state(self, sql_request, current_frame):
@@ -543,15 +461,15 @@ class App_client(ctk.CTk):
             12: self.winfo_screenwidth() / 5.5,
             11: self.winfo_screenwidth() / 5,
             10: self.winfo_screenwidth() / 4.5,
-            9: self.winfo_screenwidth() / 4,
-            8: self.winfo_screenwidth() / 3,
-            7: self.winfo_screenwidth() / 2.5,
+            9: self.winfo_screenwidth() / 3,
+            8: self.winfo_screenwidth() / 3.5,
+            7: self.winfo_screenwidth() / 2,
             6: self.winfo_screenwidth() / 2.2,
             5: self.winfo_screenwidth() / 2.0,
             4: self.winfo_screenwidth() / 1.8,
             3: self.winfo_screenwidth() / 1.6,
             2: self.winfo_screenwidth() / 1.4,
-            1: self.winfo_screenwidth() / 1.2,
+            1: self.winfo_screenwidth() / 1.3,
             'default': self.winfo_screenwidth() / 4,
         }.get(num_columns, 'default')
 
@@ -571,7 +489,12 @@ class App_client(ctk.CTk):
 
     # Сортировка данных в Treeview при клике на заголовок столбца
     def treeview_sort_column(self, tree, col, reverse):
-        l = [(tree.set(k, col), k) for k in tree.get_children('')]
+        # Преобразование данных к числам, если это возможно
+        try:
+            l = [(int(tree.set(k, col)), k) if tree.set(k, col).isdigit() else (tree.set(k, col), k) for k in tree.get_children('')]
+        # Если преобразование в число не удается, обработать как строку
+        except ValueError:
+            l = [(tree.set(k, col), k) for k in tree.get_children('')]
         l.sort(reverse=reverse)
 
         # Переставлять элементы в отсортированном порядке

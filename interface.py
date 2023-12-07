@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import Canvas, PhotoImage, ttk
 import customtkinter as ctk
-from main import show, connect_admin_with_bd
+from main import show, connect_admin_with_bd, make_insert_to_db
 from PIL import Image, ImageTk
 import commands_sql as bd
 
