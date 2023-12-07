@@ -206,10 +206,8 @@ class App_client(ctk.CTk):
             text="Поиск",
             command=lambda: self.find_car_catalog(),
         )
-        self.find_car_catalog_button.grid(
-            row=2, column=0, columnspan=2, padx=20, pady=20
-        )
-        self.find_car_catalog_button.configure(width=30, font=("Arial", 20))
+        self.find_car_catalog_button.grid(row=2, column=0, columnspan=2, padx=20, pady=20)
+        self.find_car_catalog_button.configure(width=200, font=("Arial", 30))
 
         # Кнопка "Назад"
         self.back_button_find_car_catalog = ctk.CTkButton(
@@ -218,9 +216,8 @@ class App_client(ctk.CTk):
             command=self.show_car_catalog,
             fg_color="grey",
         )
-        self.back_button_find_car_catalog.grid(
-            row=3, column=0, columnspan=2, padx=10, pady=10
-        )
+        self.back_button_find_car_catalog.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+        self.back_button_find_car_catalog.configure(width=150, font=("Arial", 20))
 
     def find_car_catalog(self):
         # Получите значения из полей ввода бренда и модели автомобиля
@@ -233,15 +230,22 @@ class App_client(ctk.CTk):
             self.entry_brand.delete(0, "end")
             self.entry_model.delete(0, "end")
 
-        elif not model:
-            self.show_result_state(bd.find_car_catalog_brand(brand), self.find_car_catalog_frame)
-
-        elif not brand:
-            self.show_result_state(bd.find_car_catalog_brand(model), self.find_car_catalog_frame)
-
         else:
-            self.show_result_state(bd.find_car_catalog_brand_and_model(brand, model), self.find_car_catalog_frame)
+            # Формирование SQL запроса в зависимости от введенных данных
+            if not model:
+                sql_request = bd.find_car_catalog_brand(brand)
+            elif not brand:
+                sql_request = bd.find_car_catalog_model(model)
+            else:
+                sql_request = bd.find_car_catalog_brand_and_model(brand, model)
 
+            # Вызов нового метода для выполнения и проверки SQL запроса
+            if self.execute_and_check_sql(sql_request):
+                self.show_result_state(sql_request, self.find_car_catalog_frame)
+            else:
+                messagebox.showinfo("Информация", "Таких автомобилей нет в Каталоге!")
+                self.entry_brand.delete(0, "end")
+                self.entry_model.delete(0, "end")
 
     # инициализация фрейма - Двс автомобилей
     def init_dvs_car_frame(self):
@@ -249,7 +253,9 @@ class App_client(ctk.CTk):
         self.dvs_car1_button = ctk.CTkButton(
             self.dvs_car_frame,
             text="Все Двс автомобили",
-            command=lambda: self.show_result_state(bd.dvs_car_Select_All, self.dvs_car_frame),
+            command=lambda: self.show_result_state(
+                bd.dvs_car_Select_All, self.dvs_car_frame
+            ),
         )
         self.dvs_car1_button.grid(row=0, column=0, padx=300, pady=25, sticky="nsew")
         self.dvs_car1_button.configure(width=200, height=50, font=("Arial", 30))
@@ -438,14 +444,10 @@ class App_client(ctk.CTk):
             if selection:
                 selected_item = selection[0]
                 car_data = self.tree.item(selected_item, "values")
-                car_id = car_data[
-                    0
-                ]  # Обязательно, чтобы ID автомобиля находится в первом столбце
+                car_id = car_data[0]  # Обязательно, чтобы ID автомобиля находится в первом столбце
 
                 # Запрос к базе данных для получения опций автомобиля
-                self.show_result_state(
-                    bd.options_select_car(car_id), self.previous_frame
-                )
+                self.show_result_state(bd.options_select_car(car_id), self.previous_frame)
         else:
             pass
 
@@ -457,7 +459,16 @@ class App_client(ctk.CTk):
                 fill="both", expand=True, pady=25
             )  # Отображаем предыдущий фрейм
 
+    def execute_and_check_sql(self, sql_request):
+        with connection.cursor() as cursor:
+            cursor.execute(sql_request)
+            rows = cursor.fetchall()
 
+        # Проверка на наличие результатов
+        if rows:
+            return rows
+        else:
+            return None
 
     # инициализация функции - скрытия фреймов
     def hide_all_states(self):
@@ -479,7 +490,6 @@ class App_client(ctk.CTk):
 
         self.result_state_frame.pack_forget()
 
-
     # TODO padx отвечает за сдвиги таблицы с кнопками по горизонтали
     # TODO pady отвечает за сдвиги таблицы с кнопками по вертикали
     # TODO надо бы сделать по центру или оставить так, +- ровно
@@ -495,14 +505,14 @@ class App_client(ctk.CTk):
         self.hide_all_states()
         self.car_catalog_frame.pack(fill="both", expand=True)
         self.car_catalog_frame.configure(
-            padx=(self.winfo_screenwidth() / 2.5), pady=220
+            padx=(self.winfo_screenwidth() / 3.5), pady=220
         )
 
     def show_find_car_catalog(self):
         self.hide_all_states()
         self.find_car_catalog_frame.pack(fill="both", expand=True)
         self.find_car_catalog_frame.configure(
-            padx=(self.winfo_screenwidth() / 2.5), pady=220
+            padx=(self.winfo_screenwidth() / 3.5), pady=220
         )
 
     # отображение фрейма - Двс автомобили
@@ -523,19 +533,22 @@ class App_client(ctk.CTk):
     def show_hybrid_car(self):
         self.hide_all_states()
         self.hybrid_car_frame.pack(fill="both", expand=True)
-        self.hybrid_car_frame.configure(padx=(self.winfo_screenwidth() / 3.8), pady=220)
+        self.hybrid_car_frame.configure(
+            padx=(self.winfo_screenwidth() / 3.8), pady=220)
 
     # отображение фрейма - Цвета
     def show_colours(self):
         self.hide_all_states()
         self.colours_frame.pack(fill="both", expand=True)
-        self.colours_frame.configure(padx=(self.winfo_screenwidth() / 3), pady=220)
+        self.colours_frame.configure(
+            padx=(self.winfo_screenwidth() / 3), pady=220)
 
     # отображение фрейма - Сделки
     def show_deals(self):
         self.hide_all_states()
         self.deals_frame.pack(fill="both", expand=True)
-        self.deals_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=220)
+        self.deals_frame.configure(
+            padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
     # отображение фрейма - Опции всех автомобилей
     def show_all_car_options(self):
@@ -605,6 +618,8 @@ class App_client(ctk.CTk):
         tree.heading(
             col, command=lambda: self.treeview_sort_column(tree, col, not reverse)
         )
+
+
 
     # пока не используется
     def get_id(self, func, to_save):
