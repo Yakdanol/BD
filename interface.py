@@ -546,7 +546,7 @@ class App(ctk.CTk):
 
     def init_insert_car_frame(self):
         # Поля для ввода данных об автомобиле
-        self.entry_idcar = ctk.CTkEntry(
+        self.entry_idcar = Entry(
             self.insert_car_frame,
             placeholder_text="ID автомобиля"
         )
@@ -555,7 +555,7 @@ class App(ctk.CTk):
         )
         self.entry_idcar.configure(width=my_width, height=my_height, font=(my_font, 14))
 
-        self.entry_brand = ctk.CTkEntry(
+        self.entry_brand = Entry(
             self.insert_car_frame,
             placeholder_text="Марка автомобиля"
         )

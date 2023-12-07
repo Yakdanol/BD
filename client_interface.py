@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import Canvas, PhotoImage, ttk
+from tkinter import Canvas, PhotoImage, ttk, messagebox
 import customtkinter as ctk
 from main import show, connect_client_with_bd
 from PIL import Image, ImageTk
@@ -47,6 +47,10 @@ class App_client(ctk.CTk):
         # Фрейм - "Каталог автомобилей"
         self.car_catalog_frame = Frame(self)
         self.init_car_catalog_frame()
+
+        # Фрейм - "Поиск автомобиля в Каталоге автомобилей"
+        self.find_car_catalog_frame = Frame(self)
+        self.init_find_car_catalog_frame()
 
         # Фрейм - "Двс автомобилей"
         self.dvs_car_frame = Frame(self)
@@ -111,7 +115,9 @@ class App_client(ctk.CTk):
         self.colours_button = ctk.CTkButton(
             self.menu_frame,
             text="Доступные цвета автомобилей",
-            command=lambda: self.show_result_state(bd.colour_of_car_Select_All, self.menu_frame),
+            command=lambda: self.show_result_state(
+                bd.colour_of_car_Select_All, self.menu_frame
+            ),
         )
         self.colours_button.grid(row=4, column=0, padx=300, pady=20, sticky="nsew")
         self.colours_button.configure(width=200, height=40, font=("Arial", 30))
@@ -138,7 +144,9 @@ class App_client(ctk.CTk):
         self.options_button = ctk.CTkButton(
             self.menu_frame,
             text="Доступные опции",
-            command=lambda: self.show_result_state(bd.options_Select_All, self.menu_frame),
+            command=lambda: self.show_result_state(
+                bd.options_Select_All, self.menu_frame
+            ),
         )
         self.options_button.grid(row=8, column=0, padx=300, pady=20, sticky="nsew")
         self.options_button.configure(width=200, height=40, font=("Arial", 30))
@@ -149,22 +157,20 @@ class App_client(ctk.CTk):
         self.car_catalog1_button = ctk.CTkButton(
             self.car_catalog_frame,
             text="Все автомобили",
-            command=lambda: self.show_result_state(bd.car_catalog_Select_All, self.car_catalog_frame),
+            command=lambda: self.show_result_state(
+                bd.car_catalog_Select_All, self.car_catalog_frame
+            ),
         )
-        self.car_catalog1_button.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
-        )
+        self.car_catalog1_button.grid(row=0, column=0, padx=300, pady=25, sticky="nsew")
         self.car_catalog1_button.configure(width=200, height=50, font=("Arial", 30))
 
         # Кнопка "Поиска по параметрам"
         self.car_catalog2_button = ctk.CTkButton(
             self.car_catalog_frame,
-            text="Поиск",
-            command=lambda: self.show_car_catalog_search_menu(bd.car_catalog_Select_All),
+            text="Поиск по названию и модели",
+            command=self.show_find_car_catalog,
         )
-        self.car_catalog2_button.grid(
-            row=1, column=0, padx=300, pady=25, sticky="nsew"
-        )
+        self.car_catalog2_button.grid(row=1, column=0, padx=300, pady=25, sticky="nsew")
         self.car_catalog2_button.configure(width=200, height=50, font=("Arial", 30))
 
         # Кнопка "Назад"
@@ -175,9 +181,67 @@ class App_client(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_car_catalog.grid(
-            row=6, column=0, padx=300, pady=25, sticky="nsew"
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
         )
         self.back_button_car_catalog.configure(width=200, height=50, font=("Arial", 30))
+
+    # инициализация фрейма - поиска автомобилей в Каталоге автомобилей
+    def init_find_car_catalog_frame(self):
+        # Поля для ввода бренда
+        self.entry_brand = ctk.CTkEntry(
+            self.find_car_catalog_frame, placeholder_text="Введите бренд автомобиля"
+        )
+        self.entry_brand.grid(row=0, column=0, padx=300, pady=25, sticky="nsew")
+        self.entry_brand.configure(width=400, height=50, font=("Arial", 30))
+
+        self.entry_model = ctk.CTkEntry(
+            self.find_car_catalog_frame, placeholder_text="Введите марку автомобиля"
+        )
+        self.entry_model.grid(row=1, column=0, padx=300, pady=25, sticky="nsew")
+        self.entry_model.configure(width=400, height=50, font=("Arial", 30))
+
+        # Кнопка выполнения поиска
+        self.find_car_catalog_button = ctk.CTkButton(
+            self.find_car_catalog_frame,
+            text="Поиск",
+            command=lambda: self.find_car_catalog(),
+        )
+        self.find_car_catalog_button.grid(
+            row=2, column=0, columnspan=2, padx=20, pady=20
+        )
+        self.find_car_catalog_button.configure(width=30, font=("Arial", 20))
+
+        # Кнопка "Назад"
+        self.back_button_find_car_catalog = ctk.CTkButton(
+            self.find_car_catalog_frame,
+            text="Назад",
+            command=self.show_car_catalog,
+            fg_color="grey",
+        )
+        self.back_button_find_car_catalog.grid(
+            row=3, column=0, columnspan=2, padx=10, pady=10
+        )
+
+    def find_car_catalog(self):
+        # Получите значения из полей ввода бренда и модели автомобиля
+        brand = self.entry_brand.get().strip()
+        model = self.entry_model.get().strip()
+
+        if not brand and not model:
+            messagebox.showerror("Ошибка", "Вы ничего не ввели!")
+            # Очистить поля для ввода логина и пароля
+            self.entry_brand.delete(0, "end")
+            self.entry_model.delete(0, "end")
+
+        elif not model:
+            self.show_result_state(bd.find_car_catalog_brand(brand), self.find_car_catalog_frame)
+
+        elif not brand:
+            self.show_result_state(bd.find_car_catalog_brand(model), self.find_car_catalog_frame)
+
+        else:
+            self.show_result_state(bd.find_car_catalog_brand_and_model(brand, model), self.find_car_catalog_frame)
+
 
     # инициализация фрейма - Двс автомобилей
     def init_dvs_car_frame(self):
@@ -187,9 +251,7 @@ class App_client(ctk.CTk):
             text="Все Двс автомобили",
             command=lambda: self.show_result_state(bd.dvs_car_Select_All, self.dvs_car_frame),
         )
-        self.dvs_car1_button.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
-        )
+        self.dvs_car1_button.grid(row=0, column=0, padx=300, pady=25, sticky="nsew")
         self.dvs_car1_button.configure(width=200, height=50, font=("Arial", 30))
 
         # Кнопка "Назад"
@@ -208,7 +270,9 @@ class App_client(ctk.CTk):
         self.electric_car1_button = ctk.CTkButton(
             self.electric_car_frame,
             text="Все Электрические автомобили",
-            command=lambda: self.show_result_state(bd.electric_car_Select_All, self.electric_car_frame),
+            command=lambda: self.show_result_state(
+                bd.electric_car_Select_All, self.electric_car_frame
+            ),
         )
         self.electric_car1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -235,11 +299,11 @@ class App_client(ctk.CTk):
         self.hybrid_car1_button = ctk.CTkButton(
             self.hybrid_car_frame,
             text="Все Гибридные автомобили",
-            command=lambda: self.show_result_state(bd.hybrid_car_Select_All, self.hybrid_car_frame),
+            command=lambda: self.show_result_state(
+                bd.hybrid_car_Select_All, self.hybrid_car_frame
+            ),
         )
-        self.hybrid_car1_button.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
-        )
+        self.hybrid_car1_button.grid(row=0, column=0, padx=300, pady=25, sticky="nsew")
         self.hybrid_car1_button.configure(width=200, height=50, font=("Arial", 30))
 
         # Кнопка "Назад"
@@ -260,11 +324,11 @@ class App_client(ctk.CTk):
         self.deals1_button = ctk.CTkButton(
             self.deals_frame,
             text="Все Сделки",
-            command=lambda: self.show_result_state(bd.deals_Select_All, self.deals_frame),
+            command=lambda: self.show_result_state(
+                bd.deals_Select_All, self.deals_frame
+            ),
         )
-        self.deals1_button.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
-        )
+        self.deals1_button.grid(row=0, column=0, padx=300, pady=25, sticky="nsew")
         self.deals1_button.configure(width=200, height=50, font=("Arial", 30))
 
         # Кнопка "Назад"
@@ -283,7 +347,9 @@ class App_client(ctk.CTk):
         self.all_car_options1_button = ctk.CTkButton(
             self.all_car_options_frame,
             text="Опции всех автомобилей",
-            command=lambda: self.show_result_state(bd.all_car_options_Select_All, self.all_car_options_frame),
+            command=lambda: self.show_result_state(
+                bd.all_car_options_Select_All, self.all_car_options_frame
+            ),
         )
         self.all_car_options1_button.grid(
             row=0, column=0, padx=300, pady=25, sticky="nsew"
@@ -309,8 +375,12 @@ class App_client(ctk.CTk):
         style = ttk.Style()
 
         # Настройте стиль "Treeview"
-        style.configure("Treeview", font=("Arial", 16))  # Измените шрифт и размер текста
-        style.configure("Treeview.Heading", font=("Arial", 18, "bold"))  # Измените шрифт и размер заголовков столбцов
+        style.configure(
+            "Treeview", font=("Arial", 16)
+        )  # Измените шрифт и размер текста
+        style.configure(
+            "Treeview.Heading", font=("Arial", 18, "bold")
+        )  # Измените шрифт и размер заголовков столбцов
 
         # Настройте высоту строк в стиле "Treeview"
         style.configure("Treeview", rowheight=40)
@@ -356,17 +426,26 @@ class App_client(ctk.CTk):
         # self.back_button_result.place(connection=10, y=675)
         # Задайте нужные вам координаты кнопки
 
-     # Метод для обработки выбора строки в Treeview
+    # Метод для обработки выбора строки в Treeview
     def on_car_selected(self, event):
-        if (self.previous_frame == self.car_catalog_frame or self.previous_frame == self.dvs_car_frame
-        or self.previous_frame == self.electric_car_frame or self.previous_frame == self.hybrid_car_frame):
+        if (
+            self.previous_frame == self.car_catalog_frame
+            or self.previous_frame == self.dvs_car_frame
+            or self.previous_frame == self.electric_car_frame
+            or self.previous_frame == self.hybrid_car_frame
+        ):
             selection = self.tree.selection()
             if selection:
                 selected_item = selection[0]
                 car_data = self.tree.item(selected_item, "values")
-                car_id = car_data[0]  # Предполагается, что ID автомобиля находится в первом столбце
+                car_id = car_data[
+                    0
+                ]  # Обязательно, чтобы ID автомобиля находится в первом столбце
+
                 # Запрос к базе данных для получения опций автомобиля
-                self.show_result_state(bd.options_select_car(car_id), self.car_catalog_frame)
+                self.show_result_state(
+                    bd.options_select_car(car_id), self.previous_frame
+                )
         else:
             pass
 
@@ -374,7 +453,10 @@ class App_client(ctk.CTk):
     def go_back(self):
         if self.previous_frame:
             self.result_state_frame.pack_forget()  # Скрываем текущий фрейм
-            self.previous_frame.pack(fill="both", expand=True, pady=25)  # Отображаем предыдущий фрейм
+            self.previous_frame.pack(
+                fill="both", expand=True, pady=25
+            )  # Отображаем предыдущий фрейм
+
 
 
     # инициализация функции - скрытия фреймов
@@ -382,6 +464,8 @@ class App_client(ctk.CTk):
         self.menu_frame.pack_forget()
 
         self.car_catalog_frame.pack_forget()
+
+        self.find_car_catalog_frame.pack_forget()
 
         self.dvs_car_frame.pack_forget()
 
@@ -410,7 +494,16 @@ class App_client(ctk.CTk):
     def show_car_catalog(self):
         self.hide_all_states()
         self.car_catalog_frame.pack(fill="both", expand=True)
-        self.car_catalog_frame.configure(padx=(self.winfo_screenwidth() / 2.5), pady=220)
+        self.car_catalog_frame.configure(
+            padx=(self.winfo_screenwidth() / 2.5), pady=220
+        )
+
+    def show_find_car_catalog(self):
+        self.hide_all_states()
+        self.find_car_catalog_frame.pack(fill="both", expand=True)
+        self.find_car_catalog_frame.configure(
+            padx=(self.winfo_screenwidth() / 2.5), pady=220
+        )
 
     # отображение фрейма - Двс автомобили
     def show_dvs_car(self):
@@ -422,7 +515,9 @@ class App_client(ctk.CTk):
     def show_electric_car(self):
         self.hide_all_states()
         self.electric_car_frame.pack(fill="both", expand=True)
-        self.electric_car_frame.configure(padx=(self.winfo_screenwidth() / 3.8), pady=220)
+        self.electric_car_frame.configure(
+            padx=(self.winfo_screenwidth() / 3.8), pady=220
+        )
 
     # отображение фрейма - Гибридные автомобили
     def show_hybrid_car(self):
@@ -446,9 +541,9 @@ class App_client(ctk.CTk):
     def show_all_car_options(self):
         self.hide_all_states()
         self.all_car_options_frame.pack(fill="both", expand=True)
-        self.all_car_options_frame.configure(padx=(self.winfo_screenwidth() / 3.5), pady=220)
-
-
+        self.all_car_options_frame.configure(
+            padx=(self.winfo_screenwidth() / 3.5), pady=220
+        )
 
     # TODO надо править padx для конкретных окно
     def show_result_state(self, sql_request, current_frame):
@@ -470,8 +565,8 @@ class App_client(ctk.CTk):
             3: self.winfo_screenwidth() / 1.6,
             2: self.winfo_screenwidth() / 1.4,
             1: self.winfo_screenwidth() / 1.3,
-            'default': self.winfo_screenwidth() / 4,
-        }.get(num_columns, 'default')
+            "default": self.winfo_screenwidth() / 4,
+        }.get(num_columns, "default")
 
         self.result_state_frame.pack(
             fill="both",
@@ -491,19 +586,25 @@ class App_client(ctk.CTk):
     def treeview_sort_column(self, tree, col, reverse):
         # Преобразование данных к числам, если это возможно
         try:
-            l = [(int(tree.set(k, col)), k) if tree.set(k, col).isdigit() else (tree.set(k, col), k) for k in tree.get_children('')]
+            l = [
+                (int(tree.set(k, col)), k)
+                if tree.set(k, col).isdigit()
+                else (tree.set(k, col), k)
+                for k in tree.get_children("")
+            ]
         # Если преобразование в число не удается, обработать как строку
         except ValueError:
-            l = [(tree.set(k, col), k) for k in tree.get_children('')]
+            l = [(tree.set(k, col), k) for k in tree.get_children("")]
         l.sort(reverse=reverse)
 
         # Переставлять элементы в отсортированном порядке
         for index, (val, k) in enumerate(l):
-            tree.move(k, '', index)
+            tree.move(k, "", index)
 
         # Изменение направления сортировки для следующего клика
-        tree.heading(col, command=lambda: self.treeview_sort_column(tree, col, not reverse))
-
+        tree.heading(
+            col, command=lambda: self.treeview_sort_column(tree, col, not reverse)
+        )
 
     # пока не используется
     def get_id(self, func, to_save):
@@ -516,7 +617,7 @@ class App_client(ctk.CTk):
 
     # пока не используется
     def create_contract(self, to_save, client_id, emp_id):
-        temp = to_save.get().strip().split(' ')
+        temp = to_save.get().strip().split(" ")
         if not temp:
             return
         self.hide_all_states()
@@ -532,7 +633,9 @@ class App_client(ctk.CTk):
             cursor.execute(bd.insert_into_clcr(num_rows, client_id))
             connection.commit()
         with connection.cursor() as cursor:
-            cursor.execute(bd.insert_into_crco(num_rows, client_id, emp_id, temp[0], temp[3]))
+            cursor.execute(
+                bd.insert_into_crco(num_rows, client_id, emp_id, temp[0], temp[3])
+            )
             connection.commit()
         self.hide_all_states()
         self.show_menu()
@@ -561,6 +664,7 @@ class App_client(ctk.CTk):
 if __name__ == "__main__":
     app = App_client()
     app.mainloop()
+
 
 def client_interface():
     app_client = App_client()
