@@ -1075,7 +1075,7 @@ class App(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 3.7,
-            pady=100,
+            pady=20,
             sticky="nsew",
         )
 
@@ -1086,7 +1086,7 @@ class App(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 2.5,
-            pady=220,
+            pady=20,
             sticky="nsew",
         )
 
@@ -1097,7 +1097,7 @@ class App(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 3,
-            pady=220,
+            pady=20,
             sticky="nsew",
         )
 
@@ -1108,7 +1108,7 @@ class App(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 3.8,
-            pady=220,
+            pady=20,
             sticky="nsew",
         )
 
@@ -1119,7 +1119,7 @@ class App(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 3.8,
-            pady=220,
+            pady=20,
             sticky="nsew",
         )
 
@@ -1130,7 +1130,7 @@ class App(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 3,
-            pady=220,
+            pady=20,
             sticky="nsew",
         )
 
@@ -1141,7 +1141,7 @@ class App(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 2.5,
-            pady=220,
+            pady=20,
             sticky="nsew",
         )
 
@@ -1152,7 +1152,7 @@ class App(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 2.5,
-            pady=220,
+            pady=20,
             sticky="nsew",
         )
 
@@ -1163,7 +1163,7 @@ class App(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 3.5,
-            pady=220,
+            pady=20,
             sticky="nsew",
         )
 
@@ -1174,7 +1174,7 @@ class App(ctk.CTk):
             row=0,
             column=0,
             padx=self.winfo_screenwidth() / 2.5,
-            pady=220,
+            pady=20,
             sticky="nsew",
         )
 
@@ -1226,7 +1226,7 @@ class App(ctk.CTk):
                 row=0,
                 column=0,
                 padx=self.winfo_screenwidth() / 4,
-                pady=220,
+                pady=20,
                 sticky="nsew",
             )
         elif num_columns == 7:
@@ -1234,7 +1234,7 @@ class App(ctk.CTk):
                 row=0,
                 column=0,
                 padx=self.winfo_screenwidth() / 8,
-                pady=220,
+                pady=20,
                 sticky="nsew",
             )
         elif num_columns == 6:
@@ -1242,7 +1242,7 @@ class App(ctk.CTk):
                 row=0,
                 column=0,
                 padx=self.winfo_screenwidth() / 6,
-                pady=220,
+                pady=20,
                 sticky="nsew",
             )
         else:
@@ -1250,7 +1250,7 @@ class App(ctk.CTk):
                 row=0,
                 column=0,
                 padx=self.winfo_screenwidth() / 3.7,
-                pady=220,
+                pady=20,
                 sticky="nsew",
             )
 
