@@ -6,7 +6,7 @@ from psycopg2 import Error
 def connect_admin_with_bd():
     connection = psycopg2.connect(
         user="postgres",
-        password="12345",
+        password="Flikster999",
         host="127.0.0.1",
         port="5432",
         database="postgres",
@@ -51,6 +51,19 @@ def show(self, connection, sql_request: str):
 
     # Возврат количества столбцов
     return len(headers)
+
+def make_insert_to_db(self, connection, sql_request: str, data: list):
+    #TODO: не добавляет данные в таблицу
+    #TODO: разделить на каждую таблицу
+    with connection.cursor() as cursor:
+        flag = True
+        for i in range(len(data)):
+            if len(data[i]) == 0:
+                flag = False
+                break
+        if flag == True:
+            cursor.execute(sql_request)
+            print(sql_request)
 
 if __name__ == "__main__":
     try:
