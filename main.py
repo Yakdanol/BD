@@ -61,6 +61,8 @@ def show(self, connection, sql_request: str):
         for row in rows:
             self.tree.insert('', 'end', values=row)
 
+        self.size = len(rows)
+
     # Возврат количества столбцов
     return len(headers)
 

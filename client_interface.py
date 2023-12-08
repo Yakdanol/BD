@@ -28,6 +28,9 @@ class App_client(ctk.CTk):
         # храним предыдущий фрейм для кнопки назад
         self.previous_frame = None
 
+        # кол-во строк в таблице
+        self.size = 0
+
         # Словарь для хранения фоновых изображений
         # self.background_images = {}
 

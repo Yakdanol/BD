@@ -221,6 +221,15 @@ class App(ctk.CTk):
         )
         self.car_catalog2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
+        # Кнопка "Поиска по параметрам"
+        self.car_catalog2_button = ctk.CTkButton(
+            self.car_catalog_frame,
+            text="Поиск по названию и модели",
+            command=self.show_find_car_catalog,
+        )
+        self.car_catalog2_button.grid(row=2, column=0, padx=300, pady=25, sticky="nsew")
+        self.car_catalog2_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_car_catalog = ctk.CTkButton(
             self.car_catalog_frame,
@@ -229,7 +238,7 @@ class App(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_car_catalog.grid(
-            row=6, column=0, padx=300, pady=25, sticky="nsew"
+            row=3, column=0, padx=300, pady=25, sticky="nsew"
         )
         self.back_button_car_catalog.configure(width=200, height=50, font=("Arial", 30))
 
@@ -266,6 +275,34 @@ class App(ctk.CTk):
         )
         self.back_button_find_car_catalog.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
         self.back_button_find_car_catalog.configure(width=150, font=("Arial", 20))
+
+    def find_car_catalog(self):
+        # Получите значения из полей ввода бренда и модели автомобиля
+        brand = self.entry_brand.get().strip()
+        model = self.entry_model.get().strip()
+
+        if not brand and not model:
+            messagebox.showerror("Ошибка", "Вы ничего не ввели!")
+            # Очистить поля для ввода логина и пароля
+            self.entry_brand.delete(0, "end")
+            self.entry_model.delete(0, "end")
+
+        else:
+            # Формирование SQL запроса в зависимости от введенных данных
+            if not model:
+                sql_request = bd.find_car_catalog_brand(brand)
+            elif not brand:
+                sql_request = bd.find_car_catalog_model(model)
+            else:
+                sql_request = bd.find_car_catalog_brand_and_model(brand, model)
+
+            # Вызов нового метода для выполнения и проверки SQL запроса
+            if self.execute_and_check_sql(sql_request):
+                self.show_result_state(sql_request, self.find_car_catalog_frame)
+            else:
+                messagebox.showinfo("Информация", "Таких автомобилей нет в Каталоге!")
+                self.entry_brand.delete(0, "end")
+                self.entry_model.delete(0, "end")
 
     # инициализация фрейма - Двс автомобилей
     def init_dvs_car_frame(self):
@@ -1134,6 +1171,8 @@ class App(ctk.CTk):
         self.menu_frame.pack_forget()
 
         self.car_catalog_frame.pack_forget()
+        
+        self.find_car_catalog_frame.pack_forget()
 
         self.dvs_car_frame.pack_forget()
 
