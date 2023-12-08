@@ -191,3 +191,7 @@ SELECT
     options.description AS "Name of option"
 FROM "options"
 """
+
+insert_into_table = """
+INSERT INTO
+"""

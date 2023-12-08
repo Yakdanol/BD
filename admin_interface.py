@@ -610,81 +610,81 @@ class App(ctk.CTk):
             placeholder_text="ID автомобиля"
         )
         self.entry_idcar.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
+            row=0, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.entry_idcar.configure(width=my_width, height=my_height, font=(my_font, 14))
+        self.entry_idcar.configure(width=my_width, height=40, font=(my_font, 14))
 
         self.entry_brand = ctk.CTkEntry(
             self.insert_car_frame,
             placeholder_text="Марка автомобиля"
         )
         self.entry_brand.grid(
-            row=1, column=0, padx=300, pady=25, sticky="nsew"
+            row=1, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.entry_brand.configure(width=my_width, height=my_height, font=(my_font, 14))
+        self.entry_brand.configure(width=my_width, height=40, font=(my_font, 14))
 
         self.entry_model = ctk.CTkEntry(
             self.insert_car_frame,
             placeholder_text="Модель автомобиля"
         )
         self.entry_model.grid(
-            row=2, column=0, padx=300, pady=25, sticky="nsew"
+            row=2, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.entry_model.configure(width=my_width, height=my_height, font=(my_font, 14))
+        self.entry_model.configure(width=my_width, height=40, font=(my_font, 14))
 
         self.entry_year = ctk.CTkEntry(
             self.insert_car_frame,
             placeholder_text="Дата выпуска (ГГГГ-ММ-ДД)"
         )
         self.entry_year.grid(
-            row=3, column=0, padx=300, pady=25, sticky="nsew"
+            row=3, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.entry_year.configure(width=my_width, height=my_height, font=(my_font, 14))
+        self.entry_year.configure(width=my_width, height=40, font=(my_font, 14))
 
         self.entry_colour = ctk.CTkEntry(
             self.insert_car_frame,
             placeholder_text="Номер цвета"
         )
         self.entry_colour.grid(
-            row=4, column=0, padx=300, pady=25, sticky="nsew"
+            row=4, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.entry_colour.configure(width=my_width, height=my_height, font=(my_font, 14))
+        self.entry_colour.configure(width=my_width, height=40, font=(my_font, 14))
 
         self.entry_price = ctk.CTkEntry(
             self.insert_car_frame,
             placeholder_text="Цена"
         )
         self.entry_price.grid(
-            row=5, column=0, padx=300, pady=25, sticky="nsew"
+            row=5, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.entry_price.configure(width=my_width, height=my_height, font=(my_font, 14))
+        self.entry_price.configure(width=my_width, height=40, font=(my_font, 14))
 
         self.entry_type = ctk.CTkEntry(
             self.insert_car_frame,
             placeholder_text="Тип (DVS, Hybrid, Electric)"
         )
         self.entry_type.grid(
-            row=6, column=0, padx=300, pady=25, sticky="nsew"
+            row=6, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.entry_type.configure(width=my_width, height=my_height, font=(my_font, 14))
+        self.entry_type.configure(width=my_width, height=40, font=(my_font, 14))
 
         self.entry_condition = ctk.CTkEntry(
             self.insert_car_frame,
             placeholder_text="Состояние (New, Used)"
         )
         self.entry_condition.grid(
-            row=7, column=0, padx=300, pady=25, sticky="nsew"
+            row=7, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.entry_condition.configure(width=my_width, height=my_height, font=(my_font, 14))
+        self.entry_condition.configure(width=my_width, height=40, font=(my_font, 14))
 
         self.entry_range = ctk.CTkEntry(
             self.insert_car_frame,
             placeholder_text="Запас хода"
         )
         self.entry_range.grid(
-            row=8, column=0, padx=300, pady=25, sticky="nsew"
+            row=8, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.entry_range.configure(width=my_width, height=my_height, font=(my_font, 14))
+        self.entry_range.configure(width=my_width, height=40, font=(my_font, 14))
 
         self.button_insert_car = ctk.CTkButton(
             self.insert_car_frame,
@@ -692,9 +692,9 @@ class App(ctk.CTk):
             command=lambda: self.make_insert_to_db("car_catalog"),
         )
         self.button_insert_car.grid(
-            row=9, column=0, padx=300, pady=25, sticky="nsew"
+            row=9, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.button_insert_car.configure(width=my_width, height=my_height, font=(my_font, 20))
+        self.button_insert_car.configure(width=my_width, height=40, font=(my_font, 20))
 
         self.back_button_insert_car = ctk.CTkButton(
             self.insert_car_frame,
@@ -703,9 +703,9 @@ class App(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_insert_car.grid(
-            row=10, column=0, padx=300, pady=25, sticky="nsew"
+            row=10, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.back_button_insert_car.configure(width=my_width, height=my_height, font=(my_font, 20))
+        self.back_button_insert_car.configure(width=my_width, height=40, font=(my_font, 20))
 
     def init_insert_dvs_frame(self):
         # Поля для ввода данных
@@ -1187,7 +1187,7 @@ class App(ctk.CTk):
         self.hide_all_states()
         self.car_catalog_frame.pack(fill="both", expand=True)
         self.car_catalog_frame.configure(
-            padx=(self.winfo_screenwidth() / 3.5), pady=220
+            padx=(self.winfo_screenwidth() / 3), pady=220
         )
 
     # Отображение фрейма - Поиск в Каталоге автомобилей
@@ -1253,7 +1253,7 @@ class App(ctk.CTk):
         self.hide_all_states()
         self.options_frame.pack(fill="both", expand=True)
         self.options_frame.configure(
-            padx=(self.winfo_screenwidth() / 3.5), pady=220
+            padx=(self.winfo_screenwidth() / 2.5), pady=220
         )
 
     # пока не используется
@@ -1298,9 +1298,9 @@ class App(ctk.CTk):
             13: self.winfo_screenwidth() / 6,
             12: self.winfo_screenwidth() / 5.5,
             11: self.winfo_screenwidth() / 5,
-            10: self.winfo_screenwidth() / 4.5,
-            9: self.winfo_screenwidth() / 3,
-            8: self.winfo_screenwidth() / 3.5,
+            10: self.winfo_screenwidth() / 3,
+            9: self.winfo_screenwidth() / 2.8,
+            8: self.winfo_screenwidth() / 2,
             7: self.winfo_screenwidth() / 2,
             6: self.winfo_screenwidth() / 2.2,
             5: self.winfo_screenwidth() / 2.0,
@@ -1331,39 +1331,39 @@ class App(ctk.CTk):
         if table == "car_catalog":
             self.insert_car_frame.pack(fill="both", expand=True)
             self.insert_car_frame.configure(
-                padx=(self.winfo_screenwidth() / 3.5), pady=220)
+                padx=(self.winfo_screenwidth() / 2.5), pady=50)
         elif table == "dvs":
             self.insert_dvs_frame.pack(fill="both", expand=True)
             self.insert_dvs_frame.configure(
-                padx=(self.winfo_screenwidth() / 3.5), pady=220)
+                padx=(self.winfo_screenwidth() / 2.5), pady=220)
         elif table == "electric":
             self.insert_electric_frame.pack(fill="both", expand=True)
             self.insert_electric_frame.configure(
-                padx=(self.winfo_screenwidth() / 3.5), pady=220)
+                padx=(self.winfo_screenwidth() / 2.5), pady=220)
         elif table == "hybrid":
             self.insert_hybrid_frame.pack(fill="both", expand=True)
             self.insert_hybrid_frame.configure(
-                padx=(self.winfo_screenwidth() / 3.5), pady=220)
+                padx=(self.winfo_screenwidth() / 2.5), pady=220)
         elif table == "colour":
             self.insert_colour_frame.pack(fill="both", expand=True)
             self.insert_colour_frame.configure(
-                padx=(self.winfo_screenwidth() / 3.5), pady=220)
+                padx=(self.winfo_screenwidth() / 2.5), pady=220)
         elif table == "deals":
             self.insert_deals_frame.pack(fill="both", expand=True)
             self.insert_deals_frame.configure(
-                padx=(self.winfo_screenwidth() / 3.5), pady=220)
+                padx=(self.winfo_screenwidth() / 2.5), pady=220)
         elif table == "buyers":
             self.insert_buyers_frame.pack(fill="both", expand=True)
             self.insert_buyers_frame.configure(
-                padx=(self.winfo_screenwidth() / 3.5), pady=220)
+                padx=(self.winfo_screenwidth() / 2.5), pady=220)
         elif table == "general_options":
             self.insert_general_options_frame.pack(fill="both", expand=True)
             self.insert_general_options_frame.configure(
-                padx=(self.winfo_screenwidth() / 3.5), pady=220)
+                padx=(self.winfo_screenwidth() / 2.5), pady=220)
         elif table == "options":
             self.insert_options_frame.pack(fill="both", expand=True)
             self.insert_options_frame.configure(
-                padx=(self.winfo_screenwidth() / 3.5), pady=220)
+                padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
     # Проверка вхождения перед вставкой
     def record_exists(self, cursor, table_name, key_column, key_value):

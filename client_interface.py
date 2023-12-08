@@ -505,7 +505,7 @@ class App_client(ctk.CTk):
         self.hide_all_states()
         self.car_catalog_frame.pack(fill="both", expand=True)
         self.car_catalog_frame.configure(
-            padx=(self.winfo_screenwidth() / 3.5), pady=220
+            padx=(self.winfo_screenwidth() / 3), pady=220
         )
 
     def show_find_car_catalog(self):
@@ -568,9 +568,9 @@ class App_client(ctk.CTk):
             13: self.winfo_screenwidth() / 6,
             12: self.winfo_screenwidth() / 5.5,
             11: self.winfo_screenwidth() / 5,
-            10: self.winfo_screenwidth() / 4.5,
-            9: self.winfo_screenwidth() / 3,
-            8: self.winfo_screenwidth() / 3.5,
+            10: self.winfo_screenwidth() / 3,
+            9: self.winfo_screenwidth() / 2.8,
+            8: self.winfo_screenwidth() / 2,
             7: self.winfo_screenwidth() / 2,
             6: self.winfo_screenwidth() / 2.2,
             5: self.winfo_screenwidth() / 2.0,
