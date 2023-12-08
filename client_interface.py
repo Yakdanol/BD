@@ -76,6 +76,9 @@ class App_client(ctk.CTk):
         self.result_state_frame = Frame(self)
         self.init_result_state_frame()
 
+        self.make_order_frame = Frame(self)
+        self.init_make_order_frame()
+
         # Обработка закрытия окна
         self.protocol("WM_DELETE_WINDOW", lambda: self.on_closing(connection))
 
@@ -337,6 +340,14 @@ class App_client(ctk.CTk):
         self.deals1_button.grid(row=0, column=0, padx=300, pady=25, sticky="nsew")
         self.deals1_button.configure(width=200, height=50, font=("Arial", 30))
 
+        self.deals2_button = ctk.CTkButton(
+            self.deals_frame,
+            text="Оформить заказ",
+            command=lambda: self.show_make_order_menu(self.deals_frame)
+        )
+        self.deals2_button.grid(row=1, column=0, padx=300, pady=25, sticky="nsew")
+        self.deals2_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_deals = ctk.CTkButton(
             self.deals_frame,
@@ -432,6 +443,64 @@ class App_client(ctk.CTk):
         # self.back_button_result.place(connection=10, y=675)
         # Задайте нужные вам координаты кнопки
 
+    def init_make_order_frame(self):
+        # Создайте объект стиля
+        style = ttk.Style()
+
+        # Настройте стиль "Treeview"
+        style.configure(
+            "Treeview", font=("Arial", 16)
+        )  # Измените шрифт и размер текста
+        style.configure(
+            "Treeview.Heading", font=("Arial", 18, "bold")
+        )  # Измените шрифт и размер заголовков столбцов
+
+        # Настройте высоту строк в стиле "Treeview"
+        style.configure("Treeview", rowheight=40)
+
+        # Treeview для отображения данных в виде таблицы
+        self.tree = ttk.Treeview(self.result_state_frame, style="Treeview")
+        self.tree.grid(row=0, column=0, padx=(10, 10), pady=(25, 0), sticky="nsew")
+
+        # Создаем виджеты Scrollbar
+        self.vertical_scrollbar = Scrollbar(
+            self.result_state_frame, orient="vertical", command=self.tree.yview
+        )
+        self.vertical_scrollbar.grid(row=0, column=1, sticky="ns")
+
+        self.horizontal_scrollbar = Scrollbar(
+            self.result_state_frame, orient="horizontal", command=self.tree.xview
+        )
+        self.horizontal_scrollbar.grid(row=1, column=0, sticky="ew")
+
+        # Привязываем Scrollbar к Treeview
+        self.tree.configure(
+            yscrollcommand=self.vertical_scrollbar.set,
+            xscrollcommand=self.horizontal_scrollbar.set,
+        )
+
+        # Ограничиваем размеры Treeview
+        self.tree.config(height=25, show="headings")
+
+        self.entry_idcar_order = ctk.CTkEntry(
+            self.make_order_frame,
+            placeholder_text="ID автомобиля"
+        )
+        self.entry_idcar_order.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_idcar_order.configure(width=200, height=20, font=("Arial", 14))
+
+        self.back_button_make_order = ctk.CTkButton(
+            self.make_order_frame,
+            text="Назад",
+            command=self.show_deals,
+            fg_color="grey",
+        )
+        self.back_button_make_order.grid(
+            row=3, column=0, padx=(10, 10), pady=(0, 50), sticky="nsew"
+        )
+
     # Метод для обработки выбора строки в Treeview
     def on_car_selected(self, event):
         if (
@@ -490,6 +559,9 @@ class App_client(ctk.CTk):
 
         self.result_state_frame.pack_forget()
 
+        self.make_order_frame.pack_forget()
+
+
     # TODO padx отвечает за сдвиги таблицы с кнопками по горизонтали
     # TODO pady отвечает за сдвиги таблицы с кнопками по вертикали
     # TODO надо бы сделать по центру или оставить так, +- ровно
@@ -512,7 +584,7 @@ class App_client(ctk.CTk):
         self.hide_all_states()
         self.find_car_catalog_frame.pack(fill="both", expand=True)
         self.find_car_catalog_frame.configure(
-            padx=(self.winfo_screenwidth() / 3.5), pady=220
+            padx=(self.winfo_screenwidth() / 2.5), pady=220
         )
 
     # отображение фрейма - Двс автомобили
@@ -595,6 +667,17 @@ class App_client(ctk.CTk):
         # Вызов функции show с передачей self в качестве первого аргумента
         show(self, connection, sql_request)
 
+    def show_make_order_menu(self, current_frame):
+        self.previous_frame = current_frame
+        self.hide_all_states()
+        self.make_order_frame.pack(fill="both", expand=True)
+        self.make_order_frame.configure(
+            padx=(self.winfo_screenwidth() / 2.5), pady=20
+        )
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+        show(self, connection, bd.car_catalog_Select_All)
+
     # Сортировка данных в Treeview при клике на заголовок столбца
     def treeview_sort_column(self, tree, col, reverse):
         # Преобразование данных к числам, если это возможно
@@ -618,8 +701,6 @@ class App_client(ctk.CTk):
         tree.heading(
             col, command=lambda: self.treeview_sort_column(tree, col, not reverse)
         )
-
-
 
     # пока не используется
     def get_id(self, func, to_save):
