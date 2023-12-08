@@ -191,3 +191,13 @@ SELECT
     options.description AS "Name of option"
 FROM "options"
 """
+
+insert_into_table = """
+INSERT INTO
+"""
+
+get_price_of_car = """
+SELECT car_price
+FROM car_catalog
+WHERE id_car = 
+"""

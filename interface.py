@@ -20,6 +20,7 @@ my_font = "xo oriel"
 class App(ctk.CTk):
     # общий конструктор класса
     def __init__(self, *args, **kwargs):
+        self.row_size = 0
         super().__init__(*args, **kwargs)
         self.title("App")
         self.geometry(f"{self.winfo_screenwidth()}x{self.winfo_screenheight()}-0-0")

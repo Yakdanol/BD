@@ -15,6 +15,7 @@ connection = connect_client_with_bd()
 class App_client(ctk.CTk):
     # общий конструтор класса
     def __init__(self, *args, **kwargs):
+        self.row_size = 0
         super().__init__(*args, **kwargs)
         self.title("App")
         self.geometry(f"{self.winfo_screenwidth()}x{self.winfo_screenheight()}-0-0")
@@ -745,7 +746,30 @@ class App_client(ctk.CTk):
                 break
 
         if flag == True:
-            pass
+            show(self, connection, bd.deals_Select_All)
+            deals_count = self.row_size
+            for item in self.tree.get_children():
+                self.tree.delete(item)
+            show(self, connection, bd.buyers_Select_All)
+            buyers_count = self.row_size
+            for item in self.tree.get_children():
+                self.tree.delete(item)
+
+            with connection.cursor() as cursor:
+                query_get_price = bd.get_price_of_car + f"{data[0]}"
+                cursor.execute(query_get_price)
+                car_price = cursor.fetchone()[0]
+                print(car_price)
+                query_insert_buyer = bd.insert_into_table + " buyers VALUES " + f"({buyers_count + 1}, '{data[1]}', '{data[2]}')"
+                cursor.execute(query_insert_buyer)
+                connection.commit()
+                query_insert_deal = bd.insert_into_table + " deals VALUES " + f"({deals_count + 1}, {data[0]}, {buyers_count + 1}, '2023-12-08', {car_price})"
+                cursor.execute(query_insert_deal)
+                connection.commit()
+            messagebox.showinfo("Успешно", "Заказ оформлен")
+
+        else:
+            messagebox.showerror("Ошибка", "Неверные данные")
 
     # Сортировка данных в Treeview при клике на заголовок столбца
     def treeview_sort_column(self, tree, col, reverse):

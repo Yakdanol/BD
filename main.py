@@ -7,7 +7,7 @@ import tkinter.font as tkFont
 def connect_admin_with_bd():
     connection = psycopg2.connect(
         user="postgres",
-        password="12345",
+        password="Flikster999",
         host="127.0.0.1",
         port="5432",
         database="postgres",
@@ -27,6 +27,8 @@ def connect_client_with_bd():
 
     return connection
 
+
+
 def show(self, connection, sql_request: str):
     with connection.cursor() as cursor:
         cursor.execute(sql_request)
@@ -40,6 +42,7 @@ def show(self, connection, sql_request: str):
 
         # Вычисляем максимальную ширину каждого столбца, включая заголовок
         col_widths = {header: font.measure(header) for header in headers}
+        self.row_size = len(rows)
         for row in rows:
             for i, val in enumerate(row):
                 width = font.measure(str(val))
