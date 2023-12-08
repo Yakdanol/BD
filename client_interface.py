@@ -343,7 +343,7 @@ class App_client(ctk.CTk):
         self.deals2_button = ctk.CTkButton(
             self.deals_frame,
             text="Оформить заказ",
-            command=lambda: self.show_make_order_menu(self.deals_frame)
+            command=lambda: self.show_make_order_menu(bd.car_catalog_Select_All, self.deals_frame)
         )
         self.deals2_button.grid(row=1, column=0, padx=300, pady=25, sticky="nsew")
         self.deals2_button.configure(width=200, height=50, font=("Arial", 30))
@@ -491,6 +491,33 @@ class App_client(ctk.CTk):
         )
         self.entry_idcar_order.configure(width=200, height=20, font=("Arial", 14))
 
+        self.entry_name_order = ctk.CTkEntry(
+            self.make_order_frame,
+            placeholder_text="Имя Фамилия"
+        )
+        self.entry_name_order.grid(
+            row=3, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_name_order.configure(width=200, height=20, font=("Arial", 14))
+
+        self.entry_contacts_order = ctk.CTkEntry(
+            self.make_order_frame,
+            placeholder_text="Контакт"
+        )
+        self.entry_contacts_order.grid(
+            row=4, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.entry_contacts_order.configure(width=200, height=20, font=("Arial", 14))
+
+        self.button_make_order = ctk.CTkButton(
+            self.make_order_frame,
+            text="Оформить",
+            command=self.make_order,
+        )
+        self.button_make_order.grid(
+            row=5, column=0, padx=(10, 10), pady=(0, 50), sticky="nsew"
+        )
+
         self.back_button_make_order = ctk.CTkButton(
             self.make_order_frame,
             text="Назад",
@@ -498,7 +525,7 @@ class App_client(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_make_order.grid(
-            row=3, column=0, padx=(10, 10), pady=(0, 50), sticky="nsew"
+            row=6, column=0, padx=(10, 10), pady=(0, 50), sticky="nsew"
         )
 
     # Метод для обработки выбора строки в Treeview
@@ -667,16 +694,58 @@ class App_client(ctk.CTk):
         # Вызов функции show с передачей self в качестве первого аргумента
         show(self, connection, sql_request)
 
-    def show_make_order_menu(self, current_frame):
+    def show_make_order_menu(self, sql_request, current_frame):
         self.previous_frame = current_frame
         self.hide_all_states()
-        self.make_order_frame.pack(fill="both", expand=True)
-        self.make_order_frame.configure(
-            padx=(self.winfo_screenwidth() / 2.5), pady=20
+        num_columns = show(self, connection, sql_request)
+
+        padx_value = {
+            13: self.winfo_screenwidth() / 6,
+            12: self.winfo_screenwidth() / 5.5,
+            11: self.winfo_screenwidth() / 5,
+            10: self.winfo_screenwidth() / 4.5,
+            9: self.winfo_screenwidth() / 3,
+            8: self.winfo_screenwidth() / 3.5,
+            7: self.winfo_screenwidth() / 2,
+            6: self.winfo_screenwidth() / 2.2,
+            5: self.winfo_screenwidth() / 2.0,
+            4: self.winfo_screenwidth() / 1.8,
+            3: self.winfo_screenwidth() / 1.6,
+            2: self.winfo_screenwidth() / 4,
+            1: self.winfo_screenwidth() / 1.3,
+            "default": self.winfo_screenwidth() / 4,
+        }.get(num_columns, "default")
+
+        self.make_order_frame.pack(
+            fill="both",
+            expand=True,
+            padx=padx_value,
+            pady=2,
         )
+
+        # Очистка Treeview перед новыми данными
         for item in self.tree.get_children():
             self.tree.delete(item)
-        show(self, connection, bd.car_catalog_Select_All)
+
+        # Вызов функции show с передачей self в качестве первого аргумента
+        show(self, connection, sql_request)
+
+    def make_order(self):
+        data = [
+            self.entry_idcar_order.get(),
+            self.entry_name_order.get(),
+            self.entry_contacts_order.get()
+        ]
+        flag = True
+        if len(data) == 0:
+            flag = False
+        for i in range(len(data)):
+            if len(data[i]) == 0:
+                flag = False
+                break
+
+        if flag == True:
+            pass
 
     # Сортировка данных в Treeview при клике на заголовок столбца
     def treeview_sort_column(self, tree, col, reverse):
