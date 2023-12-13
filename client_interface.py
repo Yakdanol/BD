@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import Canvas, PhotoImage, ttk, messagebox
 import customtkinter as ctk
-from main import show, connect_client_with_bd
+from main import show, connect_client_with_bd, show_2
 from PIL import Image, ImageTk
 import commands_client_sql as bd
 
@@ -135,17 +135,6 @@ class App_client(ctk.CTk):
         )
         self.deals_button.grid(row=5, column=0, padx=300, pady=20, sticky="nsew")
         self.deals_button.configure(width=200, height=40, font=("Arial", 30))
-
-        # # Кнопка "Опции всех автомобилей"
-        # self.all_car_options_button = ctk.CTkButton(
-        #     self.menu_frame,
-        #     text="Посмотреть опции автомобиля",
-        #     command=self.show_all_car_options,
-        # )
-        # self.all_car_options_button.grid(
-        #     row=7, column=0, padx=300, pady=20, sticky="nsew"
-        # )
-        # self.all_car_options_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Доступные опции"
         self.options_button = ctk.CTkButton(
@@ -362,34 +351,6 @@ class App_client(ctk.CTk):
         self.back_button_deals.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
         self.back_button_deals.configure(width=200, height=50, font=("Arial", 30))
 
-    # # инициализация фрейма - Опции всех автомобилей
-    # def init_all_car_options_frame(self):
-    #     # Кнопка "Опции всех автомобилей"
-    #     self.all_car_options1_button = ctk.CTkButton(
-    #         self.all_car_options_frame,
-    #         text="Опции всех автомобилей",
-    #         command=lambda: self.show_result_state(
-    #             bd.all_car_options_Select_All, self.all_car_options_frame
-    #         ),
-    #     )
-    #     self.all_car_options1_button.grid(
-    #         row=0, column=0, padx=300, pady=25, sticky="nsew"
-    #     )
-    #     self.all_car_options1_button.configure(width=200, height=50, font=("Arial", 30))
-    #
-    #     # Кнопка "Назад"
-    #     self.back_button_all_car_options = ctk.CTkButton(
-    #         self.all_car_options_frame,
-    #         text="Назад",
-    #         command=self.show_menu,
-    #         fg_color="grey",
-    #     )
-    #     self.back_button_all_car_options.grid(
-    #         row=6, column=0, padx=300, pady=25, sticky="nsew"
-    #     )
-    #     self.back_button_all_car_options.configure(
-    #         width=200, height=50, font=("Arial", 30)
-    #     )
 
     def init_result_state_frame(self):
         # Создайте объект стиля
@@ -448,43 +409,45 @@ class App_client(ctk.CTk):
         # Задайте нужные вам координаты кнопки
 
     def init_make_order_frame(self):
-        # # Создайте объект стиля
-        # style = ttk.Style()
-        #
-        # # Настройте стиль "Treeview"
-        # style.configure(
-        #     "Treeview", font=("Arial", 16)
-        # )  # Измените шрифт и размер текста
-        # style.configure(
-        #     "Treeview.Heading", font=("Arial", 18, "bold")
-        # )  # Измените шрифт и размер заголовков столбцов
-        #
-        # # Настройте высоту строк в стиле "Treeview"
-        # style.configure("Treeview", rowheight=40)
-        #
-        # # Treeview для отображения данных в виде таблицы
-        # self.tree = ttk.Treeview(self.make_order_frame, style="Treeview")
-        # self.tree.grid(row=0, column=0, padx=(10, 10), pady=(25, 0), sticky="nsew")
-        #
-        # # Создаем виджеты Scrollbar
-        # self.vertical_scrollbar = Scrollbar(
-        #     self.make_order_frame, orient="vertical", command=self.tree.yview
-        # )
-        # self.vertical_scrollbar.grid(row=0, column=1, sticky="ns")
-        #
-        # self.horizontal_scrollbar = Scrollbar(
-        #     self.make_order_frame, orient="horizontal", command=self.tree.xview
-        # )
-        # self.horizontal_scrollbar.grid(row=1, column=0, sticky="ew")
-        #
-        # # Привязываем Scrollbar к Treeview
-        # self.tree.configure(
-        #     yscrollcommand=self.vertical_scrollbar.set,
-        #     xscrollcommand=self.horizontal_scrollbar.set,
-        # )
-        #
-        # # Ограничиваем размеры Treeview
-        # self.tree.config(height=25, show="headings")
+        # Создайте объект стиля
+        style = ttk.Style()
+
+        # Настройте стиль "Treeview"
+        style.configure(
+            "Treeview", font=("Arial", 16)
+        )  # Измените шрифт и размер текста
+        style.configure(
+            "Treeview.Heading", font=("Arial", 18, "bold")
+        )  # Измените шрифт и размер заголовков столбцов
+
+        # Настройте высоту строк в стиле "Treeview"
+        style.configure("Treeview", rowheight=40)
+
+        # Treeview для отображения данных в виде таблицы
+        self.tree_make_order = ttk.Treeview(self.make_order_frame, style="Treeview")
+        self.tree_make_order.grid(row=0, column=0, padx=(10, 10), pady=(25, 0), sticky="nsew")
+
+        # Создаем виджеты Scrollbar
+        self.vertical_scrollbar = Scrollbar(
+            self.make_order_frame, orient="vertical", command=self.tree_make_order.yview
+        )
+        self.vertical_scrollbar.grid(row=0, column=1, sticky="ns")
+
+        self.horizontal_scrollbar = Scrollbar(
+            self.make_order_frame, orient="horizontal", command=self.tree_make_order.xview
+        )
+        self.horizontal_scrollbar.grid(row=1, column=0, sticky="ew")
+
+        # Привязываем Scrollbar к Treeview
+        self.tree_make_order.configure(
+            yscrollcommand=self.vertical_scrollbar.set,
+            xscrollcommand=self.horizontal_scrollbar.set,
+        )
+
+        # Ограничиваем размеры Treeview
+        self.tree_make_order.config(height=20, show="headings")
+
+
 
         self.entry_idcar_order = ctk.CTkEntry(
             self.make_order_frame,
@@ -519,8 +482,9 @@ class App_client(ctk.CTk):
             command=self.make_order,
         )
         self.button_make_order.grid(
-            row=5, column=0, padx=(10, 10), pady=(0, 20), sticky="nsew"
+            row=5, column=0, padx=200, pady=20, sticky="nsew"
         )
+        self.button_make_order.configure(width=100, height=30, font=("Arial", 20))
 
         self.back_button_make_order = ctk.CTkButton(
             self.make_order_frame,
@@ -529,8 +493,10 @@ class App_client(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_make_order.grid(
-            row=6, column=0, padx=(10, 10), pady=(0, 20), sticky="nsew"
+            row=6, column=0, padx=250, pady=10, sticky="nsew"
         )
+        self.back_button_make_order.configure(width=100, height=30, font=("Arial", 20))
+
 
     # Метод для обработки выбора строки в Treeview
     def on_car_selected(self, event):
@@ -597,8 +563,6 @@ class App_client(ctk.CTk):
 
         self.deals_frame.pack_forget()
 
-        #self.all_car_options_frame.pack_forget()
-
         self.result_state_frame.pack_forget()
 
         self.make_order_frame.pack_forget()
@@ -664,14 +628,6 @@ class App_client(ctk.CTk):
         self.deals_frame.configure(
             padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
-    # # отображение фрейма - Опции всех автомобилей
-    # def show_all_car_options(self):
-    #     self.hide_all_states()
-    #     self.all_car_options_frame.pack(fill="both", expand=True)
-    #     self.all_car_options_frame.configure(
-    #         padx=(self.winfo_screenwidth() / 3.5), pady=220
-    #     )
-
     # TODO надо править padx для конкретных окно
     def show_result_state(self, sql_request, current_frame):
         self.previous_frame = current_frame
@@ -712,7 +668,7 @@ class App_client(ctk.CTk):
     def show_make_order_menu(self, sql_request, current_frame):
         self.previous_frame = current_frame
         self.hide_all_states()
-        num_columns = show(self, connection, sql_request)
+        num_columns = show_2(self, connection, sql_request)
 
         padx_value = {
             13: self.winfo_screenwidth() / 6,
@@ -739,11 +695,11 @@ class App_client(ctk.CTk):
         )
 
         # Очистка Treeview перед новыми данными
-        for item in self.tree.get_children():
-            self.tree.delete(item)
+        for item in self.tree_make_order.get_children():
+            self.tree_make_order.delete(item)
 
         # Вызов функции show с передачей self в качестве первого аргумента
-        show(self, connection, sql_request)
+        show_2(self, connection, sql_request)
 
     def make_order(self):
         data = [

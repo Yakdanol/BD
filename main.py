@@ -69,6 +69,48 @@ def show(self, connection, sql_request: str):
     # Возврат количества столбцов
     return len(headers)
 
+def show_2(self, connection, sql_request: str):
+    with connection.cursor() as cursor:
+        cursor.execute(sql_request)
+        rows = cursor.fetchall()
+
+        # Определение заголовков
+        headers = [desc[0] for desc in cursor.description]
+
+        # Создание объекта шрифта для оценки ширины текста
+        font = tkFont.Font(family="Arial", size=22)  # Установите шрифт и размер, соответствующие вашему Treeview
+
+        # Вычисляем максимальную ширину каждого столбца, включая заголовок
+        col_widths = {header: font.measure(header) for header in headers}
+        self.row_size = len(rows)
+        for row in rows:
+            for i, val in enumerate(row):
+                width = font.measure(str(val))
+                if width > col_widths[headers[i]]:
+                    col_widths[headers[i]] = width
+
+        # Установка заголовков и связывание с функцией сортировки
+        self.tree_make_order['columns'] = headers
+        for header in headers:
+            self.tree_make_order.heading(header, text=header,
+                              command=lambda _col=header: self.treeview_sort_column(self.tree_make_order, _col, False))
+            self.tree_make_order.column(header, anchor='center', width=col_widths[header] + 10)  # Установка ширины столбца
+
+        # Очистка таблицы перед заполнением новыми данными
+        for item in self.tree_make_order.get_children():
+            self.tree_make_order.delete(item)
+
+        # Вставка новых данных
+        for row in rows:
+            self.tree_make_order.insert('', 'end', values=row)
+
+        self.size = len(rows)
+
+    # Возврат количества столбцов
+    return len(headers)
+
+
+
 if __name__ == "__main__":
     try:
         connection = connect_admin_with_bd()
