@@ -1171,7 +1171,7 @@ class App(ctk.CTk):
         self.menu_frame.pack_forget()
 
         self.car_catalog_frame.pack_forget()
-        
+
         self.find_car_catalog_frame.pack_forget()
 
         self.dvs_car_frame.pack_forget()

@@ -72,9 +72,9 @@ class App_client(ctk.CTk):
         self.deals_frame = Frame(self)
         self.init_deals_frame()
 
-        # Фрейм - "Опции всех автомобилей"
-        self.all_car_options_frame = Frame(self)
-        self.init_all_car_options_frame()
+        # # Фрейм - "Опции всех автомобилей"
+        # self.all_car_options_frame = Frame(self)
+        # self.init_all_car_options_frame()
 
         # Фрейм для результата запросов к бд (результат show)
         self.result_state_frame = Frame(self)
@@ -136,16 +136,16 @@ class App_client(ctk.CTk):
         self.deals_button.grid(row=5, column=0, padx=300, pady=20, sticky="nsew")
         self.deals_button.configure(width=200, height=40, font=("Arial", 30))
 
-        # Кнопка "Опции всех автомобилей"
-        self.all_car_options_button = ctk.CTkButton(
-            self.menu_frame,
-            text="Посмотреть опции автомобиля",
-            command=self.show_all_car_options,
-        )
-        self.all_car_options_button.grid(
-            row=7, column=0, padx=300, pady=20, sticky="nsew"
-        )
-        self.all_car_options_button.configure(width=200, height=40, font=("Arial", 30))
+        # # Кнопка "Опции всех автомобилей"
+        # self.all_car_options_button = ctk.CTkButton(
+        #     self.menu_frame,
+        #     text="Посмотреть опции автомобиля",
+        #     command=self.show_all_car_options,
+        # )
+        # self.all_car_options_button.grid(
+        #     row=7, column=0, padx=300, pady=20, sticky="nsew"
+        # )
+        # self.all_car_options_button.configure(width=200, height=40, font=("Arial", 30))
 
         # Кнопка "Доступные опции"
         self.options_button = ctk.CTkButton(
@@ -362,34 +362,34 @@ class App_client(ctk.CTk):
         self.back_button_deals.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
         self.back_button_deals.configure(width=200, height=50, font=("Arial", 30))
 
-    # инициализация фрейма - Опции всех автомобилей
-    def init_all_car_options_frame(self):
-        # Кнопка "Опции всех автомобилей"
-        self.all_car_options1_button = ctk.CTkButton(
-            self.all_car_options_frame,
-            text="Опции всех автомобилей",
-            command=lambda: self.show_result_state(
-                bd.all_car_options_Select_All, self.all_car_options_frame
-            ),
-        )
-        self.all_car_options1_button.grid(
-            row=0, column=0, padx=300, pady=25, sticky="nsew"
-        )
-        self.all_car_options1_button.configure(width=200, height=50, font=("Arial", 30))
-
-        # Кнопка "Назад"
-        self.back_button_all_car_options = ctk.CTkButton(
-            self.all_car_options_frame,
-            text="Назад",
-            command=self.show_menu,
-            fg_color="grey",
-        )
-        self.back_button_all_car_options.grid(
-            row=6, column=0, padx=300, pady=25, sticky="nsew"
-        )
-        self.back_button_all_car_options.configure(
-            width=200, height=50, font=("Arial", 30)
-        )
+    # # инициализация фрейма - Опции всех автомобилей
+    # def init_all_car_options_frame(self):
+    #     # Кнопка "Опции всех автомобилей"
+    #     self.all_car_options1_button = ctk.CTkButton(
+    #         self.all_car_options_frame,
+    #         text="Опции всех автомобилей",
+    #         command=lambda: self.show_result_state(
+    #             bd.all_car_options_Select_All, self.all_car_options_frame
+    #         ),
+    #     )
+    #     self.all_car_options1_button.grid(
+    #         row=0, column=0, padx=300, pady=25, sticky="nsew"
+    #     )
+    #     self.all_car_options1_button.configure(width=200, height=50, font=("Arial", 30))
+    #
+    #     # Кнопка "Назад"
+    #     self.back_button_all_car_options = ctk.CTkButton(
+    #         self.all_car_options_frame,
+    #         text="Назад",
+    #         command=self.show_menu,
+    #         fg_color="grey",
+    #     )
+    #     self.back_button_all_car_options.grid(
+    #         row=6, column=0, padx=300, pady=25, sticky="nsew"
+    #     )
+    #     self.back_button_all_car_options.configure(
+    #         width=200, height=50, font=("Arial", 30)
+    #     )
 
     def init_result_state_frame(self):
         # Создайте объект стиля
@@ -448,50 +448,50 @@ class App_client(ctk.CTk):
         # Задайте нужные вам координаты кнопки
 
     def init_make_order_frame(self):
-        # Создайте объект стиля
-        style = ttk.Style()
-
-        # Настройте стиль "Treeview"
-        style.configure(
-            "Treeview", font=("Arial", 16)
-        )  # Измените шрифт и размер текста
-        style.configure(
-            "Treeview.Heading", font=("Arial", 18, "bold")
-        )  # Измените шрифт и размер заголовков столбцов
-
-        # Настройте высоту строк в стиле "Treeview"
-        style.configure("Treeview", rowheight=40)
-
-        # Treeview для отображения данных в виде таблицы
-        self.tree = ttk.Treeview(self.result_state_frame, style="Treeview")
-        self.tree.grid(row=0, column=0, padx=(10, 10), pady=(25, 0), sticky="nsew")
-
-        # Создаем виджеты Scrollbar
-        self.vertical_scrollbar = Scrollbar(
-            self.result_state_frame, orient="vertical", command=self.tree.yview
-        )
-        self.vertical_scrollbar.grid(row=0, column=1, sticky="ns")
-
-        self.horizontal_scrollbar = Scrollbar(
-            self.result_state_frame, orient="horizontal", command=self.tree.xview
-        )
-        self.horizontal_scrollbar.grid(row=1, column=0, sticky="ew")
-
-        # Привязываем Scrollbar к Treeview
-        self.tree.configure(
-            yscrollcommand=self.vertical_scrollbar.set,
-            xscrollcommand=self.horizontal_scrollbar.set,
-        )
-
-        # Ограничиваем размеры Treeview
-        self.tree.config(height=25, show="headings")
+        # # Создайте объект стиля
+        # style = ttk.Style()
+        #
+        # # Настройте стиль "Treeview"
+        # style.configure(
+        #     "Treeview", font=("Arial", 16)
+        # )  # Измените шрифт и размер текста
+        # style.configure(
+        #     "Treeview.Heading", font=("Arial", 18, "bold")
+        # )  # Измените шрифт и размер заголовков столбцов
+        #
+        # # Настройте высоту строк в стиле "Treeview"
+        # style.configure("Treeview", rowheight=40)
+        #
+        # # Treeview для отображения данных в виде таблицы
+        # self.tree = ttk.Treeview(self.make_order_frame, style="Treeview")
+        # self.tree.grid(row=0, column=0, padx=(10, 10), pady=(25, 0), sticky="nsew")
+        #
+        # # Создаем виджеты Scrollbar
+        # self.vertical_scrollbar = Scrollbar(
+        #     self.make_order_frame, orient="vertical", command=self.tree.yview
+        # )
+        # self.vertical_scrollbar.grid(row=0, column=1, sticky="ns")
+        #
+        # self.horizontal_scrollbar = Scrollbar(
+        #     self.make_order_frame, orient="horizontal", command=self.tree.xview
+        # )
+        # self.horizontal_scrollbar.grid(row=1, column=0, sticky="ew")
+        #
+        # # Привязываем Scrollbar к Treeview
+        # self.tree.configure(
+        #     yscrollcommand=self.vertical_scrollbar.set,
+        #     xscrollcommand=self.horizontal_scrollbar.set,
+        # )
+        #
+        # # Ограничиваем размеры Treeview
+        # self.tree.config(height=25, show="headings")
 
         self.entry_idcar_order = ctk.CTkEntry(
             self.make_order_frame,
             placeholder_text="ID автомобиля"
         )
         self.entry_idcar_order.grid(
-            row=2, column=0, padx=300, pady=25, sticky="nsew"
+            row=2, column=0, padx=300, pady=10, sticky="nsew"
         )
         self.entry_idcar_order.configure(width=200, height=20, font=("Arial", 14))
 
@@ -500,7 +500,7 @@ class App_client(ctk.CTk):
             placeholder_text="Имя Фамилия"
         )
         self.entry_name_order.grid(
-            row=3, column=0, padx=300, pady=25, sticky="nsew"
+            row=3, column=0, padx=300, pady=10, sticky="nsew"
         )
         self.entry_name_order.configure(width=200, height=20, font=("Arial", 14))
 
@@ -509,7 +509,7 @@ class App_client(ctk.CTk):
             placeholder_text="Контакт"
         )
         self.entry_contacts_order.grid(
-            row=4, column=0, padx=300, pady=25, sticky="nsew"
+            row=4, column=0, padx=300, pady=10, sticky="nsew"
         )
         self.entry_contacts_order.configure(width=200, height=20, font=("Arial", 14))
 
@@ -519,7 +519,7 @@ class App_client(ctk.CTk):
             command=self.make_order,
         )
         self.button_make_order.grid(
-            row=5, column=0, padx=(10, 10), pady=(0, 50), sticky="nsew"
+            row=5, column=0, padx=(10, 10), pady=(0, 20), sticky="nsew"
         )
 
         self.back_button_make_order = ctk.CTkButton(
@@ -529,7 +529,7 @@ class App_client(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_make_order.grid(
-            row=6, column=0, padx=(10, 10), pady=(0, 50), sticky="nsew"
+            row=6, column=0, padx=(10, 10), pady=(0, 20), sticky="nsew"
         )
 
     # Метод для обработки выбора строки в Treeview
@@ -570,6 +570,17 @@ class App_client(ctk.CTk):
         else:
             return None
 
+    def check_sql(self, sql_request):
+        with connection.cursor() as cursor:
+            cursor.execute(sql_request)
+            rows = cursor.fetchall()
+
+        # Проверка на наличие результатов
+        if rows:
+            return True
+        else:
+            return False
+
     # инициализация функции - скрытия фреймов
     def hide_all_states(self):
         self.menu_frame.pack_forget()
@@ -586,7 +597,7 @@ class App_client(ctk.CTk):
 
         self.deals_frame.pack_forget()
 
-        self.all_car_options_frame.pack_forget()
+        #self.all_car_options_frame.pack_forget()
 
         self.result_state_frame.pack_forget()
 
@@ -653,13 +664,13 @@ class App_client(ctk.CTk):
         self.deals_frame.configure(
             padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
-    # отображение фрейма - Опции всех автомобилей
-    def show_all_car_options(self):
-        self.hide_all_states()
-        self.all_car_options_frame.pack(fill="both", expand=True)
-        self.all_car_options_frame.configure(
-            padx=(self.winfo_screenwidth() / 3.5), pady=220
-        )
+    # # отображение фрейма - Опции всех автомобилей
+    # def show_all_car_options(self):
+    #     self.hide_all_states()
+    #     self.all_car_options_frame.pack(fill="both", expand=True)
+    #     self.all_car_options_frame.configure(
+    #         padx=(self.winfo_screenwidth() / 3.5), pady=220
+    #     )
 
     # TODO надо править padx для конкретных окно
     def show_result_state(self, sql_request, current_frame):
@@ -743,6 +754,10 @@ class App_client(ctk.CTk):
         flag = True
         if len(data) == 0:
             flag = False
+
+        if not self.check_sql(f"SELECT car_price FROM car_catalog WHERE id_car = {data[0]}"):
+            flag = False
+
         for i in range(len(data)):
             if len(data[i]) == 0:
                 flag = False
@@ -765,14 +780,20 @@ class App_client(ctk.CTk):
                 print(car_price)
                 query_insert_buyer = bd.insert_into_table + " buyers VALUES " + f"({buyers_count + 1}, '{data[1]}', '{data[2]}')"
                 cursor.execute(query_insert_buyer)
-                connection.commit()
                 query_insert_deal = bd.insert_into_table + " deals VALUES " + f"({deals_count + 1}, {data[0]}, {buyers_count + 1}, '2023-12-08', {car_price})"
                 cursor.execute(query_insert_deal)
                 connection.commit()
             messagebox.showinfo("Успешно", "Заказ оформлен")
+            self.entry_idcar_order.delete(0, "end")
+            self.entry_name_order.delete(0, "end")
+            self.entry_contacts_order.delete(0, "end")
 
         else:
             messagebox.showerror("Ошибка", "Неверные данные")
+            self.entry_idcar_order.delete(0, "end")
+            self.entry_name_order.delete(0, "end")
+            self.entry_contacts_order.delete(0, "end")
+
 
     # Сортировка данных в Treeview при клике на заголовок столбца
     def treeview_sort_column(self, tree, col, reverse):

@@ -196,6 +196,7 @@ insert_into_table = """
 INSERT INTO
 """
 
+
 get_price_of_car = """
 SELECT car_price
 FROM car_catalog
