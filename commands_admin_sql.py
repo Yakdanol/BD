@@ -195,3 +195,10 @@ FROM "options"
 insert_into_table = """
 INSERT INTO
 """
+
+
+def delete_from_table(table, param):
+    return f"""
+    DELETE FROM {table}
+    WHERE {param[0]}='{param[1]}'
+    """
