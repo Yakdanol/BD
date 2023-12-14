@@ -236,7 +236,7 @@ class App(ctk.CTk):
         self.car_catalog3_button = ctk.CTkButton(
             self.car_catalog_frame,
             text="Удалить автомобиль",  # удалить двигатель
-            command=self.show_remove_menu("car_catalog"),
+            command=lambda: self.show_remove_menu("car_catalog"),
         )
         self.car_catalog3_button.grid(row=3, column=0, padx=300, pady=25, sticky="nsew")
         self.car_catalog3_button.configure(width=200, height=50, font=("Arial", 30))
@@ -1142,7 +1142,7 @@ class App(ctk.CTk):
             self.remove_car_frame,
             placeholder_text="ID автомобиля"
         )
-        self.entry_idcar.grid(
+        self.entry_remove_id_car.grid(
             row=0, column=0, padx=300, pady=15, sticky="nsew"
         )
         self.entry_remove_id_car.configure(width=my_width, height=40, font=(my_font, 14))
@@ -1596,7 +1596,7 @@ class App(ctk.CTk):
         flag = True
         if data[1] == "":
             flag = False
-        if not self.record_exists2(connection.cursor(), "deals", "id_car", data[1]):
+        if self.record_exists2(connection.cursor(), "deals", "id_car", data[1]):
             flag = False
         if not self.record_exists2(connection.cursor(), "car_catalog", "id_car", data[1]):
             flag = False
