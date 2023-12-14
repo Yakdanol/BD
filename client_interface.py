@@ -554,6 +554,16 @@ class App_client(ctk.CTk):
         else:
             return False
 
+    def buyer_exists(self, sql_request):
+        with connection.cursor() as cursor:
+            cursor.execute(sql_request)
+            rows = cursor.fetchall()
+
+        if rows:
+            return True
+        else:
+            return False
+
     # инициализация функции - скрытия фреймов
     def hide_all_states(self):
         self.menu_frame.pack_forget()
@@ -748,16 +758,21 @@ class App_client(ctk.CTk):
                 cursor.execute(query_get_price)
                 car_price = cursor.fetchone()[0]
 
-                query_get_brand =bd.get_brand_of_car + f"{data[0]}"
+                query_get_brand = bd.get_brand_of_car + f"{data[0]}"
                 cursor.execute(query_get_brand)
                 brand_car = cursor.fetchone()[0]
 
-                query_get_model =bd.get_model_of_car + f"{data[0]}"
+                query_get_model = bd.get_model_of_car + f"{data[0]}"
                 cursor.execute(query_get_model)
                 model_car = cursor.fetchone()[0]
 
-                query_insert_buyer = bd.insert_into_table + " buyers VALUES " + f"({id_buyer}, '{data[1]}', '{data[2]}')"
-                cursor.execute(query_insert_buyer)
+                if self.buyer_exists(bd.get_id_buyer(data[1], data[2])):
+                    cursor.execute(bd.get_id_buyer(data[1], data[2]))
+                    id_buyer = cursor.fetchone()[0]
+                else:
+                    query_insert_buyer = bd.insert_into_table + " buyers VALUES " + f"({id_buyer}, '{data[1]}', '{data[2]}')"
+                    cursor.execute(query_insert_buyer)
+
                 query_insert_deal = bd.insert_into_table + " deals VALUES " + (f"({id_deals}, {data[0]}, "
                                                             f"{id_buyer}, '{current_date}', {car_price})")
                 cursor.execute(query_insert_deal)

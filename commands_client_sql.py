@@ -214,3 +214,10 @@ SELECT car_model
 FROM car_catalog
 WHERE id_car = 
 """
+
+def get_id_buyer(name, contact):
+    return f"""
+    SELECT id_buyer
+    FROM car_catalog
+    WHERE name = '{name}' AND "Contacts" = '{contact}' 
+    """
