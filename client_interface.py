@@ -759,11 +759,11 @@ class App_client(ctk.CTk):
                 cursor.execute(query_get_price)
                 car_price = cursor.fetchone()[0]
 
-                query_get_brand =bd.get_brand_of_car + f"{data[0]}"
+                query_get_brand = bd.get_brand_of_car + f"{data[0]}"
                 cursor.execute(query_get_brand)
                 brand_car = cursor.fetchone()[0]
 
-                query_get_model =bd.get_model_of_car + f"{data[0]}"
+                query_get_model = bd.get_model_of_car + f"{data[0]}"
                 cursor.execute(query_get_model)
                 model_car = cursor.fetchone()[0]
 
