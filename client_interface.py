@@ -9,7 +9,6 @@ import commands_client_sql as bd
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 import os
-from PyPDF2 import PdfReader
 from PIL import Image, ImageTk
 import io
 from datetime import datetime
@@ -80,10 +79,6 @@ class App_client(ctk.CTk):
         # Фрейм - "Сделки"
         self.deals_frame = Frame(self)
         self.init_deals_frame()
-
-        # # Фрейм - "Опции всех автомобилей"
-        # self.all_car_options_frame = Frame(self)
-        # self.init_all_car_options_frame()
 
         # Фрейм для результата запросов к бд (результат show)
         self.result_state_frame = Frame(self)
@@ -194,13 +189,15 @@ class App_client(ctk.CTk):
     def init_find_car_catalog_frame(self):
         # Поля для ввода бренда
         self.entry_brand = ctk.CTkEntry(
-            self.find_car_catalog_frame, placeholder_text="Введите бренд автомобиля"
+            self.find_car_catalog_frame,
+            placeholder_text="Введите бренд автомобиля"
         )
         self.entry_brand.grid(row=0, column=0, padx=300, pady=25, sticky="nsew")
         self.entry_brand.configure(width=400, height=50, font=("Arial", 30))
 
         self.entry_model = ctk.CTkEntry(
-            self.find_car_catalog_frame, placeholder_text="Введите марку автомобиля"
+            self.find_car_catalog_frame,
+            placeholder_text="Введите марку автомобиля"
         )
         self.entry_model.grid(row=1, column=0, padx=300, pady=25, sticky="nsew")
         self.entry_model.configure(width=400, height=50, font=("Arial", 30))
@@ -224,6 +221,7 @@ class App_client(ctk.CTk):
         self.back_button_find_car_catalog.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
         self.back_button_find_car_catalog.configure(width=150, font=("Arial", 20))
 
+    # Метод поиска авто в каталоге
     def find_car_catalog(self):
         # Получите значения из полей ввода бренда и модели автомобиля
         brand = self.entry_brand.get().strip()
@@ -599,7 +597,7 @@ class App_client(ctk.CTk):
         self.hide_all_states()
         self.find_car_catalog_frame.pack(fill="both", expand=True)
         self.find_car_catalog_frame.configure(
-            padx=(self.winfo_screenwidth() / 2.5), pady=220
+            padx=(self.winfo_screenwidth() / 3.5), pady=220
         )
 
     # отображение фрейма - Двс автомобили
@@ -710,6 +708,7 @@ class App_client(ctk.CTk):
         # Вызов функции show с передачей self в качестве первого аргумента
         show_2(self, connection, sql_request)
 
+    # Оформить сделку
     def make_order(self):
         data = [
             self.entry_idcar_order.get(),

@@ -250,7 +250,7 @@ class App(ctk.CTk):
         self.car_catalog3_button = ctk.CTkButton(
             self.car_catalog_frame,
             text="Удалить автомобиль",  # удалить двигатель
-            command=self.show_remove_menu("car_catalog"),
+            command=lambda: self.show_remove_menu("car_catalog"),
         )
         self.car_catalog3_button.grid(row=3, column=0, padx=300, pady=25, sticky="nsew")
         self.car_catalog3_button.configure(width=200, height=50, font=("Arial", 30))
@@ -301,6 +301,7 @@ class App(ctk.CTk):
         self.back_button_find_car_catalog.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
         self.back_button_find_car_catalog.configure(width=150, font=("Arial", 20))
 
+    # Метод поиска авто в каталоге
     def find_car_catalog(self):
         # Получите значения из полей ввода бренда и модели автомобиля
         brand = self.entry_brand.get().strip()
