@@ -329,16 +329,16 @@ class App_client(ctk.CTk):
 
     # инициализация фрейма - Сделки
     def init_deals_frame(self):
-        # Кнопка "Все Сделки"
-        self.deals1_button = ctk.CTkButton(
-            self.deals_frame,
-            text="Все Сделки",
-            command=lambda: self.show_result_state(
-                bd.deals_Select_All, self.deals_frame
-            ),
-        )
-        self.deals1_button.grid(row=0, column=0, padx=300, pady=25, sticky="nsew")
-        self.deals1_button.configure(width=200, height=50, font=("Arial", 30))
+        # # Кнопка "Все Сделки"
+        # self.deals1_button = ctk.CTkButton(
+        #     self.deals_frame,
+        #     text="Все Сделки",
+        #     command=lambda: self.show_result_state(
+        #         bd.deals_Select_All, self.deals_frame
+        #     ),
+        # )
+        # self.deals1_button.grid(row=0, column=0, padx=300, pady=25, sticky="nsew")
+        # self.deals1_button.configure(width=200, height=50, font=("Arial", 30))
 
         self.deals2_button = ctk.CTkButton(
             self.deals_frame,

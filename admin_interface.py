@@ -1,12 +1,20 @@
+import webbrowser
 from tkinter import *
 from tkinter import Canvas, PhotoImage, ttk, messagebox
 import customtkinter as ctk
 import psycopg2
 
-from main import show, connect_admin_with_bd
+from main import show, connect_admin_with_bd, show_2
 from PIL import Image, ImageTk
 import commands_admin_sql as bd
 import matplotlib.pyplot as plt
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+import os
+from PIL import Image, ImageTk
+import io
+from datetime import datetime
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("dark-blue")
@@ -99,6 +107,9 @@ class App(ctk.CTk):
         # Фрейм для четвертого состояния (результат show)
         self.result_state_frame = Frame(self)
         self.init_result_state_frame()
+
+        self.make_order_frame = Frame(self)
+        self.init_make_order_frame()
 
         # Фреймы для добавления в бд
         self.insert_car_frame = Frame(self)
@@ -483,13 +494,11 @@ class App(ctk.CTk):
 
         self.deals2_button = ctk.CTkButton(
             self.deals_frame,
-            text="Добавить сделку",
-            command=lambda: self.show_insert_menu("deals"),
+            text="Оформить заказ",
+            command=lambda: self.show_make_order_menu(bd.car_catalog_Select_All, self.deals_frame)
         )
-        self.deals2_button.grid(
-            row=1, column=0, padx=300, pady=25, sticky="nsew"
-        )
-        self.deals2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+        self.deals2_button.grid(row=1, column=0, padx=300, pady=25, sticky="nsew")
+        self.deals2_button.configure(width=200, height=50, font=("Arial", 30))
 
         # Кнопка "Назад"
         self.back_button_deals = ctk.CTkButton(
@@ -516,15 +525,15 @@ class App(ctk.CTk):
         )
         self.buyers1_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
-        self.buyers2_button = ctk.CTkButton(
-            self.buyers_frame,
-            text="Добавить покупателя",
-            command=lambda: self.show_insert_menu("buyers"),
-        )
-        self.buyers2_button.grid(
-            row=1, column=0, padx=300, pady=25, sticky="nsew"
-        )
-        self.buyers2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+        # self.buyers2_button = ctk.CTkButton(
+        #     self.buyers_frame,
+        #     text="Добавить покупателя",
+        #     command=lambda: self.show_insert_menu("buyers"),
+        # )
+        # self.buyers2_button.grid(
+        #     row=1, column=0, padx=300, pady=25, sticky="nsew"
+        # )
+        # self.buyers2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
         # Кнопка "Назад"
         self.back_button_buyers = ctk.CTkButton(
@@ -700,6 +709,95 @@ class App(ctk.CTk):
 
         # self.back_button_result.place(connection=10, y=675)
         # Задайте нужные вам координаты кнопки
+
+    def init_make_order_frame(self):
+        # Создайте объект стиля
+        style = ttk.Style()
+
+        # Настройте стиль "Treeview"
+        style.configure(
+            "Treeview", font=("Arial", 16)
+        )  # Измените шрифт и размер текста
+        style.configure(
+            "Treeview.Heading", font=("Arial", 18, "bold")
+        )  # Измените шрифт и размер заголовков столбцов
+
+        # Настройте высоту строк в стиле "Treeview"
+        style.configure("Treeview", rowheight=40)
+
+        # Treeview для отображения данных в виде таблицы
+        self.tree_make_order = ttk.Treeview(self.make_order_frame, style="Treeview")
+        self.tree_make_order.grid(row=0, column=0, padx=(10, 10), pady=(25, 0), sticky="nsew")
+
+        # Создаем виджеты Scrollbar
+        self.vertical_scrollbar = Scrollbar(
+            self.make_order_frame, orient="vertical", command=self.tree_make_order.yview
+        )
+        self.vertical_scrollbar.grid(row=0, column=1, sticky="ns")
+
+        self.horizontal_scrollbar = Scrollbar(
+            self.make_order_frame, orient="horizontal", command=self.tree_make_order.xview
+        )
+        self.horizontal_scrollbar.grid(row=1, column=0, sticky="ew")
+
+        # Привязываем Scrollbar к Treeview
+        self.tree_make_order.configure(
+            yscrollcommand=self.vertical_scrollbar.set,
+            xscrollcommand=self.horizontal_scrollbar.set,
+        )
+
+        # Ограничиваем размеры Treeview
+        self.tree_make_order.config(height=20, show="headings")
+
+
+
+        self.entry_idcar_order = ctk.CTkEntry(
+            self.make_order_frame,
+            placeholder_text="ID автомобиля"
+        )
+        self.entry_idcar_order.grid(
+            row=2, column=0, padx=300, pady=10, sticky="nsew"
+        )
+        self.entry_idcar_order.configure(width=200, height=20, font=("Arial", 14))
+
+        self.entry_name_order = ctk.CTkEntry(
+            self.make_order_frame,
+            placeholder_text="Имя Фамилия"
+        )
+        self.entry_name_order.grid(
+            row=3, column=0, padx=300, pady=10, sticky="nsew"
+        )
+        self.entry_name_order.configure(width=200, height=20, font=("Arial", 14))
+
+        self.entry_contacts_order = ctk.CTkEntry(
+            self.make_order_frame,
+            placeholder_text="Контакт"
+        )
+        self.entry_contacts_order.grid(
+            row=4, column=0, padx=300, pady=10, sticky="nsew"
+        )
+        self.entry_contacts_order.configure(width=200, height=20, font=("Arial", 14))
+
+        self.button_make_order = ctk.CTkButton(
+            self.make_order_frame,
+            text="Оформить",
+            command=self.make_order,
+        )
+        self.button_make_order.grid(
+            row=5, column=0, padx=200, pady=20, sticky="nsew"
+        )
+        self.button_make_order.configure(width=100, height=30, font=("Arial", 20))
+
+        self.back_button_make_order = ctk.CTkButton(
+            self.make_order_frame,
+            text="Назад",
+            command=self.show_deals,
+            fg_color="grey",
+        )
+        self.back_button_make_order.grid(
+            row=6, column=0, padx=250, pady=10, sticky="nsew"
+        )
+        self.back_button_make_order.configure(width=100, height=30, font=("Arial", 20))
 
     def init_insert_car_frame(self):
         # Поля для ввода данных об автомобиле
@@ -1192,7 +1290,7 @@ class App(ctk.CTk):
             self.remove_car_frame,
             placeholder_text="ID автомобиля"
         )
-        self.entry_idcar.grid(
+        self.entry_remove_id_car.grid(
             row=0, column=0, padx=300, pady=15, sticky="nsew"
         )
         self.entry_remove_id_car.configure(width=my_width, height=40, font=(my_font, 14))
@@ -1256,6 +1354,26 @@ class App(ctk.CTk):
         else:
             return None
 
+    def check_sql(self, sql_request):
+        with connection.cursor() as cursor:
+            cursor.execute(sql_request)
+            rows = cursor.fetchall()
+
+        # Проверка на наличие результатов
+        if rows:
+            return True
+        else:
+            return False
+
+    def buyer_exists(self, sql_request):
+        with connection.cursor() as cursor:
+            cursor.execute(sql_request)
+            rows = cursor.fetchall()
+
+        if rows:
+            return True
+        else:
+            return False
 
 
     # инициализация функции - скрытия фреймов
@@ -1285,6 +1403,8 @@ class App(ctk.CTk):
         self.analytics_frame.pack_forget()
 
         self.result_state_frame.pack_forget()
+
+        self.make_order_frame.pack_forget()
 
         self.insert_car_frame.pack_forget()
 
@@ -1465,6 +1585,141 @@ class App(ctk.CTk):
 
         # Вызов функции show с передачей self в качестве первого аргумента
         show(self, connection, sql_request)
+
+    def show_make_order_menu(self, sql_request, current_frame):
+        self.previous_frame = current_frame
+        self.hide_all_states()
+        num_columns = show_2(self, connection, sql_request)
+
+        padx_value = {
+            13: self.winfo_screenwidth() / 6,
+            12: self.winfo_screenwidth() / 5.5,
+            11: self.winfo_screenwidth() / 5,
+            10: self.winfo_screenwidth() / 4.5,
+            9: self.winfo_screenwidth() / 3,
+            8: self.winfo_screenwidth() / 3.5,
+            7: self.winfo_screenwidth() / 2,
+            6: self.winfo_screenwidth() / 2.2,
+            5: self.winfo_screenwidth() / 2.0,
+            4: self.winfo_screenwidth() / 1.8,
+            3: self.winfo_screenwidth() / 1.6,
+            2: self.winfo_screenwidth() / 4,
+            1: self.winfo_screenwidth() / 1.3,
+            "default": self.winfo_screenwidth() / 4,
+        }.get(num_columns, "default")
+
+        self.make_order_frame.pack(
+            fill="both",
+            expand=True,
+            padx=padx_value,
+            pady=2,
+        )
+
+        # Очистка Treeview перед новыми данными
+        for item in self.tree_make_order.get_children():
+            self.tree_make_order.delete(item)
+
+        # Вызов функции show с передачей self в качестве первого аргумента
+        show_2(self, connection, sql_request)
+
+    # Оформить сделку
+    def make_order(self):
+        data = [
+            self.entry_idcar_order.get(),
+            self.entry_name_order.get(),
+            self.entry_contacts_order.get()
+        ]
+
+        flag = True
+        if len(data) == 0:
+            flag = False
+
+        # наверное убрать
+        if not self.check_sql(f"SELECT car_price FROM car_catalog WHERE id_car = {data[0]}"):
+            flag = False
+
+        for i in range(len(data)):
+            if len(data[i]) == 0:
+                flag = False
+                break
+
+        if flag == True:
+            # Получение текущей даты и времени
+            current_date = datetime.now().date().strftime("%Y-%m-%d")
+            show(self, connection, bd.deals_Select_All)
+            deals_count = self.row_size
+            id_deals = deals_count + 1
+            for item in self.tree.get_children():
+                self.tree.delete(item)
+            show(self, connection, bd.buyers_Select_All)
+            buyers_count = self.row_size
+            id_buyer = buyers_count + 1
+            for item in self.tree.get_children():
+                self.tree.delete(item)
+
+            with connection.cursor() as cursor:
+                query_get_price = bd.get_price_of_car + f"{data[0]}"
+                cursor.execute(query_get_price)
+                car_price = cursor.fetchone()[0]
+
+                query_get_brand = bd.get_brand_of_car + f"{data[0]}"
+                cursor.execute(query_get_brand)
+                brand_car = cursor.fetchone()[0]
+
+                query_get_model = bd.get_model_of_car + f"{data[0]}"
+                cursor.execute(query_get_model)
+                model_car = cursor.fetchone()[0]
+
+                if self.buyer_exists(bd.get_id_buyer(data[1], data[2])):
+                    cursor.execute(bd.get_id_buyer(data[1], data[2]))
+                    id_buyer = cursor.fetchone()[0]
+                else:
+                    query_insert_buyer = bd.insert_into_table + " buyers VALUES " + f"({id_buyer}, '{data[1]}', '{data[2]}')"
+                    cursor.execute(query_insert_buyer)
+
+                query_insert_deal = bd.insert_into_table + " deals VALUES " + (f"({id_deals}, {data[0]}, "
+                                                            f"{id_buyer}, '{current_date}', {car_price})")
+                cursor.execute(query_insert_deal)
+                connection.commit()
+            messagebox.showinfo("Успешно", "Заказ оформлен. Спасибо за покупку!")
+            self.entry_idcar_order.delete(0, "end")
+            self.entry_name_order.delete(0, "end")
+            self.entry_contacts_order.delete(0, "end")
+            order_details = {
+                'name': data[1],
+                'id_car': data[0],
+                'brand': brand_car,
+                'model': model_car,
+                'price': car_price,
+                'date': current_date,
+                'contact': data[2],
+                'id_buyer': id_buyer
+                }
+            receipt_path = self.create_receipt(order_details)
+            webbrowser.open(receipt_path)
+
+        else:
+            messagebox.showerror("Ошибка", "Неверные данные")
+            self.entry_idcar_order.delete(0, "end")
+            self.entry_name_order.delete(0, "end")
+            self.entry_contacts_order.delete(0, "end")
+
+    # Функция для создания PDF-чека
+    def create_receipt(self, order_details):
+        receipt_folder = 'receipts'
+        if not os.path.exists(receipt_folder):
+            os.makedirs(receipt_folder)
+
+        receipt_path = os.path.join(receipt_folder, f"{order_details['id_buyer']}_{order_details['id_car']}.pdf")
+        c = canvas.Canvas(receipt_path, pagesize=letter)
+        c.drawString(100, 750, f"Order Receipt:")
+        c.drawString(100, 730, f"Buyer: {order_details['name']}")
+        c.drawString(100, 710, f"Car: {order_details['brand']} {order_details['model']}; Id Car = {order_details['id_car']}")
+        c.drawString(100, 690, f"Price: {order_details['price']}")
+        c.drawString(100, 670, f"Date: {order_details['date']}")
+        c.drawString(100, 650, f"Contact: {order_details['contact']}")
+        c.save()
+        return receipt_path
 
     # отображение фрйема встаки в таблицы
     def show_insert_menu(self, table: str):
@@ -1731,7 +1986,7 @@ class App(ctk.CTk):
         flag = True
         if data[1] == "":
             flag = False
-        if not self.record_exists2(connection.cursor(), "deals", "id_car", data[1]):
+        if self.record_exists2(connection.cursor(), "deals", "id_car", data[1]):
             flag = False
         if not self.record_exists2(connection.cursor(), "car_catalog", "id_car", data[1]):
             flag = False

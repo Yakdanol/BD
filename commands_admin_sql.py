@@ -202,3 +202,28 @@ def delete_from_table(table, param):
     DELETE FROM {table}
     WHERE {param[0]}='{param[1]}'
     """
+
+get_price_of_car = """
+SELECT car_price
+FROM car_catalog
+WHERE id_car = 
+"""
+
+get_brand_of_car = """
+SELECT car_brand
+FROM car_catalog
+WHERE id_car = 
+"""
+
+get_model_of_car = """
+SELECT car_model
+FROM car_catalog
+WHERE id_car = 
+"""
+
+def get_id_buyer(name, contact):
+    return f"""
+    SELECT id_buyer
+    FROM buyers
+    WHERE name = '{name}' AND "Contacts" = '{contact}' 
+    """
