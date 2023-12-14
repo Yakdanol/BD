@@ -202,3 +202,15 @@ SELECT car_price
 FROM car_catalog
 WHERE id_car = 
 """
+
+get_brand_of_car = """
+SELECT car_brand
+FROM car_catalog
+WHERE id_car = 
+"""
+
+get_model_of_car = """
+SELECT car_model
+FROM car_catalog
+WHERE id_car = 
+"""

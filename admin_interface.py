@@ -1,9 +1,12 @@
 from tkinter import *
 from tkinter import Canvas, PhotoImage, ttk, messagebox
 import customtkinter as ctk
+import psycopg2
+
 from main import show, connect_admin_with_bd
 from PIL import Image, ImageTk
 import commands_admin_sql as bd
+import matplotlib.pyplot as plt
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("dark-blue")
@@ -88,6 +91,10 @@ class App(ctk.CTk):
         # Фрейм - "Опиции"
         self.options_frame = Frame(self)
         self.init_options_frame()
+
+        # Фрейм - "Аналитика"
+        self.analytics_frame = Frame(self)
+        self.init_analytics_frame()
 
         # Фрейм для четвертого состояния (результат show)
         self.result_state_frame = Frame(self)
@@ -191,6 +198,13 @@ class App(ctk.CTk):
         # Кнопка "Опции"
         self.options_button = ctk.CTkButton(
             self.menu_frame, text="Опции", command=self.show_options
+        )
+        self.options_button.grid(row=8, column=0, padx=300, pady=20, sticky="nsew")
+        self.options_button.configure(width=200, height=40, font=("Arial", 30))
+
+        # Кнопка "Аналитика"
+        self.options_button = ctk.CTkButton(
+            self.menu_frame, text="Аналитика", command=self.show_analytics
         )
         self.options_button.grid(row=8, column=0, padx=300, pady=20, sticky="nsew")
         self.options_button.configure(width=200, height=40, font=("Arial", 30))
@@ -584,6 +598,41 @@ class App(ctk.CTk):
         self.back_button_options.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
         self.back_button_options.configure(width=200, height=50, font=("Arial", 30))
 
+    # инициализация фрейма - Аналитика
+    def init_analytics_frame(self):
+
+        # Кнопка "Показать общую статистику"
+        self.analytics1_button = ctk.CTkButton(
+            self.analytics_frame,
+            text="Показать общую статистику",
+            command=self.output_analytics
+        )
+        self.analytics1_button.grid(
+            row=0, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.analytics1_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
+        # Кнопка "Топ-5 самых продаваемых автомобилей"
+        self.analytics2_button = ctk.CTkButton(
+            self.analytics_frame,
+            text="Топ-5 самых продаваемых автомобилей",
+            command=self.output_top_cars_sold,
+        )
+        self.analytics2_button.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.analytics2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
+        # Кнопка "Назад"
+        self.back_button_analytics = ctk.CTkButton(
+            self.analytics_frame,
+            text="Назад",
+            command=self.show_menu,
+            fg_color="grey",
+        )
+        self.back_button_analytics.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
+        self.back_button_analytics.configure(width=200, height=50, font=("Arial", 30))
+
     def init_result_state_frame(self):
         # Создайте объект стиля
         style = ttk.Style()
@@ -736,7 +785,7 @@ class App(ctk.CTk):
         self.back_button_insert_car = ctk.CTkButton(
             self.insert_car_frame,
             text="Назад",
-            command=self.show_menu,
+            command=lambda: self.show_insert_menu("general_options"),
             fg_color="grey",
         )
         self.back_button_insert_car.grid(
@@ -1190,6 +1239,8 @@ class App(ctk.CTk):
 
         self.options_frame.pack_forget()
 
+        self.analytics_frame.pack_forget()
+
         self.result_state_frame.pack_forget()
 
         self.insert_car_frame.pack_forget()
@@ -1219,7 +1270,7 @@ class App(ctk.CTk):
     def show_menu(self):
         self.hide_all_states()
         self.menu_frame.pack(fill="both", expand=True)
-        self.menu_frame.configure(padx=(self.winfo_screenwidth() / 3.5), pady=100)
+        self.menu_frame.configure(padx=(self.winfo_screenwidth() / 3.5), pady=50)
 
     # отображение фрейма - Каталог автомобилей
     def show_car_catalog(self):
@@ -1293,6 +1344,13 @@ class App(ctk.CTk):
         self.options_frame.pack(fill="both", expand=True)
         self.options_frame.configure(
             padx=(self.winfo_screenwidth() / 2.5), pady=220
+        )
+
+    def show_analytics(self):
+        self.hide_all_states()
+        self.analytics_frame.pack(fill="both", expand=True)
+        self.analytics_frame.configure(
+            padx=(self.winfo_screenwidth() / 4.5), pady=220
         )
 
     # пока не используется
@@ -1412,6 +1470,82 @@ class App(ctk.CTk):
         select_query = f"SELECT 1 FROM {table_name} WHERE {key_column} = %s"
         cursor.execute(select_query, (key_value,))
         return cursor.fetchone() is not None
+
+    # вывести аналитику Каталога
+    def output_analytics(self):
+        try:
+            with connection.cursor() as cursor:
+                # Запрос для получения общего количества проданных автомобилей
+                cursor.execute("SELECT COUNT(*) FROM deals")
+                total_cars_sold = cursor.fetchone()[0]
+
+                # Запрос для получения общей суммы продаж
+                cursor.execute("SELECT SUM(sale_price) FROM deals")
+                total_sales = cursor.fetchone()[0]
+
+            # Создаем две диаграммы
+            fig, axs = plt.subplots(1, 2, figsize=(10, 10))
+
+            # Диаграмма для общего количества проданных автомобилей
+            axs[0].bar('Total Cars Sold', total_cars_sold, color='green')
+            axs[0].set_ylabel('Number of Cars Sold', fontsize = 14)
+            axs[0].set_title('Total Cars Sold', fontsize=18)
+
+            # Диаграмма для общей суммы продаж
+            axs[1].bar('Total Sales', total_sales, color='orange')
+            axs[1].set_ylabel('Total Sales Amount', fontsize = 14)
+            axs[1].set_title('Total Sales', fontsize=18)
+
+            # Отображение диаграмм
+            plt.tight_layout()
+            plt.show()
+
+        except psycopg2.Error as e:
+            messagebox.showerror("Ошибка", str(e))
+
+    # Вывести топ-5 самых продаваемых авто
+    def output_top_cars_sold(self):
+        try:
+            with connection.cursor() as cursor:
+                # Запрос для получения топ-5 проданных автомобилей
+                cursor.execute("SELECT id_car, COUNT(*) FROM deals GROUP BY id_car ORDER BY COUNT(*) DESC LIMIT 5")
+                top_cars = cursor.fetchall()
+
+                # Данные для горизонтальной диаграммы
+                car_ids, sale_counts = zip(*top_cars)
+
+                # Запросы для получения бренда и модели по id_car из таблицы car_catalog
+                car_brands, car_models = [], []
+                for car_id in car_ids:
+                    cursor.execute("SELECT car_brand, car_model FROM car_catalog WHERE id_car = %s", (car_id,))
+                    result = cursor.fetchone()
+                    if result:
+                        brand, model = result
+                    else:
+                        # Если не удалось найти информацию о бренде и модели, используем пустые значения
+                        brand, model = "", ""
+                    car_brands.append(brand)
+                    car_models.append(model)
+
+            # Статические цвета для полосок
+            colors = ['red', 'green', 'blue', 'yellow', 'purple']
+
+            # Создание горизонтальной диаграммы
+            plt.figure(figsize=(10, 6))
+            plt.barh([f"{brand} {model} (id_car={car_id})" for brand, model, car_id in zip(car_brands, car_models, car_ids)], sale_counts,
+                     color=colors, height = 0.5)
+
+            plt.xlabel('Number of Sales', fontsize=14)
+            plt.ylabel('Car Brand and Model', fontsize=14)
+            plt.title('Top Cars Sold', fontsize=18)
+
+            # Отображение диаграммы
+            plt.tight_layout()
+            plt.show()
+
+        except psycopg2.Error as e:
+            messagebox.showerror("Ошибка", str(e))
+
 
     # Вставка в таблицы
     def make_insert_to_db(self, table):

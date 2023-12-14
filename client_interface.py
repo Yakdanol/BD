@@ -1,9 +1,18 @@
+import webbrowser
 from tkinter import *
 from tkinter import Canvas, PhotoImage, ttk, messagebox
 import customtkinter as ctk
 from main import show, connect_client_with_bd, show_2
 from PIL import Image, ImageTk
 import commands_client_sql as bd
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+import os
+from PyPDF2 import PdfReader
+from PIL import Image, ImageTk
+import io
+from datetime import datetime
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("dark-blue")
@@ -707,10 +716,12 @@ class App_client(ctk.CTk):
             self.entry_name_order.get(),
             self.entry_contacts_order.get()
         ]
+
         flag = True
         if len(data) == 0:
             flag = False
 
+        # наверное убрать
         if not self.check_sql(f"SELECT car_price FROM car_catalog WHERE id_car = {data[0]}"):
             flag = False
 
@@ -720,12 +731,16 @@ class App_client(ctk.CTk):
                 break
 
         if flag == True:
+            # Получение текущей даты и времени
+            current_date = datetime.now().date().strftime("%Y-%m-%d")
             show(self, connection, bd.deals_Select_All)
             deals_count = self.row_size
+            id_deals = deals_count + 1
             for item in self.tree.get_children():
                 self.tree.delete(item)
             show(self, connection, bd.buyers_Select_All)
             buyers_count = self.row_size
+            id_buyer = buyers_count + 1
             for item in self.tree.get_children():
                 self.tree.delete(item)
 
@@ -733,22 +748,60 @@ class App_client(ctk.CTk):
                 query_get_price = bd.get_price_of_car + f"{data[0]}"
                 cursor.execute(query_get_price)
                 car_price = cursor.fetchone()[0]
-                print(car_price)
-                query_insert_buyer = bd.insert_into_table + " buyers VALUES " + f"({buyers_count + 1}, '{data[1]}', '{data[2]}')"
+
+                query_get_brand =bd.get_brand_of_car + f"{data[0]}"
+                cursor.execute(query_get_brand)
+                brand_car = cursor.fetchone()[0]
+
+                query_get_model =bd.get_model_of_car + f"{data[0]}"
+                cursor.execute(query_get_model)
+                model_car = cursor.fetchone()[0]
+
+                query_insert_buyer = bd.insert_into_table + " buyers VALUES " + f"({id_buyer}, '{data[1]}', '{data[2]}')"
                 cursor.execute(query_insert_buyer)
-                query_insert_deal = bd.insert_into_table + " deals VALUES " + f"({deals_count + 1}, {data[0]}, {buyers_count + 1}, '2023-12-08', {car_price})"
+                query_insert_deal = bd.insert_into_table + " deals VALUES " + (f"({id_deals}, {data[0]}, "
+                                                            f"{id_buyer}, '{current_date}', {car_price})")
                 cursor.execute(query_insert_deal)
                 connection.commit()
-            messagebox.showinfo("Успешно", "Заказ оформлен")
+            messagebox.showinfo("Успешно", "Заказ оформлен. Спасибо за покупку!")
             self.entry_idcar_order.delete(0, "end")
             self.entry_name_order.delete(0, "end")
             self.entry_contacts_order.delete(0, "end")
+            order_details = {
+                'name': data[1],
+                'id_car': data[0],
+                'brand': brand_car,
+                'model': model_car,
+                'price': car_price,
+                'date': current_date,
+                'contact': data[2],
+                'id_buyer': id_buyer
+                }
+            receipt_path = self.create_receipt(order_details)
+            webbrowser.open(receipt_path)
 
         else:
             messagebox.showerror("Ошибка", "Неверные данные")
             self.entry_idcar_order.delete(0, "end")
             self.entry_name_order.delete(0, "end")
             self.entry_contacts_order.delete(0, "end")
+
+     # Функция для создания PDF-чека
+    def create_receipt(self, order_details):
+        receipt_folder = 'receipts'
+        if not os.path.exists(receipt_folder):
+            os.makedirs(receipt_folder)
+
+        receipt_path = os.path.join(receipt_folder, f"{order_details['id_buyer']}_{order_details['id_car']}.pdf")
+        c = canvas.Canvas(receipt_path, pagesize=letter)
+        c.drawString(100, 750, f"Order Receipt:")
+        c.drawString(100, 730, f"Buyer: {order_details['name']}")
+        c.drawString(100, 710, f"Car: {order_details['brand']} {order_details['model']}; Id Car = {order_details['id_car']}")
+        c.drawString(100, 690, f"Price: {order_details['price']}")
+        c.drawString(100, 670, f"Date: {order_details['date']}")
+        c.drawString(100, 650, f"Contact: {order_details['contact']}")
+        c.save()
+        return receipt_path
 
 
     # Сортировка данных в Treeview при клике на заголовок столбца
