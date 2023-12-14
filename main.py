@@ -7,7 +7,7 @@ import tkinter.font as tkFont
 def connect_admin_with_bd():
     connection = psycopg2.connect(
         user="postgres",
-        password="12345",
+        password="Flikster999",
         host="127.0.0.1",
         port="5432",
         database="postgres",

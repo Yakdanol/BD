@@ -128,6 +128,9 @@ class App(ctk.CTk):
         self.insert_options_frame = Frame(self)
         self.init_insert_options_frame()
 
+        self.remove_car_frame = Frame(self)
+        self.init_remove_car_frame()
+
         # Обработка закрытия окна
         self.protocol("WM_DELETE_WINDOW", lambda: self.on_closing(connection))
 
@@ -244,6 +247,14 @@ class App(ctk.CTk):
         self.car_catalog2_button.grid(row=2, column=0, padx=300, pady=25, sticky="nsew")
         self.car_catalog2_button.configure(width=200, height=50, font=("Arial", 30))
 
+        self.car_catalog3_button = ctk.CTkButton(
+            self.car_catalog_frame,
+            text="Удалить автомобиль",  # удалить двигатель
+            command=self.show_remove_menu("car_catalog"),
+        )
+        self.car_catalog3_button.grid(row=3, column=0, padx=300, pady=25, sticky="nsew")
+        self.car_catalog3_button.configure(width=200, height=50, font=("Arial", 30))
+
         # Кнопка "Назад"
         self.back_button_car_catalog = ctk.CTkButton(
             self.car_catalog_frame,
@@ -252,7 +263,7 @@ class App(ctk.CTk):
             fg_color="grey",
         )
         self.back_button_car_catalog.grid(
-            row=3, column=0, padx=300, pady=25, sticky="nsew"
+            row=4, column=0, padx=300, pady=25, sticky="nsew"
         )
         self.back_button_car_catalog.configure(width=200, height=50, font=("Arial", 30))
 
@@ -1175,6 +1186,37 @@ class App(ctk.CTk):
         )
         self.back_button_insert_options.configure(width=my_width, height=my_height, font=(my_font, 20))
 
+    def init_remove_car_frame(self):
+        self.entry_remove_id_car = ctk.CTkEntry(
+            self.remove_car_frame,
+            placeholder_text="ID автомобиля"
+        )
+        self.entry_idcar.grid(
+            row=0, column=0, padx=300, pady=15, sticky="nsew"
+        )
+        self.entry_remove_id_car.configure(width=my_width, height=40, font=(my_font, 14))
+
+        self.button_remove_car = ctk.CTkButton(
+            self.remove_car_frame,
+            text="Удалить",
+            command=lambda: self.remove_from_db("car_catalog"),
+        )
+        self.button_remove_car.grid(
+            row=1, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.button_remove_car.configure(width=my_width, height=my_height, font=(my_font, 20))
+
+        self.button_remove_car_back = ctk.CTkButton(
+            self.remove_car_frame,
+            text="Назад",
+            command=self.show_car_catalog,
+            fg_color="grey"
+        )
+        self.button_remove_car_back.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.button_remove_car_back.configure(width=my_width, height=my_height, font=(my_font, 20))
+
     # Метод для обработки выбора строки в Treeview
     def on_car_selected(self, event):
         if (
@@ -1261,6 +1303,7 @@ class App(ctk.CTk):
 
         self.insert_options_frame.pack_forget()
 
+        self.remove_car_frame.pack_forget()
 
     # TODO padx отвечает за сдвиги таблицы с кнопками по горизонтали
     # TODO pady отвечает за сдвиги таблицы с кнопками по вертикали
@@ -1462,11 +1505,26 @@ class App(ctk.CTk):
             self.insert_options_frame.configure(
                 padx=(self.winfo_screenwidth() / 2.5), pady=220)
 
+    def show_remove_menu(self, table: str):
+        self.hide_all_states()
+        if table == "car_catalog":
+            self.remove_car_frame.pack(fill="both", expand=True)
+            self.remove_car_frame.configure(
+                padx=(self.winfo_screenwidth() / 2.5), pady=50)
+
     # Проверка вхождения перед вставкой
     def record_exists(self, cursor, table_name, key_column, key_value):
         # Проверка существования записи с определенным ключом
         if key_value == "":
             return True
+        select_query = f"SELECT 1 FROM {table_name} WHERE {key_column} = %s"
+        cursor.execute(select_query, (key_value,))
+        return cursor.fetchone() is not None
+
+    def record_exists2(self, cursor, table_name, key_column, key_value):
+        # Проверка существования записи с определенным ключом
+        if key_value == "":
+            return False
         select_query = f"SELECT 1 FROM {table_name} WHERE {key_column} = %s"
         cursor.execute(select_query, (key_value,))
         return cursor.fetchone() is not None
@@ -1664,6 +1722,52 @@ class App(ctk.CTk):
                 messagebox.showinfo("Успешно", "Данные добавлены в таблицу")
             else:
                 messagebox.showerror("Ошибка", "Неверные данные или ключ уже существует!")
+
+    def remove_from_db(self, table):
+        data = ["id_car", self.entry_remove_id_car.get()]
+        remove_car_query = bd.delete_from_table(table, data)
+
+        flag = True
+        if data[1] == "":
+            flag = False
+        if not self.record_exists2(connection.cursor(), "deals", "id_car", data[1]):
+            flag = False
+        if not self.record_exists2(connection.cursor(), "car_catalog", "id_car", data[1]):
+            flag = False
+
+        if flag == True:
+            with connection.cursor() as cursor:
+                while self.record_exists2(cursor, "general_car_options", "id_car", data[1]):
+                    remove_options_query = bd.delete_from_table("general_car_options", data)
+                    cursor.execute(remove_options_query)
+                    connection.commit()
+
+                get_type_query = f"SELECT car_type FROM car_catalog WHERE id_car = {data[1]}"
+                cursor.execute(get_type_query)
+                car_type = cursor.fetchone()[0]
+                if car_type == "DVS":
+                    remove_dvs_query = bd.delete_from_table("dvs_car", data)
+                    cursor.execute(remove_dvs_query)
+                    connection.commit()
+                elif car_type == "Electric":
+                    remove_electric_query = bd.delete_from_table("electric_car", data)
+                    cursor.execute(remove_electric_query)
+                    connection.commit()
+                elif car_type == "Hybrid":
+                    remove_hybrid_query = bd.delete_from_table("hybrid_car", data)
+                    cursor.execute(remove_hybrid_query)
+                    connection.commit()
+
+                cursor.execute(remove_car_query)
+                connection.commit()
+
+            messagebox.showinfo("Успешно", "Автомобиль удален")
+            self.entry_remove_id_car.delete(0, "end")
+
+        else:
+            messagebox.showerror("Ошибка", "Невозможно удалить автомобиль\nНеверный ID или Автомобиль участвует в сделке")
+            self.entry_remove_id_car.delete(0, "end")
+
 
     # Сортировка данных в Treeview при клике на заголовок столбца
     def treeview_sort_column(self, tree, col, reverse):
