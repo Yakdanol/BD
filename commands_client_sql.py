@@ -218,6 +218,6 @@ WHERE id_car =
 def get_id_buyer(name, contact):
     return f"""
     SELECT id_buyer
-    FROM car_catalog
+    FROM buyers
     WHERE name = '{name}' AND "Contacts" = '{contact}' 
     """
