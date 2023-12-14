@@ -1,7 +1,7 @@
 
 car_catalog_Select_All = """
 SELECT
-    cc.id_car AS "VIN",
+    cc.id_car AS "ID",
     cc.car_brand AS "Brand",
     cc.car_model AS "Model",
     cc.year_release AS "Year release",
@@ -20,7 +20,7 @@ ORDER BY id_car;
 def find_car_catalog_brand_and_model(brand, model):
      return f"""
     SELECT
-        cc.id_car AS "VIN",
+        cc.id_car AS "ID",
         cc.car_brand AS "Brand",
         cc.car_model AS "Model",
         cc.year_release AS "Year release",
@@ -42,7 +42,7 @@ def find_car_catalog_brand_and_model(brand, model):
 def find_car_catalog_brand(brand):
      return f"""
     SELECT
-        cc.id_car AS "VIN",
+        cc.id_car AS "ID",
         cc.car_brand AS "Brand",
         cc.car_model AS "Model",
         cc.year_release AS "Year release",
@@ -64,7 +64,7 @@ def find_car_catalog_brand(brand):
 def find_car_catalog_model(model):
      return f"""
     SELECT
-        cc.id_car AS "VIN",
+        cc.id_car AS "ID",
         cc.car_brand AS "Brand",
         cc.car_model AS "Model",
         cc.year_release AS "Year release",
@@ -86,7 +86,7 @@ def find_car_catalog_model(model):
 
 dvs_car_Select_All = """
 SELECT
-    cc.id_car AS "VIN",
+    cc.id_car AS "ID",
     cc.car_brand AS "Brand",
     cc.car_model AS "Model",
 --    cc.year_release AS "Year release",
@@ -108,7 +108,7 @@ ORDER BY dvs.id_car;
 
 electric_car_Select_All = """
 SELECT
-    cc.id_car AS "VIN",
+    cc.id_car AS "ID",
     cc.car_brand AS "Brand",
     cc.car_model AS "Model",
 --    cc.year_release AS "Year release",
@@ -128,7 +128,7 @@ ORDER BY elcar.id_car;
 
 hybrid_car_Select_All = """
 SELECT
-    cc.id_car AS "VIN",
+    cc.id_car AS "ID",
     cc.car_brand AS "Brand",
     cc.car_model AS "Model",
 --    cc.year_release AS "Year release",

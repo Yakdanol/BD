@@ -1,7 +1,7 @@
 
 car_catalog_Select_All = """
 SELECT
-    cc.id_car AS "VIN",
+    cc.id_car AS "ID",
     cc.car_brand AS "Brand",
     cc.car_model AS "Model",
     cc.year_release AS "Year release",
@@ -20,7 +20,7 @@ ORDER BY id_car;
 def find_car_catalog_brand_and_model(brand, model):
      return f"""
     SELECT
-        cc.id_car AS "VIN",
+        cc.id_car AS "ID",
         cc.car_brand AS "Brand",
         cc.car_model AS "Model",
         cc.year_release AS "Year release",
@@ -42,7 +42,7 @@ def find_car_catalog_brand_and_model(brand, model):
 def find_car_catalog_brand(brand):
      return f"""
     SELECT
-        cc.id_car AS "VIN",
+        cc.id_car AS "ID",
         cc.car_brand AS "Brand",
         cc.car_model AS "Model",
         cc.year_release AS "Year release",
@@ -64,7 +64,7 @@ def find_car_catalog_brand(brand):
 def find_car_catalog_model(model):
      return f"""
     SELECT
-        cc.id_car AS "VIN",
+        cc.id_car AS "ID",
         cc.car_brand AS "Brand",
         cc.car_model AS "Model",
         cc.year_release AS "Year release",
@@ -86,7 +86,7 @@ def find_car_catalog_model(model):
 
 dvs_car_Select_All = """
 SELECT
-    cc.id_car AS "VIN",
+    cc.id_car AS "ID",
     cc.car_brand AS "Brand",
     cc.car_model AS "Model",
 --    cc.year_release AS "Year release",
@@ -108,7 +108,7 @@ ORDER BY dvs.id_car;
 
 electric_car_Select_All = """
 SELECT
-    cc.id_car AS "VIN",
+    cc.id_car AS "ID",
     cc.car_brand AS "Brand",
     cc.car_model AS "Model",
 --    cc.year_release AS "Year release",
@@ -128,7 +128,7 @@ ORDER BY elcar.id_car;
 
 hybrid_car_Select_All = """
 SELECT
-    cc.id_car AS "VIN",
+    cc.id_car AS "ID",
     cc.car_brand AS "Brand",
     cc.car_model AS "Model",
 --    cc.year_release AS "Year release",
@@ -168,8 +168,22 @@ FROM "colour_of_car"
 
 
 deals_Select_All = """
-SELECT *
-FROM "deals"
+SELECT
+    d.id_deal AS "Id deal",
+    d.id_car AS "Id car",
+    cc.car_brand AS "Brand",
+    cc.car_model AS "Model",
+    d.id_buyer AS "Id buyer",
+    b.name AS "Name",
+    d.date_of_sale AS "Date",
+    cc.car_price AS "Car price"
+FROM
+    deals d
+JOIN
+    car_catalog cc ON cc.id_car = d.id_car
+JOIN
+    buyers b ON b.id_buyer = d.id_buyer
+ORDER BY d.id_deal;
 """
 
 
@@ -180,8 +194,20 @@ FROM "buyers"
 
 
 all_car_options_Select_All = """
-SELECT *
-FROM "general_car_options"
+SELECT
+    gco.id_number AS "№",
+    cc.id_car AS "Id car",
+    cc.car_brand AS "Brand",
+    cc.car_model AS "Model",
+    gco.id_option AS "Id option",
+    o.description AS "Description"
+FROM
+    general_car_options gco
+JOIN
+    car_catalog cc ON cc.id_car = gco.id_car
+JOIN
+    options o ON o.id_option = gco.id_option
+ORDER BY gco.id_number;
 """
 
 

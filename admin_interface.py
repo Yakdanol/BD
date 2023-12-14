@@ -1561,7 +1561,7 @@ class App(ctk.CTk):
             11: self.winfo_screenwidth() / 5,
             10: self.winfo_screenwidth() / 3,
             9: self.winfo_screenwidth() / 2.8,
-            8: self.winfo_screenwidth() / 2,
+            8: self.winfo_screenwidth() / 2.5,
             7: self.winfo_screenwidth() / 2,
             6: self.winfo_screenwidth() / 2.2,
             5: self.winfo_screenwidth() / 2.0,
