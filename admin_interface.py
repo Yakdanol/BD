@@ -15,6 +15,7 @@ import os
 from PIL import Image, ImageTk
 import io
 from datetime import datetime
+from tkcalendar import Calendar
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("dark-blue")
@@ -670,28 +671,36 @@ class App(ctk.CTk):
         self.back_button_analytics.configure(width=200, height=50, font=("Arial", 30))
 
     def init_period_frame(self):
-        self.entry_date1 = ctk.CTkEntry(
-            self.period_frame,
-            placeholder_text="Дата начала",
-        )
-        self.entry_date1.grid(
-            row=0, column=0, padx=300, pady=15, sticky="nsew"
-        )
-        self.entry_date1.configure(width=my_width, height=40, font=(my_font, 14))
+        # self.entry_date1 = ctk.CTkEntry(
+        #     self.period_frame,
+        #     placeholder_text="Дата начала",
+        # )
+        # self.entry_date1.grid(
+        #     row=0, column=0, padx=300, pady=15, sticky="nsew"
+        # )
+        # self.entry_date1.configure(width=my_width, height=40, font=(my_font, 14))
+        #
+        # self.entry_date2 = ctk.CTkEntry(
+        #     self.period_frame,
+        #     placeholder_text="Дата окончания",
+        # )
+        # self.entry_date2.grid(
+        #     row=1, column=0, padx=300, pady=15, sticky="nsew"
+        # )
+        # self.entry_date2.configure(width=my_width, height=40, font=(my_font, 14))
 
-        self.entry_date2 = ctk.CTkEntry(
-            self.period_frame,
-            placeholder_text="Дата окончания",
-        )
-        self.entry_date2.grid(
-            row=1, column=0, padx=300, pady=15, sticky="nsew"
-        )
-        self.entry_date2.configure(width=my_width, height=40, font=(my_font, 14))
+        # Календарь для начальной даты
+        self.calendar_start = Calendar(self.period_frame, selectmode='day')
+        self.calendar_start.grid(row=0, column=0, padx=300, pady=15, sticky="nsew")
+
+        # Календарь для конечной даты
+        self.calendar_end = Calendar(self.period_frame, selectmode='day')
+        self.calendar_end.grid(row=1, column=0, padx=300, pady=15, sticky="nsew")
 
         self.get_period_button = ctk.CTkButton(
             self.period_frame,
             text="Получить статистику",
-            command=self.make_period, # TODO исправить
+            command=self.generate_pdf_report, # TODO исправить
         )
         self.get_period_button.grid(
             row=2, column=0, padx=300, pady=25, sticky="nsew"
@@ -1498,6 +1507,61 @@ class App(ctk.CTk):
 
     def make_period(self):
         pass
+
+    def generate_pdf_report(self):
+        start_date = self.calendar_start.get_date()
+        end_date = self.calendar_end.get_date()
+
+        # Преобразование строк даты в объекты datetime
+        start_date_obj = datetime.strptime(start_date, '%m/%d/%y')
+        end_date_obj = datetime.strptime(end_date, '%m/%d/%y')
+
+        # Форматирование дат в нужный формат
+        start_date = start_date_obj.strftime('%Y-%m-%d')
+        end_date = end_date_obj.strftime('%Y-%m-%d')
+        # TODO валидация данных
+
+
+        receipt_folder = 'receipts_admin'
+        if not os.path.exists(receipt_folder):
+            os.makedirs(receipt_folder)
+
+        # Получение текущей даты и времени
+        current_date = datetime.now().date().strftime("%Y-%m-%d")
+
+        report_file = os.path.join(receipt_folder, f"{current_date}.pdf")
+        c = canvas.Canvas(report_file, pagesize=letter)
+        c.drawString(100, 780, "Order Receipt:")
+        c.drawString(100, 760, f"Start date: {start_date}")
+        c.drawString(100, 740, f"End date: {end_date}")
+
+        # Запрос данных из базы данных
+        sql_query = bd.get_period(start_date, end_date)
+        with connection.cursor() as cursor:
+            cursor.execute(sql_query)
+            rows = cursor.fetchall()
+
+        # Добавление данных в PDF
+        total_sum = 0
+        y_position = 700
+        for row in rows:
+            text = ', '.join(map(str, row))  # Преобразование данных строки в текст
+            c.drawString(100, y_position, text)
+            y_position -= 20  # Уменьшение позиции Y для следующей строки
+
+            total_sum += row[7]
+
+        count = len(rows)
+
+        # Вставка итоговой суммы в документ
+        c.drawString(100, y_position-20, f"Total Car Price Sum: {total_sum}")
+        c.drawString(100, y_position-40, f"Total Count Sales: {count}")
+
+        # Добавьте здесь дополнительные данные
+        c.save()
+
+        # Открытие PDF-файла
+        webbrowser.open(report_file)
 
     # отображение фрейма - Каталог автомобилей
     def show_car_catalog(self):

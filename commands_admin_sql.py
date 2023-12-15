@@ -187,6 +187,30 @@ ORDER BY d.id_deal;
 """
 
 
+def get_period(date_start, date_end):
+    return f"""
+    SELECT
+    d.id_deal AS "Id deal",
+    d.id_car AS "Id car",
+    cc.car_brand AS "Brand",
+    cc.car_model AS "Model",
+    d.id_buyer AS "Id buyer",
+    b.name AS "Name",
+    d.date_of_sale AS "Date",
+    cc.car_price AS "Car price"
+    FROM
+        deals d
+    
+    JOIN
+        car_catalog cc ON cc.id_car = d.id_car
+    JOIN
+        buyers b ON b.id_buyer = d.id_buyer
+    WHERE date_of_sale >= '{date_start}' AND date_of_sale <= '{date_end}'
+    ORDER BY d.id_deal;
+    """
+
+
+
 buyers_Select_All = """
 SELECT *
 FROM "buyers"
