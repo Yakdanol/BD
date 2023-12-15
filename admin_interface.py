@@ -3,6 +3,8 @@ from tkinter import *
 from tkinter import Canvas, PhotoImage, ttk, messagebox
 import customtkinter as ctk
 import psycopg2
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib import colors
 
 from main import show, connect_admin_with_bd, show_2
 from PIL import Image, ImageTk
@@ -1528,12 +1530,14 @@ class App(ctk.CTk):
 
         # Получение текущей даты и времени
         current_date = datetime.now().date().strftime("%Y-%m-%d")
-
         report_file = os.path.join(receipt_folder, f"{current_date}.pdf")
+        pdf = SimpleDocTemplate(report_file, pagesize=letter)
+
+        # Заголовок документа
+        elements = []
+        elements.append(Table([[f"Sales Report: {current_date}"], [f"Period: {start_date} to {end_date}"]]))
+
         c = canvas.Canvas(report_file, pagesize=letter)
-        c.drawString(100, 780, "Order Receipt:")
-        c.drawString(100, 760, f"Start date: {start_date}")
-        c.drawString(100, 740, f"End date: {end_date}")
 
         # Запрос данных из базы данных
         sql_query = bd.get_period(start_date, end_date)
@@ -1545,20 +1549,40 @@ class App(ctk.CTk):
         total_sum = 0
         y_position = 700
         for row in rows:
-            text = ', '.join(map(str, row))  # Преобразование данных строки в текст
-            c.drawString(100, y_position, text)
-            y_position -= 20  # Уменьшение позиции Y для следующей строки
-
             total_sum += row[7]
 
         count = len(rows)
 
-        # Вставка итоговой суммы в документ
-        c.drawString(100, y_position-20, f"Total Car Price Sum: {total_sum}")
-        c.drawString(100, y_position-40, f"Total Count Sales: {count}")
+        ## Вставка итоговой суммы в документ
+        #c.drawString(100, 720, f"Total Car Price Sum: {total_sum}")
+        #c.drawString(100, 700, f"Total Count Sales: {count}")
+
+        # Заголовки столбцов
+        column_headers = ["Id deal", "Id car", "Brand", "Model", "Id buyer", "Name", "Date", "Car price"]
+        rows.insert(0, column_headers)  # Добавление заголовков в начало списка данных
+
+        # Создание таблицы для данных
+        table = Table(rows)
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+
+        elements.append(table)
+
+        elements.append(Table([[f"Total Car Price Sum: {total_sum}"],
+                               [f"Total Count Sales: {count}"]]))
 
         # Добавьте здесь дополнительные данные
         c.save()
+
+        # Сохранение PDF-файла
+        pdf.build(elements)
 
         # Открытие PDF-файла
         webbrowser.open(report_file)
