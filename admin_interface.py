@@ -651,7 +651,7 @@ class App(ctk.CTk):
         self.analytics3_button = ctk.CTkButton(
             self.analytics_frame,
             text="Вывести аналитику за период",
-            command=self.output_analytics(), # TODO исправить
+            command=self.show_period,
         )
         self.analytics3_button.grid(
             row=2, column=0, padx=300, pady=25, sticky="nsew"
@@ -672,12 +672,40 @@ class App(ctk.CTk):
     def init_period_frame(self):
         self.entry_date1 = ctk.CTkEntry(
             self.period_frame,
-            placeholder_text="Введите текст 1",
+            placeholder_text="Дата начала",
         )
-        self.entry_idcar.grid(
+        self.entry_date1.grid(
             row=0, column=0, padx=300, pady=15, sticky="nsew"
         )
-        self.entry_idcar.configure(width=my_width, height=40, font=(my_font, 14))
+        self.entry_date1.configure(width=my_width, height=40, font=(my_font, 14))
+
+        self.entry_date2 = ctk.CTkEntry(
+            self.period_frame,
+            placeholder_text="Дата окончания",
+        )
+        self.entry_date2.grid(
+            row=1, column=0, padx=300, pady=15, sticky="nsew"
+        )
+        self.entry_date2.configure(width=my_width, height=40, font=(my_font, 14))
+
+        self.get_period_button = ctk.CTkButton(
+            self.period_frame,
+            text="Получить статистику",
+            command=self.make_period, # TODO исправить
+        )
+        self.get_period_button.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.get_period_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
+        self.back_button_period = ctk.CTkButton(
+            self.period_frame,
+            text="Назад",
+            command=self.show_analytics,
+            fg_color="grey",
+        )
+        self.back_button_period.grid(row=3, column=0, padx=300, pady=25, sticky="nsew")
+        self.back_button_period.configure(width=200, height=50, font=("Arial", 30))
 
     def init_result_state_frame(self):
         # Создайте объект стиля
@@ -1451,6 +1479,8 @@ class App(ctk.CTk):
 
         self.remove_car_frame.pack_forget()
 
+        self.period_frame.pack_forget()
+
     # TODO padx отвечает за сдвиги таблицы с кнопками по горизонтали
     # TODO pady отвечает за сдвиги таблицы с кнопками по вертикали
     # TODO надо бы сделать по центру или оставить так, +- ровно
@@ -1460,6 +1490,14 @@ class App(ctk.CTk):
         self.hide_all_states()
         self.menu_frame.pack(fill="both", expand=True)
         self.menu_frame.configure(padx=(self.winfo_screenwidth() / 3.5), pady=50)
+
+    def show_period(self):
+        self.hide_all_states()
+        self.period_frame.pack(fill="both", expand=True)
+        self.period_frame.configure(padx=(self.winfo_screenwidth() / 3.5), pady=50)
+
+    def make_period(self):
+        pass
 
     # отображение фрейма - Каталог автомобилей
     def show_car_catalog(self):
