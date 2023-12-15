@@ -142,6 +142,9 @@ class App(ctk.CTk):
         self.remove_car_frame = Frame(self)
         self.init_remove_car_frame()
 
+        self.period_frame = Frame(self)
+        self.init_period_frame()
+
         # Обработка закрытия окна
         self.protocol("WM_DELETE_WINDOW", lambda: self.on_closing(connection))
 
@@ -644,6 +647,18 @@ class App(ctk.CTk):
         )
         self.analytics2_button.configure(width=my_width, height=my_height, font=(my_font, 30))
 
+        # Кнопка "Вывести аналитику за период"
+        self.analytics3_button = ctk.CTkButton(
+            self.analytics_frame,
+            text="Вывести аналитику за период",
+            command=self.output_analytics(), # TODO исправить
+        )
+        self.analytics3_button.grid(
+            row=2, column=0, padx=300, pady=25, sticky="nsew"
+        )
+        self.analytics3_button.configure(width=my_width, height=my_height, font=(my_font, 30))
+
+
         # Кнопка "Назад"
         self.back_button_analytics = ctk.CTkButton(
             self.analytics_frame,
@@ -651,8 +666,18 @@ class App(ctk.CTk):
             command=self.show_menu,
             fg_color="grey",
         )
-        self.back_button_analytics.grid(row=6, column=0, padx=300, pady=25, sticky="nsew")
+        self.back_button_analytics.grid(row=3, column=0, padx=300, pady=25, sticky="nsew")
         self.back_button_analytics.configure(width=200, height=50, font=("Arial", 30))
+
+    def init_period_frame(self):
+        self.entry_date1 = ctk.CTkEntry(
+            self.period_frame,
+            placeholder_text="Введите текст 1",
+        )
+        self.entry_idcar.grid(
+            row=0, column=0, padx=300, pady=15, sticky="nsew"
+        )
+        self.entry_idcar.configure(width=my_width, height=40, font=(my_font, 14))
 
     def init_result_state_frame(self):
         # Создайте объект стиля
@@ -1859,6 +1884,10 @@ class App(ctk.CTk):
 
         except psycopg2.Error as e:
             messagebox.showerror("Ошибка", str(e))
+
+
+
+
 
 
     # Вставка в таблицы
