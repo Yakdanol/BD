@@ -226,7 +226,7 @@ class App(ctk.CTk):
         self.options_button = ctk.CTkButton(
             self.menu_frame, text="Аналитика", command=self.show_analytics
         )
-        self.options_button.grid(row=8, column=0, padx=300, pady=20, sticky="nsew")
+        self.options_button.grid(row=9, column=0, padx=300, pady=20, sticky="nsew")
         self.options_button.configure(width=200, height=40, font=("Arial", 30))
 
     # инициализация фрейма - Каталог автомобилей
